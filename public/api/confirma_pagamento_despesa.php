@@ -1,0 +1,22 @@
+<?php
+$mysqli = new mysqli("localhost", "root", "root", "teste");
+
+	$post = $_POST;
+
+	$sql = "UPDATE parcelas 
+			SET id_forma_pagamento = '".$post['forma_pagamento']."', valor_pago = '".$post['valor_pago']."', data_pagamento = now(), status = '1'
+			WHERE id = '".$post['id_parcela']."'
+		";
+
+	$result = $mysqli->query($sql);
+
+	$sql = "UPDATE contas_pagar 
+			SET valor_pago = '".$post['valor_pago']."', qtd_parcelas_pagas += 1
+			WHERE id = '".$post['id_conta_pagar']."'
+		";
+
+	$result = $mysqli->query($sql);
+	
+    echo json_encode($result);
+
+?>
