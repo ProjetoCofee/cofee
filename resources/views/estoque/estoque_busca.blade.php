@@ -43,7 +43,7 @@
                     <div class="panel-heading">Estoque</div>
                         <ul class="nav nav-pills nav-stacked">
                             <li class="active"><a href="#">Estoque<span class="sr-only">(current)</span></a></li>
-                            <li><a href="/estoque/entrada">Entrada<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/estoque/historico_entrada">Entrada<span class="sr-only">(current)</span></a></li>
                             <li><a href="/estoque/retirada">Retirada<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>

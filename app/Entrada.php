@@ -11,6 +11,8 @@ class Entrada extends Model
     	'id',
     	'id_usuario',
     	'id_fornecedor',
+    	'data_entrada',
+    	'serie_nf',
     	'num_nota_fiscal',
     	'motivo'
     ];

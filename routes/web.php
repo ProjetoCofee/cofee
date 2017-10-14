@@ -124,6 +124,8 @@ Route::post('/estoque/busca', 'Estoque_Controller@busca_produto')->name('busca_p
 
 Route::post('/estoque/produto', 'Estoque_Controller@create_entrada')->name('entrada');
 
+Route::post('/estoque/entrada/busca', 'Estoque_Controller@busca_entrada')->name('busca_entrada');
+
 Route::post('/estoque/retirada/busca', 'Estoque_Controller@busca_retirada')->name('busca_retirada');
 
 Route::post('/estoque/compra/busca', 'Estoque_Controller@busca_compra')->name('busca_compra');

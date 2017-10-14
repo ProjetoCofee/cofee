@@ -163,19 +163,19 @@
                                 <ul class="nav nav-pills nav-stacked">
                                     <li class="subactive"><a> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Solicitações retirada</a></li> 
                                     <li style = "padding-left: 5px;"><a> <span class="glyphicon glyphicon-menu-right"></span> Solicitações compra</a></li>
-                                    <li style = "padding-left: 5px;"><a> <span class="glyphicon glyphicon-menu-right"></span> Solicitar retirada</a></li>
+                                    <!-- <li style = "padding-left: 5px;"><a> <span class="glyphicon glyphicon-menu-right"></span> Solicitar retirada</a></li> -->
                                 </ul>
                             </li>
                         </ul>
                         @else
                         <ul class="nav nav-pills nav-stacked">
                             <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
-                            <li><a href="/estoque/entrada">Entrada<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/estoque/historico_entrada">Entrada<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Retirada<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked">
                                     <li class="subactive"><a href="/estoque/retirada"> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Solicitações retirada</a></li> 
                                     <li style = "padding-left: 5px;"><a href="/estoque/compra"> <span class="glyphicon glyphicon-menu-right"></span> Solicitações compra</a></li>
-                                    <li style = "padding-left: 5px;"><a href="/estoque/solicita_retirada"> <span class="glyphicon glyphicon-menu-right"></span> Solicitar retirada</a></li>
+                                    <!-- <li style = "padding-left: 5px;"><a href="/estoque/solicita_retirada"> <span class="glyphicon glyphicon-menu-right"></span> Solicitar retirada</a></li> -->
                                 </ul>
                             </li>
                         </ul>

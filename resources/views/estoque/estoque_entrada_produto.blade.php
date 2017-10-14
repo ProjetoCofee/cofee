@@ -214,7 +214,7 @@
                         </div>
                     </div>
 
-                    <form method="GET" action="entrada">
+                    <form method="GET" action="/estoque/historico_entrada">
                         <div class="form-group">
                             <div align="center">
                                 <button id="btn_salvar" type="submit" class="btn btn-primary" disabled="true">

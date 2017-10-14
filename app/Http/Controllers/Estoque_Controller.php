@@ -35,7 +35,24 @@ class Estoque_Controller extends Controller
 				");
 
 			return view('estoque.estoque_show',compact('produtos'));
+		}else if($atributo == "historico_entrada"){
+
+			$entradas= DB::select("
+				SELECT
+				entrada.id,
+				entrada.id_usuario,
+				entrada.data_entrada,
+				entrada.motivo,
+				users.name as responsavel
+				FROM entrada, users
+				WHERE entrada.id_usuario = users.id
+				ORDER BY data_entrada DESC
+				");
+
+			return view('estoque.estoque_historico_entrada',compact('entradas'));
+
 		}else if($atributo == "entrada"){
+
 			$fornecedors = DB::select("
 				SELECT fornecedors.id, pessoa_fisicas.nome FROM fornecedors
 				INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = fornecedors.id_pessoa_fisica
@@ -190,6 +207,8 @@ class Estoque_Controller extends Controller
 		$entrada = Entrada::create([
 			'id_usuario' => Auth::user()->id,
 			'id_fornecedor' => $data['fornecedor'],
+			'data_entrada' => $data['data_entrada'],
+			'serie_nf' => $data['serie_nf'],
 			'num_nota_fiscal' => $data['num_nota_fiscal'],
 			'motivo' => $data['motivo']
 		]);
@@ -229,6 +248,42 @@ class Estoque_Controller extends Controller
 			return view('estoque.estoque_entrada_produto_retorno',compact('entrada'));
 		} 
 
+	}
+
+	public function busca_entrada(Request $request){
+
+		$busca = $request->search;
+		trim($busca);
+
+		if($busca != ''){
+
+			$entradas= DB::select("
+				SELECT
+				entrada.id,
+				entrada.id_usuario,
+				entrada.data_entrada,
+				entrada.motivo,
+				users.name as responsavel
+				FROM entrada, users
+				WHERE entrada.id_usuario = users.id
+				AND (
+				entrada.id LIKE '%".$busca."%' OR
+				users.name LIKE '%".$busca."%'
+				)
+				ORDER BY data_entrada DESC
+			");
+
+			if (count($entradas) != 0) {
+
+				return view('estoque.estoque_historico_entrada_busca',compact('entradas','busca'));
+			}else{
+
+				return view('estoque.estoque_historico_entrada_busca_vazia',compact('busca'));
+			}
+		}else{
+
+			return redirect('estoque/historico_entrada');
+		}
 	}
 
 	//retirada
