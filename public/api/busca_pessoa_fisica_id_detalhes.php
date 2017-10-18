@@ -23,6 +23,8 @@ $sql = mysqli_query($mysqli, "SELECT
 				pessoa_fisicas.logradouro,
 				pessoa_fisicas.numero,
 				pessoa_fisicas.tipo,
+				pessoa_fisicas.orgao_expedidor,
+				pessoa_fisicas.complemento,
 				pessoa_fisicas.created_at,
 				pessoa_fisicas.updated_at
 			FROM pessoa_fisicas
