@@ -15,10 +15,8 @@
 
                             <div class="col-md-6">
                                 <select name="departamento" class="form-control" required>
-                                    <option value="{{$produto->id_departamento}}">{{$produto->id_departamento}}</option>
+                                    <option value="{{$produto->id_departamento}}">{{$departamento_up->nome}}</option>
                                     <option value=""></option>
-                                    <!--<option value="../departamento/cadastrar">Cadastrar departamento</option>
-                                    <option value="">--</option>-->
 
                                     @foreach($departamentos as $departamento)
                                         <option value="{{$departamento->id_departamento}}">{{$departamento->nome}}</option>
@@ -38,9 +36,7 @@
 
                             <div class="col-md-6">
                                 <select name="marca" class="form-control" required>
-                                    <option value="{{$produto->id_marca}}">{{$produto->id_marca}}</option>
-                                    <!--<option value="../marca/cadastrar">Cadastrar marca</option>
-                                    <option value="">--</option>-->
+                                    <option value="{{$produto->id_marca}}">{{$marca_up->nome}}</option>
                                     <option value=""></option>
                                     @foreach($marcas as $marca)
                                         <option value="{{$marca->id_marca}}">{{$marca->nome}}</option>

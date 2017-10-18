@@ -47,15 +47,23 @@
                         function getCep() {
 
                             busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
-                            console.log(busca.cep);
+
                             $.ajax({
                                 dataType: 'json',
                                 url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
                             }).done(function(data){
-                                console.log(data);
-                                $('#resultadoCep').empty();
-                                $('#resultadoCep').append('<div id="form"><div class="form-group"><label for="uf" class="col-md-4 control-label" id="ufL">UF</label><div class="col-md-6"><input id="uf" type="text" class="form-control" name="uf" value="'+data.uf+'" readonly></div></div><div class="form-group"><label for="cidade" class="col-md-4 control-label" id="cidadeL">Cidade</label><div class="col-md-6"><input id="cidade" type="text" class="form-control" name="cidade" value="'+data.localidade+'" readonly></div></div><div class="form-group"><label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label><div class="col-md-6"><input id="bairro" type="text" class="form-control" name="bairro" value="'+data.bairro+'" readonly></div></div><div class="form-group"><label for="logradouro" class="col-md-4 control-label" id="logradouroL">Logradouro</label><div class="col-md-6"><input id="logradouro" type="text" class="form-control" name="logradouro" value="'+data.logradouro+'" readonly></div></div><div class="form-group"><label for="numero" class="col-md-4 control-label" id="numeroL">Número</label><div class="col-md-6"><input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false"></div></div></div>'
-                                    );
+                                if(data.uf != 'undefined'){
+                                    document.querySelector("[name='uf']").value = data.uf;
+                                }
+                                if(data.localidade != 'undefined'){
+                                    document.querySelector("[name='cidade']").value = data.localidade;
+                                }
+                                if(data.bairro != 'undefined'){
+                                    document.querySelector("[name='bairro']").value = data.bairro;
+                                }
+                                if(data.logradouro != 'undefined'){
+                                    document.querySelector("[name='logradouro']").value = data.logradouro;
+                                }
                             });
                         }
 
@@ -185,6 +193,78 @@
                                             <strong>{{ $errors->first('cep') }}</strong>
                                         </span>
                                         @endif
+                                    </div>
+                                </div>
+
+                                                                <div class="form-group">
+                                    <label for="uf" class="col-md-4 control-label required" id="ufL">UF</label>
+                                    <div class="col-md-6">
+
+                                        <select class="form-control" name="uf" id="ufL" required>
+                                            <option value="">Selecione</option>
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AM">AM</option>
+                                            <option value="AP">AP</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MG">MG</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MT">MT</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="PR">PR</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RS">RS</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SE">SE</option>
+                                            <option value="SP">SP</option>
+                                            <option value="TO">TO</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cidade" class="col-md-4 control-label required" id="cidadeL">Cidade</label>
+                                    <div class="col-md-6">
+                                        <input id="cidade" type="text" class="form-control" name="cidade" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="bairro" class="col-md-4 control-label required" id="bairroL">Bairro</label>
+                                    <div class="col-md-6">
+                                        <input id="bairro" type="text" class="form-control" name="bairro" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="logradouro" class="col-md-4 control-label required" id="logradouroL">Logradouro</label>
+                                    <div class="col-md-6">
+                                        <input id="logradouro" type="text" class="form-control" name="logradouro" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
+                                    <div class="col-md-6">
+                                        <input id="complemento" type="text" class="form-control" name="complemento">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="numero" class="col-md-4 control-label required" id="numeroL">Número</label>
+                                    <div class="col-md-6">
+                                        <input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false">
                                     </div>
                                 </div>
 

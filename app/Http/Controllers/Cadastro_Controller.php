@@ -248,11 +248,14 @@ class Cadastro_Controller extends Controller
     public function update_produto(Request $request, $id){
 
         $produto = \App\Produto::find($id);
+        $departamento_up = \App\Departamento::find($produto->id_departamento);
+        $marca_up = \App\Marca::find($produto->id_marca);
+
         $departamentos = \App\Departamento::All();
         $marcas = \App\Marca::All();
         $unidade_medidas = \App\Unidade_medida::All();
 
-        return view('cadastro/cadastro_produto_update',compact('produto','marcas','departamentos','unidade_medidas')); 
+        return view('cadastro/cadastro_produto_update',compact('produto','marcas','departamentos','unidade_medidas', 'departamento_up','marca_up')); 
     }  
 
     public function save_produto(Request $request, $id){
@@ -447,7 +450,7 @@ class Cadastro_Controller extends Controller
 
             $data['nome'] = mb_strtoupper($data['nome']);
             $data['email'] = mb_strtolower($data['email']);
-
+            $data['orgao_expedidor'] = mb_strtoupper($data['orgao_expedidor']);
             $data['cpf'] = preg_replace("/\D+/", "", $data['cpf']);
             $data['rg'] = preg_replace("/\D+/", "", $data['rg']);
             $data['telefone'] = preg_replace("/\D+/", "", $data['telefone']);
@@ -459,6 +462,7 @@ class Cadastro_Controller extends Controller
                 'nome' => $data['nome'],
                 'cpf' => $data['cpf'],
                 'rg' => $data['rg'],
+                'orgao_expedidor' => $data['orgao_expedidor'],
                 'sexo' => $data['sexo'],
                 'data_nascim' => $data['data_nascim'],
                 'telefone' => $data['telefone'],
@@ -466,6 +470,7 @@ class Cadastro_Controller extends Controller
                 'email' => $data['email'],
                 'cep' => $data['cep'],
                 'logradouro' => $data['logradouro'],
+                'complemento' => $data['complemento'],
                 'numero' => $data['numero'],
                 'bairro' => $data['bairro'],
                 'cidade' => $data['cidade'],
@@ -562,6 +567,10 @@ class Cadastro_Controller extends Controller
             $pessoa_fisica->rg = $this->Mask("##.###.###-#",$pessoa_fisica->rg);
         }
 
+        if(strlen($pessoa_fisica->orgao_expedidor) == 5){
+            $pessoa_fisica->orgao_expedidor = $this->Mask("###/##",$pessoa_fisica->orgao_expedidor);
+        }
+
         if(strlen($pessoa_fisica->telefone) == 10){
             $pessoa_fisica->telefone = $this->Mask("(##)####-####",$pessoa_fisica->telefone);
         } else if(strlen($pessoa_fisica->telefone) == 11){
@@ -621,7 +630,9 @@ class Cadastro_Controller extends Controller
         }
 
         $request['cep'] = preg_replace("/\D+/", "", $request['cep']);
-        $request['cnpj'] = preg_replace("/\D+/", "", $request['cnpj']);
+        $request['cpf'] = preg_replace("/\D+/", "", $request['cpf']);
+        $request['rg'] = preg_replace("/\D+/", "", $request['rg']);
+        $request['orgao_expedidor'] = mb_strtoupper($request['orgao_expedidor']);
         $request['telefone'] = preg_replace("/\D+/", "", $request['telefone']);
         $request['telefone_sec'] = preg_replace("/\D+/", "", $request['telefone_sec']);
 
@@ -630,6 +641,7 @@ class Cadastro_Controller extends Controller
 
         $pessoa_fisica->nome = $request->input('nome');
         $pessoa_fisica->rg = $request->input('rg');
+        $pessoa_fisica->orgao_expedidor = $request->input('orgao_expedidor');
         $pessoa_fisica->sexo = $request->input('sexo');
         $pessoa_fisica->data_nascim = $request->input('data_nascim');
         $pessoa_fisica->telefone = $request->input('telefone');
@@ -640,6 +652,7 @@ class Cadastro_Controller extends Controller
         $pessoa_fisica->cidade = $request->input('cidade');
         $pessoa_fisica->bairro = $request->input('bairro');
         $pessoa_fisica->logradouro = $request->input('logradouro');
+        $pessoa_fisica->complemento = $request->input('complemento');
         $pessoa_fisica->numero = $request->input('numero');
         $pessoa_fisica->tipo = $relacao;
         $pessoa_fisica->save();
@@ -716,6 +729,7 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.nome, 
                 pessoa_fisicas.cpf, 
                 pessoa_fisicas.rg, 
+                pessoa_fisicas.orgao_expedidor,
                 pessoa_fisicas.sexo,
                 pessoa_fisicas.data_nascim, 
                 pessoa_fisicas.email, 
@@ -724,7 +738,8 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.cep, 
                 pessoa_fisicas.uf, 
                 pessoa_fisicas.cidade, 
-                pessoa_fisicas.logradouro, 
+                pessoa_fisicas.logradouro,
+                pessoa_fisicas.complemento, 
                 pessoa_fisicas.numero,
                 pessoa_fisicas.tipo 
                 FROM pessoa_fisicas
@@ -794,6 +809,7 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.nome, 
                 pessoa_fisicas.cpf, 
                 pessoa_fisicas.rg, 
+                pessoa_fisicas.orgao_expedidor,
                 pessoa_fisicas.sexo,
                 pessoa_fisicas.data_nascim, 
                 pessoa_fisicas.email, 
@@ -803,6 +819,7 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.uf, 
                 pessoa_fisicas.cidade, 
                 pessoa_fisicas.logradouro, 
+                pessoa_fisicas.complemento,
                 pessoa_fisicas.numero,
                 pessoa_fisicas.tipo 
                 FROM pessoa_fisicas, clientes
@@ -875,6 +892,7 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.cpf, 
                 pessoa_fisicas.rg, 
                 pessoa_fisicas.sexo,
+                pessoa_fisicas.orgao_expedidor,
                 pessoa_fisicas.data_nascim, 
                 pessoa_fisicas.email, 
                 pessoa_fisicas.telefone, 
@@ -883,6 +901,7 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.uf, 
                 pessoa_fisicas.cidade, 
                 pessoa_fisicas.logradouro, 
+                pessoa_fisicas.complemento,
                 pessoa_fisicas.numero,
                 pessoa_fisicas.tipo 
                 FROM pessoa_fisicas, fornecedors

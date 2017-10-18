@@ -19,6 +19,12 @@ html, body {
 	margin: 0;
 }
 
+.required:after {
+	content: " *";
+	color: #f00;
+	font: bold normal 1em sans-serif; 
+}
+
 .table>tbody>tr>td, .table>tfoot>tr>td, .table>thead>tr>td {/*corpo tabela*/
 	color: #000000;
 	font-weight: 400;
