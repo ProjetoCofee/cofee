@@ -1,6 +1,108 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script type="text/javascript">
+
+    function valida_ean(){
+
+        var numero = document.getElementById('codigo_barras');
+
+        var codigo = numero.value;
+        var mascara = '#############';
+
+        var i = numero.value.length;
+        var saida = mascara.substring(0,1);
+        var texto = mascara.substring(i)
+
+        if (texto.substring(0,1) != saida){
+            numero.value += texto.substring(0,1);
+        }
+
+        factor = 3;
+        sum = 0;
+        numlen = numero.value.length;
+        if (numlen == 13){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 13){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(12);
+            if(cc == ca){
+                $('#alerta').empty();
+                document.getElementById("btn_salvar").disabled = false; 
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+                document.getElementById("btn_salvar").disabled = true;
+            }
+        }
+        if(numlen == 14){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 14){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(13);
+            if(cc == ca){
+                $('#alerta').empty();
+                document.getElementById("btn_salvar").disabled = false;
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+                document.getElementById("btn_salvar").disabled = true;
+            }
+        }
+        if(numlen == 8){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 8){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(7);
+            if(cc == ca){
+                $('#alerta').empty();
+                document.getElementById("btn_salvar").disabled = false;
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');     
+                document.getElementById("btn_salvar").disabled = true;  
+            }
+        }
+        if(numlen == 12){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 12){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(11);
+            if(cc == ca){
+                $('#alerta').empty();
+                document.getElementById("btn_salvar").disabled = false;
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+                document.getElementById("btn_salvar").disabled = true;
+            }
+        }
+        if (((((numlen != 8) && (numlen != 12)) && (numlen != 13)) && (numlen != 14))){
+            $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+            document.getElementById("btn_salvar").disabled = true;
+        }
+    }
+</script>
+
+<div id="alerta"></div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -71,7 +173,7 @@
                             <label for="codigo_barras" class="col-md-4 control-label">Código de barras</label>
 
                             <div class="col-md-6">
-                                <input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="{{ old('codigo_barras') }}" required>
+                                <input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="{{ old('codigo_barras') }}" maxlength="13" onkeyup="valida_ean()" required>
 
                                 @if ($errors->has('codigo_barras'))
                                     <span class="help-block">
@@ -139,7 +241,7 @@
                         </div> 
                         <div class="form-group">
                             <div align="center">
-                                <button type="submit" class="btn btn-primary">
+                                <button id="btn_salvar" type="submit" class="btn btn-primary">
                                     Salvar
                                 </button>
                                 <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">Cancelar</button>

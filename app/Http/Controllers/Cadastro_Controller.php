@@ -39,7 +39,9 @@ class Cadastro_Controller extends Controller
                 produtos.minimo, 
                 produtos.observacao 
                 FROM produtos, marcas, departamentos
-                WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id");
+                WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+                ORDER BY descricao ASC
+            ");
 
             return view('cadastro.cadastro_produto',compact('produtos'));
 
