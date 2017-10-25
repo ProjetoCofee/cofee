@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script type="text/javascript">
+
+    window.onload = function() {
+        document.getElementById('nome').focus();
+    };
+
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -11,7 +20,7 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('nome') ? ' has-error' : '' }}">
-                            <label for="nome" class="col-md-4 control-label">Descrição</label>
+                            <label for="nome" class="col-md-4 control-label required">Descrição</label>
 
                             <div class="col-md-6">
                                 <input id="nome" type="text" class="form-control" name="nome" value="{{ old('nome') }}" required>

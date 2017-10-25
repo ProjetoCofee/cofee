@@ -4,7 +4,9 @@
 
 <script type="text/javascript">
 
-    var url = "http://localhost:8000/";
+    window.onload = function() {
+        document.getElementById('search').focus();
+    };
 
     function formatar_Data(data, tipo){
         var d = new Date(data),
@@ -37,6 +39,8 @@
             var saldo = data[0].saldo;
             var unidade_medida = data[0].unidade_medida;
             var posicao = data[0].posicao;
+            var corredor = data[0].corredor;
+            var prateleira = data[0].prateleira;
             var minimo = data[0].minimo;
             var observacao = data[0].observacao;
             var created_at = formatar_Data(data[0].created_at, 'nc');
@@ -46,7 +50,7 @@
 
             console.log(data);
 
-            $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Código:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+codigo_barras+'</td><tr><td><th style="float: right">Descrição:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+descricao+'</td><tr><td><th style="float: right">Marca:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+nome_marca+'</td><tr><td><th style="float: right">Departamento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+nome_departamento+'</td><tr><td><th style="float: right">Saldo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+saldo+' '+unidade_medida+'</td><tr><td><th style="float: right">Mínimo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+minimo+'</td><tr><td><th style="float: right">Posição:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+posicao+'</td><tr><td><th style="float: right">Observação:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+observacao+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');    
+            $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Código:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+codigo_barras+'</td><tr><td><th style="float: right">Descrição:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+descricao+'</td><tr><td><th style="float: right">Marca:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+nome_marca+'</td><tr><td><th style="float: right">Departamento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+nome_departamento+'</td><tr><td><th style="float: right">Saldo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+saldo+' '+unidade_medida+'</td><tr><td><th style="float: right">Mínimo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+minimo+'</td><tr><td><th style="float: right">Posição:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+posicao+'</td><tr><td><th style="float: right">Corredor:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+corredor+'</td><tr><td><th style="float: right">Prateleira:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+prateleira+'</td><tr><td><th style="float: right">Observação:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+observacao+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');    
         });
     }
 
@@ -88,7 +92,7 @@
                                         <td style="padding-bottom: 1em;">
                                         <form method="post" action="/cadastro/produto/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
+                                                <input id="search" type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
                                             </div>
                                                 <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}

@@ -1,67 +1,101 @@
+<!-- date picker -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<!-- date picker -->
+
 @extends('layouts.app')
 
 @section('content')
+
+<script type="text/javascript">
+
+    window.onload = function() {
+        document.getElementById('nome').focus();
+    };
+
+    $( function() {
+        $( "#data_nascim").datepicker({ minDate: "", maxDate: "0D", dateFormat: 'dd/mm/yy'});
+    } );
+
+    function valida_data(){
+        var data_nascim = document.getElementById('data_nascim').value;
+        var partesData = data_nascim.split("/");
+        var data = new Date(partesData[2], partesData[1] - 1, partesData[0]);
+        if(data > new Date()){
+            $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Data de nascimento inválida!</div>');
+            document.getElementById('alerta').focus(); 
+            document.getElementById("btn_salvar").disabled = true;
+        }else{
+            $('#alerta').empty();
+            document.getElementById("btn_salvar").disabled = false;
+        }
+    }
+
+    function formatar(mascara, documento, tipo){
+
+        if(documento.value.length > 12  &&  tipo == 'telefone'){
+            mascara = '##-#####-####';
+        }
+
+        var i = documento.value.length;
+        var saida = mascara.substring(0,1);
+        var texto = mascara.substring(i)
+
+        if (texto.substring(0,1) != saida){
+            documento.value += texto.substring(0,1);
+        }
+        
+        if(documento.value.length >= 9 && tipo == 'cep'){
+            getCep();
+        } else if(documento.value.length < 9 && tipo == 'cep'){
+            form.remove();
+        }
+    }
+
+    var url = "http://localhost:8000/";
+
+    function getPageDataEnter(event) {
+        if(event.keyCode == 13){
+            getCep();
+        } 
+    }
+
+    function getCep() {
+
+        busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
+
+        $.ajax({
+            dataType: 'json',
+            url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
+        }).done(function(data){
+            if(data.uf != 'undefined'){
+                document.querySelector("[name='uf']").value = data.uf;
+            }
+            if(data.localidade != 'undefined'){
+                document.querySelector("[name='cidade']").value = data.localidade;
+            }
+            if(data.bairro != 'undefined'){
+                document.querySelector("[name='bairro']").value = data.bairro;
+            }
+            if(data.logradouro != 'undefined'){
+                document.querySelector("[name='logradouro']").value = data.logradouro;
+            }
+        });
+    }
+
+</script>
+
+<div id="alerta"></div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
-
-                    <script type="text/javascript">
-                        function formatar(mascara, documento, tipo){
-
-                            if(documento.value.length > 11  &&  tipo == 'telefone'){
-                                mascara = '##-#####-####';
-                            }
-
-                            var i = documento.value.length;
-                            var saida = mascara.substring(0,1);
-                            var texto = mascara.substring(i)
-
-                            if (texto.substring(0,1) != saida){
-                                documento.value += texto.substring(0,1);
-                            }
-                            
-                            if(documento.value.length >= 9 && tipo == 'cep'){
-                                getCep();
-                            } else if(documento.value.length < 9 && tipo == 'cep'){
-                                form.remove();
-                            }
-                        }
-
-                        var url = "http://localhost:8000/";
-
-                        function getPageDataEnter(event) {
-                            if(event.keyCode == 13){
-                                getCep();
-                            } 
-                        }
-
-                        function getCep() {
-
-                            busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
-
-                            $.ajax({
-                                dataType: 'json',
-                                url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
-                            }).done(function(data){
-                                if(data.uf != 'undefined'){
-                                    document.querySelector("[name='uf']").value = data.uf;
-                                }
-                                if(data.localidade != 'undefined'){
-                                    document.querySelector("[name='cidade']").value = data.localidade;
-                                }
-                                if(data.bairro != 'undefined'){
-                                    document.querySelector("[name='bairro']").value = data.bairro;
-                                }
-                                if(data.logradouro != 'undefined'){
-                                    document.querySelector("[name='logradouro']").value = data.logradouro;
-                                }
-                            });
-                        }
-
-                    </script>
 
                     <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/create">
                         {{ csrf_field() }}
@@ -76,7 +110,7 @@
                                     <label for="nome" class="col-md-4 control-label required">Nome</label>
 
                                     <div class="col-md-6">
-                                        <input id="nome" type="text" class="form-control" name="nome" required autofocus>
+                                        <input id="nome" type="text" class="form-control" name="nome" pattern="[A-Za-z\s]+$" placeholder="Ex: Joao Carlos Santos" required>
 
                                         @if ($errors->has('nome'))
                                         <span class="help-block">
@@ -87,7 +121,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('cpf') ? ' has-error' : '' }}">
-                                    <label for="cpf" class="col-md-4 control-label">CPF</label>
+                                    <label for="cpf" class="col-md-4 control-label required">CPF</label>
 
                                     <div class="col-md-6">
                                         <input id="cpf" type="text" class="form-control" name="cpf" OnKeyPress="formatar('###.###.###-##', this, 'cpf')" value="{{$cpf}}" readonly="true" required>
@@ -104,7 +138,7 @@
                                     <label for="rg" class="col-md-4 control-label required">RG</label>
 
                                     <div class="col-md-6">
-                                        <input id="rg" type="text" maxlength="13" class="form-control" name="rg" OnKeyPress="formatar('##.###.###-##', this, 'rg')" required autofocus>
+                                        <input id="rg" type="text" maxlength="13" class="form-control" name="rg" OnKeyPress="formatar('##.###.###-##', this, 'rg')" style="text-transform:uppercase" placeholder="Ex: 00.000.000-0" required>
 
                                         @if ($errors->has('rg'))
                                         <span class="help-block">
@@ -118,7 +152,7 @@
                                     <label for="orgao_expedidor" class="col-md-4 control-label required">Orgão Expedidor</label>
 
                                     <div class="col-md-6">
-                                        <input id="orgao_expedidor" type="text" maxlength="6" class="form-control" name="orgao_expedidor" onkeyup="formatar('###/##', this, 'orgao_expedidor')" style="text-transform:uppercase" required autofocus>
+                                        <input id="orgao_expedidor" type="text" maxlength="6" class="form-control" name="orgao_expedidor" onkeyup="formatar('######', this, 'orgao_expedidor')" style="text-transform:uppercase" placeholder="Ex: SESP" required>
 
                                         @if ($errors->has('orgao_expedidor'))
                                         <span class="help-block">
@@ -132,8 +166,8 @@
                                     <label for="sexo" class="col-md-4 control-label required">Sexo</label>
 
                                     <div class="col-md-6">
+                                        <input type="radio" name="sexo" value="f" checked> Feminino<br>
                                         <input type="radio" name="sexo" value="m"> Masculino<br>
-                                        <input type="radio" name="sexo" value="f"> Feminino<br>
                                     </div>
                                 </div>
 
@@ -141,7 +175,7 @@
                                     <label for="data_nascim" class="col-md-4 control-label required">Data de Nascimento</label>
 
                                     <div class="col-md-6">
-                                        <input id="data_nascim" type="date" class="form-control" OnKeyPress="formatar('##/##/####', this, 'data_nascim')" name="data_nascim" required autofocus>
+                                        <input id="data_nascim" type="text" class="form-control" OnKeyPress="formatar('##/##/####', this, 'data_nascim')" onkeyup="valida_data()" name="data_nascim" maxlength="10" required>
 
                                         @if ($errors->has('data_nascim'))
                                         <span class="help-block">
@@ -152,10 +186,10 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
-                                    <label for="telefone" class="col-md-4 control-label">Telefone</label>
+                                    <label for="telefone" class="col-md-4 control-label required">Telefone</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone" type="text" maxlength="16" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" autofocus>
+                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" pattern="[0-9]{2}-[0-9]{4,6}-[0-9]{3,4}$" required>
 
                                         @if ($errors->has('telefone'))
                                         <span class="help-block">
@@ -169,7 +203,7 @@
                                     <label for="telefone_sec" class="col-md-4 control-label">Telefone Secundário</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone_sec" type="text" maxlength="16" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone_sec" autofocus>
+                                        <input id="telefone_sec" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone_sec" pattern="[0-9]{2}-[0-9]{4,6}-[0-9]{3,4}$">
 
                                         @if ($errors->has('telefone_sec'))
                                         <span class="help-block">
@@ -183,7 +217,7 @@
                                     <label for="email" class="col-md-4 control-label required">Email</label>
 
                                     <div class="col-md-6">
-                                        <input id="email" type="email" class="form-control" name="email" required autofocus>
+                                        <input id="email" type="email" class="form-control" name="email" required>
 
                                         @if ($errors->has('email'))
                                         <span class="help-block">
@@ -201,7 +235,7 @@
                                     <label for="cep" class="col-md-4 control-label">CEP</label>
 
                                     <div class="col-md-6">
-                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false">
+                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false" pattern="[0-9]{5}-[0-9]{3}$">
 
                                         @if ($errors->has('cep'))
                                         <span class="help-block">
@@ -256,9 +290,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="bairro" class="col-md-4 control-label required" id="bairroL">Bairro</label>
+                                    <label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label>
                                     <div class="col-md-6">
-                                        <input id="bairro" type="text" class="form-control" name="bairro" required>
+                                        <input id="bairro" type="text" class="form-control" name="bairro">
                                     </div>
                                 </div>
 
@@ -270,16 +304,16 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
+                                    <label for="numero" class="col-md-4 control-label required" id="numeroL">Número</label>
                                     <div class="col-md-6">
-                                        <input id="complemento" type="text" class="form-control" name="complemento">
+                                        <input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="numero" class="col-md-4 control-label required" id="numeroL">Número</label>
+                                    <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
                                     <div class="col-md-6">
-                                        <input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false">
+                                        <input id="complemento" type="text" class="form-control" name="complemento">
                                     </div>
                                 </div>
 
@@ -297,7 +331,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div align="center">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button id="btn_salvar" type="submit" class="btn btn-primary">
                                             Registrar
                                         </button>
                                         <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">

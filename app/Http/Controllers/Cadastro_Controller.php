@@ -36,6 +36,8 @@ class Cadastro_Controller extends Controller
                 produtos.saldo, 
                 produtos.unidade_medida, 
                 produtos.posicao, 
+                produtos.corredor, 
+                produtos.prateleira, 
                 produtos.minimo, 
                 produtos.observacao 
                 FROM produtos, marcas, departamentos
@@ -46,12 +48,16 @@ class Cadastro_Controller extends Controller
             return view('cadastro.cadastro_produto',compact('produtos'));
 
         }else if($atributo == "marca"){
-            $marcas = \App\Marca::All();
+            $marcas = DB::select("
+                    SELECT * FROM marcas ORDER BY nome ASC
+                ");
 
             return view('cadastro.cadastro_marca', compact('marcas'));
 
         }else if($atributo == "departamento"){
-            $departamentos = \App\Departamento::All();
+            $departamentos = DB::select("
+                    SELECT * FROM departamentos ORDER BY nome ASC
+                ");
 
             return view('cadastro.cadastro_departamento', compact('departamentos'));
 
@@ -238,6 +244,8 @@ class Cadastro_Controller extends Controller
             'saldo'=> $data['saldo'],
             'unidade_medida'=> $data['unidade_medida'],
             'posicao'=> $data['posicao'],
+            'corredor'=> $data['corredor'],
+            'prateleira'=> $data['prateleira'],
             'minimo'=> $data['minimo'],
             'observacao'=> $data['observacao'],
             'saldo'=> 0
@@ -448,7 +456,12 @@ class Cadastro_Controller extends Controller
                 $relacao = "c";
             }else if ($data['fornecedor']) {
                 $relacao = "f";
+            }else{
+                $relacao = '';
             }
+
+            $date = str_replace('/', '-', $data['data_nascim']);
+            $data_nascim = date('Y-m-d', strtotime($date));
 
             $data['nome'] = mb_strtoupper($data['nome']);
             $data['email'] = mb_strtolower($data['email']);
@@ -466,7 +479,7 @@ class Cadastro_Controller extends Controller
                 'rg' => $data['rg'],
                 'orgao_expedidor' => $data['orgao_expedidor'],
                 'sexo' => $data['sexo'],
-                'data_nascim' => $data['data_nascim'],
+                'data_nascim' => $data_nascim,
                 'telefone' => $data['telefone'],
                 'telefone_sec' => $data['telefone_sec'],
                 'email' => $data['email'],
@@ -589,6 +602,8 @@ class Cadastro_Controller extends Controller
             $pessoa_fisica->cep = $this->Mask("#####-###",$pessoa_fisica->cep);
         }
         
+        $date = str_replace('-', '/', $pessoa_fisica->data_nascim);
+        $pessoa_fisica->data_nascim = date('d/m/Y', strtotime($date));
 
         return view('cadastro/cadastro_pessoa_fisica_update',compact('pessoa_fisica')); 
     }
@@ -629,7 +644,12 @@ class Cadastro_Controller extends Controller
             $relacao = "c";
         }else if ($request['fornecedor']) {
             $relacao = "f";
+        }else{
+            $relacao = '';
         }
+
+        $date = str_replace('/', '-', $request['data_nascim']);
+        $data_nascim = date('Y-m-d', strtotime($date));
 
         $request['cep'] = preg_replace("/\D+/", "", $request['cep']);
         $request['cpf'] = preg_replace("/\D+/", "", $request['cpf']);

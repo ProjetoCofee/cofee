@@ -4,8 +4,6 @@
 
 <script type="text/javascript">
 
-    var url = "http://localhost:8000/";
-
     function formatar_Data(data, tipo){
         var d = new Date(data),
         ano = ''  +  d.getFullYear(),
@@ -70,8 +68,10 @@
                     tipo = 'Cliente';
                 } else if(tipo == 'f'){
                     tipo = 'Fornecedor';
-                } else{
-                    tipo = 'Cliente / Fornecedor';
+                } else if(tipo == 'cf'){
+                    tipo = 'Cliente/Fornecedor';
+                }else{
+                    tipo = '';
                 }
 
                 $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Nome:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+nome+'</td><tr><td><th style="float: right">CPF:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+cpf+'</td><tr><td><th style="float: right">RG:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+rg+'</td><tr><td><th style="float: right">Orgão Expedidor:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+orgao_expedidor+'</td><tr><td><th style="float: right">Sexo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+sexo+'</td><tr><td><th style="float: right">Data de nascimento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+data_nascim+'</td><tr><td><th style="float: right">Telefone:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone+'</td><tr><td><th style="float: right">Telefone Secundário:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone_sec+'</td><tr><td><th style="float: right">Email:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+email+'</td><tr><td><th style="float: right">UF:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+uf+'</td><tr><td><th style="float: right">Cidade:</th></td><td style="color: black; fontuf-family: arial; padding-left: 10%;">'+cidade+'</td><tr><td><th style="float: right">Bairro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+bairro+'</td><tr><td><th style="float: right">Logradouro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+logradouro+'</td><tr><td><th style="float: right">Complemento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+complemento+'</td><tr><td><th style="float: right">Número:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+numero+'</td><tr><td><th style="float: right">Tipo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+tipo+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');    
@@ -115,6 +115,10 @@
         }
     }
 
+    function busca_pessoa(busca){
+        
+    }
+
 </script>
 
 <div class="container-fluid">
@@ -147,7 +151,7 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <form class="btn-new" method="get" action="pessoa/tipo">
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
                                             <button type="submit" class="btn btn-primary">Novo</button>
                                         </form>
                                     </td>
@@ -204,9 +208,9 @@
                                                 <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$pessoa->id}}','fisica')"><span class="glyphicon glyphicon-eye-open"></span></button>
 
                                                 
-                                                <form method="GET" action="pessoa/fisica/{{$pessoa->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+                                                <form method="GET" action="/cadastro/pessoa/fisica/{{$pessoa->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
 
-                                                <form method="GET" action="pessoa/fisica/{{$pessoa->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                                <form method="GET" action="/cadastro/pessoa/fisica/{{$pessoa->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
                                             </div>
                                         </td>                                      
                                     </tr>
@@ -227,13 +231,6 @@
                                     <form class="btn-new" method="get" action="pessoa/tipo">
                                         <button type="submit" class="btn btn-primary">Novo</button>
                                     </form>
-                                </td>
-
-                                <td>
-                                    <select name="tipo" class="form-control" onchange="location = this.value;" style="margin-bottom: 1em;">
-                                        <option value="fisica">Pessoa Física</option>
-                                        <option value="juridica" selected>Pessoa Jurídica</option>
-                                    </select>
                                 </td>
 
                                 <td style="padding-bottom: 1em; padding-left: 1em;">
@@ -288,9 +285,9 @@
 
                                             <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$pessoa->id}}', 'juridica')"><span class="glyphicon glyphicon-eye-open"></span></button>
 
-                                            <form method="GET" action="pessoa/juridica/{{$pessoa->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+                                            <form method="GET" action="/cadastro/pessoa/juridica/{{$pessoa->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
 
-                                            <form method="GET" action="pessoa/juridica/{{$pessoa->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            <form method="GET" action="/cadastro/pessoa/juridica/{{$pessoa->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
                                         </div>
                                     </td>                                      
                                 </tr>

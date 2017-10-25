@@ -15,6 +15,8 @@ class Produto extends Model
         'saldo',
         'unidade_medida',
         'posicao',
+        'corredor',
+        'prateleira',
         'minimo',
         'observacao'
     ];

@@ -2,6 +2,14 @@
 
 @section('content')
 
+<script type="text/javascript">
+    
+    window.onload = function() {
+        document.getElementById('search').focus();
+    };
+
+</script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-14 col-md-offset-0">
@@ -30,7 +38,7 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <form class="btn-new" method="get" action="marca/cadastrar">
+                                        <form class="btn-new" method="get" action="/cadastro/marca/cadastrar">
                                             <button type="submit" class="btn btn-primary">Nova Marca</button>
                                         </form>
                                     </td>
@@ -38,7 +46,7 @@
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/marca/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
+                                                <input id="search" type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -68,9 +76,9 @@
                                             <td>{{$marca->nome}}</td>
                                             <td>
                                             <div style="display: inline-flex; float: right;">
-                                            <form method="GET" action="marca/{{$marca->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+                                            <form method="GET" action="/cadastro/marca/{{$marca->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
                                             
-                                            <form method="GET" action="marca/{{$marca->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            <form method="GET" action="/cadastro/marca/{{$marca->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
                                             </div>
                                             </td>                                      
                                         </tr>

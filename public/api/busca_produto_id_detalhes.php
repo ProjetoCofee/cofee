@@ -13,6 +13,8 @@ $sql = mysqli_query($mysqli, "SELECT
 				produtos.saldo,
 				produtos.unidade_medida,
 				produtos.posicao,
+				produtos.corredor,
+				produtos.prateleira,
 				produtos.minimo,
 				produtos.observacao,
 				produtos.created_at,
