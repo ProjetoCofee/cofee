@@ -6,6 +6,10 @@
 
     // var url = "http://localhost:8000/";
 
+    window.onload = function() {
+        document.getElementById('search').focus();
+    };
+
     function detalhes_produto(id){
 
         $.ajax({
@@ -61,7 +65,7 @@
                                     <td>
                                     <form method="post" action="busca" class="form-inline" role="search">
                                         <div class="form-group">
-                                            <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Código, descrição, marca ou departamento" autofocus="true">
+                                            <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Código, descrição, marca ou departamento" autofocus="true">
                                         </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                         {{ csrf_field() }}
