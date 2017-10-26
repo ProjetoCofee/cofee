@@ -4,6 +4,10 @@
 
 <script type="text/javascript">
 
+    window.onload = function() {
+        document.getElementById('search').focus();
+    };
+
     function formatar_Data(data, tipo){
         var d = new Date(data),
         ano = ''  +  d.getFullYear(),
@@ -162,7 +166,7 @@
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/pessoa_fisica/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
+                                                <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -244,7 +248,7 @@
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/pessoa_juridica/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
+                                                <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}

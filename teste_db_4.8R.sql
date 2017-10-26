@@ -6,6 +6,8 @@
 -- Generation Time: 25-Out-2017 às 20:16
 -- Versão do servidor: 5.7.11
 -- PHP Version: 5.6.19
+create database teste;
+use teste;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
