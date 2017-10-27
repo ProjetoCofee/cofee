@@ -4,8 +4,6 @@
 
 <script type="text/javascript">
 
-    // var url = "http://localhost:8000/";
-
     window.onload = function() {
         document.getElementById('search').focus();
     };
@@ -37,8 +35,6 @@
     }
 
 </script>
-
-
 
 <div class="container-fluid">
     <div class="row">

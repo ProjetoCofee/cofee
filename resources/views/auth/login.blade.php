@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script type="text/javascript">
+    
+    window.onload = function() {
+        document.getElementById('email').focus();
+   };
+   
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2" style="padding-top: 5%">

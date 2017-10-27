@@ -4,7 +4,9 @@
 
 <script type="text/javascript">
 
-    // var url = "http://localhost:8000/";
+    window.onload = function() {
+        document.getElementById('input_search').focus();
+    };
    
     function getPageDataEnter(event) {
         if(event.keyCode == 13){
@@ -47,19 +49,35 @@
 
     function dados_modal(id){
 
+        var id_solicitacao_produto = "<?php print $retirada->id ?>";
+        var id_produto = id;
+
         $.ajax({
             dataType: 'json',
-            url: url+'api/busca_produto_id.php',
-            data: {busca:id}
+            type:'POST',
+            url: url+'api/consulta_produto_solicitado.php',
+            data: {id_produto:id_produto, id_solicitacao_produto:id_solicitacao_produto}
         }).done(function(data){
-            var id = data[0].id;
-            var codigo_barras = data[0].codigo_barras;
-            var descricao = data[0].descricao;
-            var nome_marca = data[0].nome_marca;
-            var nome_departamento = data[0].nome_departamento;
-            var saldo = data[0].saldo;
+            $('#modal_retirada').empty();
+            if(data==1){
+                $('#modal_retirada').html('<div align="center" role="alert">Este produto já foi solicitado!</div><br><br><div align="center"><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
+            }else if(data==0){ 
 
-            $('#modal_retirada').html('<form class="form-horizontal"><div class="form-group"><label for="codigo_barras" class="col-md-4 control-label">Código</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="'+codigo_barras+'" readonly></div><label for="descricao" class="col-md-4 control-label">Descrição</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly></div><label for="marca" class="col-md-4 control-label">Marca</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="marca" type="text" class="form-control" name="marca" value="'+nome_marca+'" readonly></div><label for="departamento" class="col-md-4 control-label">Departamento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="departamento" type="text" class="form-control" name="departamento" value="'+nome_departamento+'" readonly></div><label for="saldo" class="col-md-4 control-label">Saldo</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="saldo" type="text" class="form-control" name="saldo" value="'+saldo+'" readonly></div><label for="quantidade" class="col-md-4 control-label">Quantidade</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="quantidade" type="number" class="form-control" name="quantidade" autocomplete="off" onkeyup="calcula_saldo()" required></div><div align="center"><button id="btn_inserir" type="button" class="btn crud-submit btn-primary" onclick="solicita_produto('+id+')" data-dismiss="modal" aria-label="Close">Inserir</button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></div></div></form>');    
+                $.ajax({
+                    dataType: 'json',
+                    url: url+'api/busca_produto_id.php',
+                    data: {busca:id}
+                }).done(function(data){
+                    var id = data[0].id;
+                    var codigo_barras = data[0].codigo_barras;
+                    var descricao = data[0].descricao;
+                    var nome_marca = data[0].nome_marca;
+                    var nome_departamento = data[0].nome_departamento;
+                    var saldo = data[0].saldo;
+
+                    $('#modal_retirada').html('<form class="form-horizontal"><div class="form-group"><label for="codigo_barras" class="col-md-4 control-label">Código</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="'+codigo_barras+'" readonly></div><label for="descricao" class="col-md-4 control-label">Descrição</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly></div><label for="marca" class="col-md-4 control-label">Marca</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="marca" type="text" class="form-control" name="marca" value="'+nome_marca+'" readonly></div><label for="departamento" class="col-md-4 control-label">Departamento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="departamento" type="text" class="form-control" name="departamento" value="'+nome_departamento+'" readonly></div><label for="saldo" class="col-md-4 control-label">Saldo</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="saldo" type="text" class="form-control" name="saldo" value="'+saldo+'" readonly></div><label for="quantidade" class="col-md-4 control-label">Quantidade</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="quantidade" type="number" class="form-control" name="quantidade" autocomplete="off" onkeyup="calcula_saldo()" required></div><div align="center"><button id="btn_inserir" type="button" class="btn crud-submit btn-primary" onclick="solicita_produto('+id+')" data-dismiss="modal" aria-label="Close">Inserir</button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></div></div></form>');    
+                });
+            }
         });
     }
 
@@ -69,6 +87,8 @@
 
         if(qtd_solicitada>saldo){
             document.getElementById("btn_inserir").disabled = true; 
+        }else if(qtd_solicitada<=0 || qtd_solicitada>99999){
+            document.getElementById("btn_inserir").disabled = true;
         }else{
             document.getElementById("btn_inserir").disabled = false;
         }

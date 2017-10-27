@@ -7,6 +7,35 @@
     window.onload = function() {
         document.getElementById('search').focus();
     };
+
+    function detalhes_entrada(id){
+
+        $.ajax({
+            dataType: 'json',
+            url: url+'api/busca_entrada_id_detalhes.php',
+            data: {busca:id}
+        }).done(function(data){
+
+            var id = data[0].id;
+            var motivo = data[0].motivo;
+            var fornecedor = data[0].fornecedor;
+            var responsavel = data[0].responsavel;
+            var serie_nf = data[0].serie_nf;
+            var num_nota_fiscal = data[0].num_nota_fiscal;
+            var data_entrada = data[0].data_entrada;
+            var created_at = data[0].created_at;
+            var updated_at = data[0].updated_at;
+
+            if(serie_nf){
+                $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Nº entrada:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+id+'</td><tr><td><th style="float: right">Responsável:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+responsavel+'</td><tr><td><th style="float: right">Fornecedor:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+fornecedor+'</td><tr><td><th style="float: right">Série NF:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+serie_nf+'</td><tr><td><th style="float: right">Nº nota fiscal:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+num_nota_fiscal+'</td><tr><td><th style="float: right">Data da entrada:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+data_entrada+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>'); 
+            }else if(motivo){
+                $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Nº entrada:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+id+'</td><tr><td><th style="float: right">Responsável:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+responsavel+'</td><tr><td><th style="float: right">Motivo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+motivo+'</td><tr><td><th style="float: right">Data da entrada:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+data_entrada+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');
+            } else{
+                $('#modal_detalhes').html('');
+            }              
+        });
+    }
+
 </script>
 
 <div class="container-fluid">
@@ -74,10 +103,7 @@
                                                 @else Retorno
                                                 @endif</td>
                                             <td>
-                                                <div style="display: inline-flex; float: right;">
-                                                    <form method="get" action="/estoque/entrada/detalhes/{{$entrada->id}}">
-                                                    <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-eye-open"></span></button></form>
-                                                </div>
+                                                <div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_entrada('{{$entrada->id}}')"><span class="glyphicon glyphicon-eye-open"></span></button></div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -90,6 +116,25 @@
                 </div>
             </div>
             
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detail_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">Detalhes da entrada</div>
+                <div class="panel-body">
+                    <div id="modal_detalhes" class="modal-body" style="color: #1E3973;">
+                    <!-- conteudo js -->
+                    </div>
+                    </div>
+                    <div align="center">
+                        <button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button>
+                    </div>
+                
+            </div>
         </div>
     </div>
 </div>
