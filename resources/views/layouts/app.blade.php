@@ -26,6 +26,18 @@
             <div class="container">
                 <div class="navbar-header">
 
+                    <!-- Branding Image -->
+                    <!-- <a class="navbar-brand" href="{{ url('/home') }}"> -->
+                    <a class="navbar-brand text" style="position: absolute; width: 100%; left: 0; text-align: center; margin:0 auto;">
+                        {{ config('app.name', 'Cofee') }}
+                    </a>
+    
+                    <!-- logotipo -->
+                    <a class="navbar-brand" rel="home" href="/home" title="Ir para menu">
+                        <img style="position: absolute; max-width:100px; max-height:40px; margin-top: -7px;"
+                             src="/logo_plus.jpg">
+                    </a>
+
                     <!-- Collapsed Hamburger -->
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
                         <span class="sr-only">Toggle Navigation</span>
@@ -33,11 +45,6 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/home') }}">
-                        {{ config('app.name', 'Cofee') }}
-                    </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -60,10 +67,10 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ route('logout') }}"
+                                        <a align="center" href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            <span class="glyphicon glyphicon-off"></span> Logout
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

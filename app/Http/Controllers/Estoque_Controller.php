@@ -32,6 +32,7 @@ class Estoque_Controller extends Controller
 				produtos.observacao 
 				FROM produtos, marcas, departamentos
 				WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+				ORDER BY descricao ASC
 				");
 
 			return view('estoque.estoque_show',compact('produtos'));
@@ -57,8 +58,9 @@ class Estoque_Controller extends Controller
 				SELECT fornecedors.id, pessoa_fisicas.nome FROM fornecedors
 				INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = fornecedors.id_pessoa_fisica
 				union
-				SELECT fornecedors.id, pessoa_juridicas.nome_fantasia FROM fornecedors
+				SELECT fornecedors.id, pessoa_juridicas.nome_fantasia as nome FROM fornecedors
 				INNER JOIN pessoa_juridicas ON pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+				ORDER BY nome ASC
 				");
 
 			return view('estoque.estoque_entrada',compact('fornecedors'));
@@ -73,7 +75,8 @@ class Estoque_Controller extends Controller
 				solicitacao_produto.data_solicitacao,
 				solicitacao_produto.data_aprovacao,
 				solicitacao_produto.status
-				FROM solicitacao_produto ORDER BY data_solicitacao DESC
+				FROM solicitacao_produto 
+				ORDER BY data_solicitacao DESC
 				");
 
 			foreach ($solicitacoes as $solicitacao) {
@@ -181,11 +184,12 @@ class Estoque_Controller extends Controller
 				FROM produtos, marcas, departamentos
 				WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
 				AND (
-				produtos.descricao LIKE '%".$busca."%' OR
-				produtos.codigo_barras LIKE '%".$busca."%' OR
-				marcas.nome LIKE '%".$busca."%' OR
-				departamentos.nome LIKE '%".$busca."%'
-			)
+					produtos.descricao LIKE '%".$busca."%' OR
+					produtos.codigo_barras LIKE '%".$busca."%' OR
+					marcas.nome LIKE '%".$busca."%' OR
+					departamentos.nome LIKE '%".$busca."%'
+				)
+				ORDER BY descricao ASC
 			");
 
 			if (count($produtos) != 0) {
@@ -305,9 +309,10 @@ class Estoque_Controller extends Controller
 				FROM solicitacao_produto, users as users_sol
 				WHERE solicitacao_produto.id_usuario_solicitante = users_sol.id
 				AND (
-				users_sol.name LIKE '%".$busca."%' OR
-				solicitacao_produto.id LIKE '%".$busca."%'
-			)
+					users_sol.name LIKE '%".$busca."%' OR
+					solicitacao_produto.id LIKE '%".$busca."%'
+				)
+				ORDER BY data_solicitacao DESC
 			");
 
 			foreach ($solicitacoes as $solicitacao) {
@@ -444,9 +449,10 @@ class Estoque_Controller extends Controller
 				WHERE solicitacao_compra.id_usuario_solicitante = users.id
 				AND solicitacao_compra.id_produto = produtos.id
 				AND (
-				users.name LIKE '%".$busca."%' OR
-				produtos.descricao LIKE '%".$busca."%'
-			)
+					users.name LIKE '%".$busca."%' OR
+					produtos.descricao LIKE '%".$busca."%'
+				)
+				ORDER BY data_solicitacao DESC
 			");
 
 			if (count($solicitacoes) != 0) {

@@ -76,7 +76,9 @@
                                             <td>{{$solicitacao->solicitante}}</td>
                                             <td>{{$solicitacao->data_solicitacao}}</td>
                                             <td>{{$solicitacao->aprovador}}</td>
-                                            <td>{{$solicitacao->data_aprovacao}}</td>
+                                            <td>@if($solicitacao->status=='p')
+                                                @else{{$solicitacao->data_aprovacao}}
+                                                @endif</td>
                                             <td>@if($solicitacao->status=='p')Pendente
                                                 @else Finalizada
                                                 @endif</td>

@@ -16,9 +16,9 @@
             document.getElementById("btn_proximo").disabled = true;
 
         }else if (value == "retorno") {
-            $('#tipo_entrada').html('<div class="form-group{{ $errors->has('motivo') ? ' has-error' : '' }}"><br><br><label for="motivo" class="col-md-4 control-label">Motivo</label><div class="col-md-6" style="padding-right: 15%;"><input id="motivo" type="text" class="form-control" name="motivo" placeholder="Motivo do retorno" value="{{ old('motivo') }}" autocomplete="off" autofocus="autofocus" required="true">@if ($errors->has('motivo'))<span class="help-block"><strong>{{ $errors->first('motivo') }}</strong></span>@endif</div>');
+            $('#tipo_entrada').html('<div class="form-group{{ $errors->has('data_entrada') ? ' has-error' : '' }}"><br><br><label for="data_entrada" class="col-md-4 control-label">Data entrada</label><div class="col-md-6" style="padding-right: 15%;"><input id="data_entrada" type="date" class="form-control" name="data_entrada" value="{{ old('data_entrada') }}" autocomplete="off" required="true">@if ($errors->has('data_entrada'))<span class="help-block"><strong>{{ $errors->first('data_entrada') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('motivo') ? ' has-error' : '' }}"><label for="motivo" class="col-md-4 control-label">Motivo</label><div class="col-md-6" style="padding-right: 15%;"><input id="motivo" type="text" class="form-control" name="motivo" placeholder="Motivo do retorno" value="{{ old('motivo') }}" autocomplete="off" required="true">@if ($errors->has('motivo'))<span class="help-block"><strong>{{ $errors->first('motivo') }}</strong></span>@endif</div>');
 
-            document.getElementById('motivo').focus();
+            document.getElementById('data_entrada').focus();
             document.getElementById("btn_proximo").disabled = false;
         }  
     }
@@ -72,7 +72,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Entrada de produtos</div>
                         <div class="panel-body">
-                            <form class="form-horizontal" method="POST" action="produto">
+                            <form class="form-horizontal" method="POST" action="/estoque/produto">
                                 {{ csrf_field() }}
                                
                                 <div class="form-group{{ $errors->has('tipo_entrada') ? ' has-error' : '' }}">
