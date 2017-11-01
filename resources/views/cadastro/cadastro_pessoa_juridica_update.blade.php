@@ -1,60 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script>
+    function formatar(mascara, documento, tipo){
+        var i = documento.value.length;
+        var saida = mascara.substring(0,1);
+        var texto = mascara.substring(i)
+
+        if (texto.substring(0,1) != saida){
+            documento.value += texto.substring(0,1);
+        }
+        
+        if(documento.value.length >= 9 && tipo == 'cep'){
+            getCep();
+        } else if(documento.value.length < 9 && tipo == 'cep'){
+            form.remove();
+        }
+        
+    }
+
+    function getPageDataEnter(event) {
+        if(event.keyCode == 13){
+            getCep();
+        } 
+    }
+
+    function getCep() {
+
+        busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
+        
+        $.ajax({
+            dataType: 'json',
+            url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
+        }).done(function(data){
+
+            $('#resultadoCep').empty();
+            $('#preCep').empty();
+
+            $('#resultadoCep').append('<div id="form"><div class="form-group"><label for="uf" class="col-md-4 control-label" id="ufL">UF</label><div class="col-md-6"><input id="uf" type="text" class="form-control" name="uf" value="'+data.uf+'" readonly></div></div><div class="form-group"><label for="cidade" class="col-md-4 control-label" id="cidadeL">Cidade</label><div class="col-md-6"><input id="cidade" type="text" class="form-control" name="cidade" value="'+data.localidade+'" readonly></div></div><div class="form-group"><label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label><div class="col-md-6"><input id="bairro" type="text" class="form-control" name="bairro" value="'+data.bairro+'" readonly></div></div><div class="form-group"><label for="logradouro" class="col-md-4 control-label" id="logradouroL">Logradouro</label><div class="col-md-6"><input id="logradouro" type="text" class="form-control" name="logradouro" value="'+data.logradouro+'" readonly></div></div><div class="form-group"><label for="numero" class="col-md-4 control-label" id="numeroL">Número</label><div class="col-md-6"><input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false"></div></div></div>'
+                );
+        });
+    }
+
+</script>
+
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
-
-                    <script>
-                        function formatar(mascara, documento, tipo){
-                            var i = documento.value.length;
-                            var saida = mascara.substring(0,1);
-                            var texto = mascara.substring(i)
-
-                            if (texto.substring(0,1) != saida){
-                                documento.value += texto.substring(0,1);
-                            }
-                            
-                            if(documento.value.length >= 9 && tipo == 'cep'){
-                                getCep();
-                            } else if(documento.value.length < 9 && tipo == 'cep'){
-                                form.remove();
-                            }
-                            
-                        }
-                    </script>
-
-                    <script type="text/javascript">
-
-                        var url = "http://localhost:8000/";
-
-                        function getPageDataEnter(event) {
-                            if(event.keyCode == 13){
-                                getCep();
-                            } 
-                        }
-
-                        function getCep() {
-
-                            busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
-                            
-                            $.ajax({
-                                dataType: 'json',
-                                url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
-                            }).done(function(data){
-
-                                $('#resultadoCep').empty();
-                                $('#preCep').empty();
-
-                                $('#resultadoCep').append('<div id="form"><div class="form-group"><label for="uf" class="col-md-4 control-label" id="ufL">UF</label><div class="col-md-6"><input id="uf" type="text" class="form-control" name="uf" value="'+data.uf+'" readonly></div></div><div class="form-group"><label for="cidade" class="col-md-4 control-label" id="cidadeL">Cidade</label><div class="col-md-6"><input id="cidade" type="text" class="form-control" name="cidade" value="'+data.localidade+'" readonly></div></div><div class="form-group"><label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label><div class="col-md-6"><input id="bairro" type="text" class="form-control" name="bairro" value="'+data.bairro+'" readonly></div></div><div class="form-group"><label for="logradouro" class="col-md-4 control-label" id="logradouroL">Logradouro</label><div class="col-md-6"><input id="logradouro" type="text" class="form-control" name="logradouro" value="'+data.logradouro+'" readonly></div></div><div class="form-group"><label for="numero" class="col-md-4 control-label" id="numeroL">Número</label><div class="col-md-6"><input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false"></div></div></div>'
-                                    );
-                            });
-                        }
-
-                    </script>
 
                     <form class="form-horizontal" method="POST" action="/cadastro/pessoa/juridica/{{$pessoa_juridica->id}}/save">
                         {{ csrf_field() }}
@@ -257,7 +254,7 @@
                                 <div class="form-group">
                                     <div align="center">
                                         <button type="submit" class="btn btn-primary">
-                                            Registrar
+                                            Salvar
                                         </button>
                                         <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">    
                                             Cancelar

@@ -97,7 +97,7 @@
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
 
-                    <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/create">
+                    <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/{{$pessoa_fisica->id}}/save">
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -355,7 +355,7 @@
                                 <div class="form-group">
                                     <div align="center">
                                         <button id="btn_salvar" type="submit" class="btn btn-primary">
-                                            Registrar
+                                            Salvar
                                         </button>
                                         <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">
                                             Cancelar

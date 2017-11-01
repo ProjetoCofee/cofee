@@ -63,7 +63,9 @@ class Cadastro_Controller extends Controller
 
         }else if($atributo == "fisica"){
             $tipo = "fisica";
-            $pessoas = \App\Pessoa_fisica::All();
+            $pessoas = DB::select("
+                    SELECT * FROM pessoa_fisicas ORDER BY nome ASC
+                ");
 
             return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
 
@@ -140,8 +142,13 @@ class Cadastro_Controller extends Controller
 
         }else if($atributo == "usuario"){
 
-            $usuarios = \App\User::All();
-            $usuarios = $usuarios->sortBy('name');
+            $usuarios = DB::select("
+                SELECT
+                *
+                FROM users
+                WHERE users.id != '0'
+				ORDER BY name
+                ");
 
             return view('cadastro.cadastro_usuario',compact('usuarios'));
         }else{
@@ -344,6 +351,7 @@ class Cadastro_Controller extends Controller
 
         $busca = $request->search;
         trim($busca);
+        $tipo = 'produto';
 
         if($busca != ''){
             $produtos = DB::select("
@@ -373,7 +381,7 @@ class Cadastro_Controller extends Controller
                 return view('cadastro.cadastro_produto_busca',compact('produtos','busca'));
             }else{
 
-                return view('cadastro.cadastro_produto_busca_vazia',compact('busca'));
+                return view('cadastro.cadastro_busca_vazia',compact('busca','tipo'));
             }
         }else{
 
@@ -587,15 +595,15 @@ class Cadastro_Controller extends Controller
         }
 
         if(strlen($pessoa_fisica->telefone) == 10){
-            $pessoa_fisica->telefone = $this->Mask("(##)####-####",$pessoa_fisica->telefone);
+            $pessoa_fisica->telefone = $this->Mask("##-####-####",$pessoa_fisica->telefone);
         } else if(strlen($pessoa_fisica->telefone) == 11){
-            $pessoa_fisica->telefone = $this->Mask("(##)#####-####",$pessoa_fisica->telefone);
+            $pessoa_fisica->telefone = $this->Mask("##-#####-####",$pessoa_fisica->telefone);
         }
 
         if(strlen($pessoa_fisica->telefone_sec) == 10){
-            $pessoa_fisica->telefone_sec = $this->Mask("(##)####-####",$pessoa_fisica->telefone_sec);
+            $pessoa_fisica->telefone_sec = $this->Mask("##-####-####",$pessoa_fisica->telefone_sec);
         } else if(strlen($pessoa_fisica->telefone_sec) == 11){
-            $pessoa_fisica->telefone_sec = $this->Mask("(##)#####-####",$pessoa_fisica->telefone_sec);
+            $pessoa_fisica->telefone_sec = $this->Mask("##-#####-####",$pessoa_fisica->telefone_sec);
         }
 
         if(strlen($pessoa_fisica->cep) == 8){
@@ -612,15 +620,15 @@ class Cadastro_Controller extends Controller
         $pessoa_juridica = \App\Pessoa_juridica::find($id);
 
         if(strlen($pessoa_juridica->telefone) == 10){
-            $pessoa_juridica->telefone = $this->Mask("(##)####-####",$pessoa_juridica->telefone);
+            $pessoa_juridica->telefone = $this->Mask("##-####-####",$pessoa_juridica->telefone);
         } else if(strlen($pessoa_juridica->telefone) == 11){
-            $pessoa_juridica->telefone = $this->Mask("(##)#####-####",$pessoa_juridica->telefone);
+            $pessoa_juridica->telefone = $this->Mask("##-#####-####",$pessoa_juridica->telefone);
         }
 
         if(strlen($pessoa_juridica->telefone_sec) == 10){
-            $pessoa_juridica->telefone_sec = $this->Mask("(##)####-####",$pessoa_juridica->telefone_sec);
+            $pessoa_juridica->telefone_sec = $this->Mask("##-####-####",$pessoa_juridica->telefone_sec);
         } else if(strlen($pessoa_juridica->telefone_sec) == 11){
-            $pessoa_juridica->telefone_sec = $this->Mask("(##)#####-####",$pessoa_juridica->telefone_sec);
+            $pessoa_juridica->telefone_sec = $this->Mask("##-#####-####",$pessoa_juridica->telefone_sec);
         }
 
         if(strlen($pessoa_juridica->cnpj) == 14){
@@ -665,7 +673,7 @@ class Cadastro_Controller extends Controller
         $pessoa_fisica->rg = $request->input('rg');
         $pessoa_fisica->orgao_expedidor = $request->input('orgao_expedidor');
         $pessoa_fisica->sexo = $request->input('sexo');
-        $pessoa_fisica->data_nascim = $request->input('data_nascim');
+        $pessoa_fisica->data_nascim = $data_nascim;
         $pessoa_fisica->telefone = $request->input('telefone');
         $pessoa_fisica->telefone_sec = $request->input('telefone_sec');
         $pessoa_fisica->email = $request->input('email');
@@ -995,8 +1003,11 @@ class Cadastro_Controller extends Controller
                 users.name, 
                 users.email
                 FROM users
-                WHERE users.name LIKE '%".$busca."%' OR users.id LIKE '%".$busca."%' OR
-                users.email LIKE '%".$busca."%'");
+                WHERE users.id != '0'
+                AND users.name LIKE '%".$busca."%' OR users.id LIKE '%".$busca."%' 
+                OR users.email LIKE '%".$busca."%'
+				ORDER BY name
+                ");
 
             if (count($usuarios) != 0) {
 

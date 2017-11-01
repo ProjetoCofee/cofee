@@ -2,22 +2,32 @@
 
 @section('content')
 
+<script type="text/javascript">
+    
+    window.onload = function() {
+        document.getElementById('search').focus();
+    };
+
+</script>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-14 col-md-offset-0">
+
             @if($tipo == "produto")
             <div class="col-md-2 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
-                        <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
+                        <li class="active"><a href="#">Produtos<span class="sr-only">(current)</span></a>
                             <ul class="nav nav-pills nav-stacked"> 
-                                <li style = "padding-left: 10px" class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 
+                                <li style = "padding-left: 10px"><a href="/cadastro/departamento"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 
                                 <li style = "padding-left: 10px "><a href="/cadastro/marca"> <span class="glyphicon glyphicon-menu-right"></span> Marca</a></li> 
                             </ul>
                         </li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a></li>
-                        <li><a href="/cadastro/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
+                        <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -30,10 +40,15 @@
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
                                     <tr>
+                                        <td>
+                                            <form class="btn-new" method="get" action="/cadastro/produto/cadastrar">
+                                                <button type="submit" class="btn btn-primary">Novo produto</button>
+                                            </form>
+                                        </td>
                                         <td style="padding-bottom: 1em;">
                                             <form method="post" action="/cadastro/produto/busca" class="form-inline" role="search">
                                                 <div class="form-group">
-                                                    <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                    <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                                 </div>
                                                 <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                                 {{ csrf_field() }}
@@ -63,6 +78,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
                             <ul class="nav nav-pills nav-stacked"> 
                                 <li style = "padding-left: 10px" class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 
@@ -83,10 +99,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/departamento/cadastrar">
+                                            <button type="submit" class="btn btn-primary">Novo Departamento</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/departamento/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -118,6 +139,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
                                     <li style = "padding-left: 10px"><a href="/cadastro/departamento"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 
@@ -138,10 +160,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/marca/cadastrar">
+                                            <button type="submit" class="btn btn-primary">Nova Marca</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/marca/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -174,6 +201,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a href="#">Pessoas<span class="sr-only">(current)</span></a>
                             <ul class="nav nav-pills nav-stacked"> 
@@ -194,10 +222,15 @@
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
                                     <tr>
+                                        <td>
+                                            <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                                <button type="submit" class="btn btn-primary">Novo</button>
+                                            </form>
+                                        </td>
                                         <td style="padding-bottom: 1em; padding-left: 1em;">
                                             <form method="post" action="/cadastro/pessoa_fisica/busca" class="form-inline" role="search">
                                                 <div class="form-group">
-                                                    <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                    <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                                 </div>
                                                 <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                                 {{ csrf_field() }}
@@ -227,6 +260,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a href="#">Pessoas<span class="sr-only">(current)</span></a>
                             <ul class="nav nav-pills nav-stacked"> 
@@ -247,10 +281,15 @@
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
                                     <tr>
+                                        <td>
+                                            <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                                <button type="submit" class="btn btn-primary">Novo</button>
+                                            </form>
+                                        </td>
                                         <td style="padding-bottom: 1em; padding-left: 1em;">
                                             <form method="post" action="/cadastro/pessoa_fisica/busca" class="form-inline" role="search">
                                                 <div class="form-group">
-                                                    <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                    <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                                 </div>
                                                 <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                                 {{ csrf_field() }}
@@ -281,6 +320,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
                         </li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
@@ -302,10 +342,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/cliente_fisica/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -336,6 +381,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
                         </li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
@@ -357,10 +403,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/cliente_fisica/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -393,6 +444,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
                             <li style = "padding-left: 10px "><a href="/cadastro/cliente-fisica"> <span class="glyphicon glyphicon-menu-right"></span>  Clientes</a></li> 
@@ -411,10 +463,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/fornecedor_fisica/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -446,6 +503,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
                             <li style = "padding-left: 10px "><a href="/cadastro/cliente-fisica"> <span class="glyphicon glyphicon-menu-right"></span>  Clientes</a></li> 
@@ -464,10 +522,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/fornecedor_juridica/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}
@@ -499,6 +562,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a href="#">Usuários<span class="sr-only">(current)</span></a></li>
@@ -514,10 +578,15 @@
 
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/usuario/cadastrar">
+                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/usuario/busca" class="form-inline" role="search">
                                             <div class="form-group">
-                                                <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}" autofocus="true">
+                                                <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" value="{{$busca}}">
                                             </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                             {{ csrf_field() }}

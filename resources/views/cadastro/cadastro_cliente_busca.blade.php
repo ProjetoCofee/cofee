@@ -10,6 +10,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
                             </li>
                             <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
@@ -32,6 +33,11 @@
                             
                             <table>
                                 <tr>
+                                    <td>
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
+                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                        </form>
+                                    </td>
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/cliente_fisica/busca" class="form-inline" role="search">
                                             <div class="form-group">
@@ -86,18 +92,10 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <form class="btn-new" method="get" action="cliente/pessoa">
+                                        <form class="btn-new" method="get" action="/cadastro/pessoa/tipo">
                                             <button type="submit" class="btn btn-primary">Novo</button>
                                         </form>
                                     </td>
-
-                                    <td>
-                                        <select name="tipo" class="form-control" onchange="location = this.value;" style="margin-bottom: 1em;">
-                                            <option value="cliente-fisica">Pessoa Física</option>
-                                            <option value="cliente-juridica" selected>Pessoa Jurídica</option>
-                                        </select>
-                                    </td>
-
                                     <td style="padding-bottom: 1em; padding-left: 1em;">
                                         <form method="post" action="/cadastro/cliente_juridica/busca" class="form-inline" role="search">
                                             <div class="form-group">

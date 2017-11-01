@@ -140,6 +140,7 @@
                     <div class="panel-heading">Estoque</div>
                         @if($status == 'p')
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a>Estoque<span class="sr-only">(current)</span></a></li>
                             <li><a>Entrada<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Retirada<span class="sr-only">(current)</span></a>

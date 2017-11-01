@@ -91,9 +91,9 @@ Route::get('/cadastro/pessoa/fisica/{id}/update', 'Cadastro_Controller@update_pe
 
 Route::get('/cadastro/pessoa/juridica/{id}/update', 'Cadastro_Controller@update_pessoa_juridica')->name('update_pessoa_juridica');
 
-Route::post('/cadastro/pessoa/fisica/{tipo}/save', 'Cadastro_Controller@pessoa_fisica_save')->name('pessoa_fisica_save');
+Route::post('/cadastro/pessoa/fisica/{id}/save', 'Cadastro_Controller@pessoa_fisica_save')->name('pessoa_fisica_save');
 
-Route::post('/cadastro/pessoa/juridica/{tipo}/save', 'Cadastro_Controller@pessoa_juridica_save')->name('pessoa_juridica_save');
+Route::post('/cadastro/pessoa/juridica/{id}/save', 'Cadastro_Controller@pessoa_juridica_save')->name('pessoa_juridica_save');
 
 Route::get('/cadastro/pessoa/fisica/{id}/delete', 'Cadastro_Controller@delete_pessoa_fisica')->name('delete_pessoa_fisica');
 
