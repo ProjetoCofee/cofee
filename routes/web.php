@@ -118,6 +118,7 @@ Route::post('/cadastro/fornecedor_juridica/busca', 'Cadastro_Controller@busca_fo
 //estoque
 //get
 Route::get('/estoque/retirada/detalhes/{id}', 'Estoque_Controller@detalhes_retirada')->name('detalhes_retirada');
+Route::get('/estoque/entrada/detalhes/{id}', 'Estoque_Controller@detalhes_entrada')->name('detalhes_entrada');
 
 //post
 Route::post('/estoque/busca', 'Estoque_Controller@busca_produto')->name('busca_produto');

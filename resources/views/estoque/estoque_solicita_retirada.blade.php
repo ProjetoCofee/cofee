@@ -23,18 +23,19 @@
             $('#tabela_produtos').empty();
             $.ajax({
                 dataType: 'json',
-                url: url+'api/busca_produtos.php',
+                url: url+'api/busca_produtos_retirada.php',
                 data: {busca:busca.value}
             }).done(function(data){
+                if(data==0){
+                    $('#tabela_produtos').append('<tr><td colspan="5"><p align="center">Nenhum resultado encontrado!</p></td>');
+                }
                 for(var i=0; data.length>i; i++){
-
                     var id = data[i].id;
                     var codigo_barras = data[i].codigo_barras;
                     var descricao = data[i].descricao;
                     var nome_marca = data[i].nome_marca;
                     var nome_departamento = data[i].nome_departamento;
                     var saldo = data[i].saldo;
-
                     $('#tabela_produtos').append('<tr><td>'+codigo_barras+'</td><td>'+descricao+'</td><td>'+nome_marca+'</td><td>'+nome_departamento+'</td><td>'+saldo+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#create-item" onclick="dados_modal('+id+')"><span class="glyphicon glyphicon-plus"></span></button></div></td></tr>');  
                 }
 
@@ -45,6 +46,7 @@
     function clearPageData(){
         $("#input_search").val('');
         $('#tabela_produtos').empty();
+        document.getElementById('input_search').focus();
     }
 
     function dados_modal(id){
@@ -62,7 +64,6 @@
             if(data==1){
                 $('#modal_retirada').html('<div align="center" role="alert">Este produto já foi solicitado!</div><br><br><div align="center"><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
             }else if(data==0){ 
-
                 $.ajax({
                     dataType: 'json',
                     url: url+'api/busca_produto_id.php',
@@ -107,52 +108,44 @@
                 data:{id_retirada:id_retirada, id_produto:id_produto, qtd_solicitada:qtd_solicitada}
             }).done(function(data){
                 $('#tabela_item_retirada').empty();
-
                 if(data.length == 0){
                     document.getElementById("btn_salvar").disabled = true;
                 }else{
                     document.getElementById("btn_salvar").disabled = false;
                 }
-
-                for(var i=0; data.length>i; i++){
-                    
+                for(var i=0; data.length>i; i++){  
                     var id = data[i].id;
                     var descricao_produto = data[i].descricao_produto;
                     var qtd_solicitada = data[i].qtd_solicitada;
                     var saldo_produto = (data[i].qtd_produto - qtd_solicitada);
-
-                    $('#tabela_item_retirada').append('<tr><td>'+descricao_produto+'</td><td>'+qtd_solicitada+'</td><td>'+saldo_produto+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
+                    var minimo_produto = data[i].minimo_produto;
+                    $('#tabela_item_retirada').append('<tr><td>'+descricao_produto+'</td><td>'+qtd_solicitada+'</td><td>'+saldo_produto+'</td><td>'+minimo_produto+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
                 }
             });
         }
     }
 
     function delete_produto(id){
-        $('#tabela_item_retirada').empty();
         var id_retirada = "<?php print $retirada->id ?>";
-
         $.ajax({
                 dataType: 'json',
                 type:'POST',
                 url: url+'api/delete_item_retirada.php',
                 data:{id_retirada:id_retirada, id:id}
             }).done(function(data){
-
-                //fazer o btn_salvar disabled quando data = vazio
-                // if(data){
-                //     document.getElementById("btn_salvar").disabled = true;
-                // }else{
-                //     document.getElementById("btn_salvar").disabled = false;
-                // }
-                
+                $('#tabela_item_retirada').empty();
+                if(data=="0"){
+                    document.getElementById("btn_salvar").disabled = true;
+                }else{
+                    document.getElementById("btn_salvar").disabled = false;
+                }     
                 for(var i=0; data.length>i; i++){
-
                     var id = data[i].id;
-                    var id_entrada = data[i].id_entrada;
                     var descricao_produto = data[i].descricao_produto;
-                    var quantidade_produto = data[i].quantidade;
-
-                    $('#tabela_item_entrada').append('<tr><td>'+id_entrada+'</td><td>'+descricao_produto+'</td><td>'+quantidade_produto+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
+                    var qtd_solicitada = data[i].qtd_solicitada;
+                    var saldo_produto = (data[i].qtd_produto - qtd_solicitada);
+                    var minimo_produto = data[i].minimo_produto;
+                    $('#tabela_item_retirada').append('<tr><td>'+descricao_produto+'</td><td>'+qtd_solicitada+'</td><td>'+saldo_produto+'</td><td>'+minimo_produto+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
                 }
             });
     }
@@ -200,7 +193,7 @@
                                 <table>
                                     <td>
                                         <div class="form-group" style="padding-top: 1em; margin-right: 1em;">
-                                            <input style="min-width: 300px;" type="text" id="input_search" name="input_search" class="form-control" placeholder="Código, descrição, marca ou departamento" autofocus="autofocus" onkeypress="getPageDataEnter(event)">
+                                            <input style="min-width: 300px;" type="text" id="input_search" name="input_search" class="form-control" placeholder="Código, descrição, marca ou departamento" onkeypress="getPageDataEnter(event)">
                                         </div>
                                         <td>
                                             <button type="submit" class="btn btn-icon" onclick="getPageData()"><span class="glyphicon glyphicon-search"></span></button>
@@ -243,6 +236,7 @@
                                         <th>Produto</th>
                                         <th>Qtd. solicitada</th>
                                         <th>Saldo</th>
+                                        <th>Mínimo</th>
                                         <th></th>
                                     </tr>
                                 </thead>

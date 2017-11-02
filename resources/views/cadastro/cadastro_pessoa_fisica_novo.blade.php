@@ -235,7 +235,7 @@
                                     <label for="cep" class="col-md-4 control-label">CEP</label>
 
                                     <div class="col-md-6">
-                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false" pattern="[0-9]{5}-[0-9]{3}$">
+                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false" placeholder="Digite o CEP" pattern="[0-9]{5}-[0-9]{3}$">
 
                                         @if ($errors->has('cep'))
                                         <span class="help-block">
@@ -285,35 +285,35 @@
                                 <div class="form-group">
                                     <label for="cidade" class="col-md-4 control-label required" id="cidadeL">Cidade</label>
                                     <div class="col-md-6">
-                                        <input id="cidade" type="text" class="form-control" name="cidade" required>
+                                        <input id="cidade" type="text" class="form-control" name="cidade" placeholder="Ex: Curitiba" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label>
                                     <div class="col-md-6">
-                                        <input id="bairro" type="text" class="form-control" name="bairro">
+                                        <input id="bairro" type="text" class="form-control" name="bairro" placeholder="Ex: Batel">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="logradouro" class="col-md-4 control-label required" id="logradouroL">Logradouro</label>
                                     <div class="col-md-6">
-                                        <input id="logradouro" type="text" class="form-control" name="logradouro" required>
+                                        <input id="logradouro" type="text" class="form-control" name="logradouro" placeholder="Ex: Avenida do Batel" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="numero" class="col-md-4 control-label required" id="numeroL">Número</label>
                                     <div class="col-md-6">
-                                        <input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false">
+                                        <input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false" placeholder="Ex: 1023">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
                                     <div class="col-md-6">
-                                        <input id="complemento" type="text" class="form-control" name="complemento">
+                                        <input id="complemento" type="text" class="form-control" name="complemento" placeholder="Ex: Aos fundos">
                                     </div>
                                 </div>
 

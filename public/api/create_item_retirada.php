@@ -16,11 +16,14 @@ $mysqli = new mysqli("localhost", "root", "root", "teste");
 	    produto_solicitado.id_solicitacao_produto,
 		produtos.descricao as descricao_produto,
 		produtos.saldo as qtd_produto,
+		produtos.saldo as minimo_produto,
 		produto_solicitado.qtd_solicitada	
 		FROM produtos, produto_solicitado, solicitacao_produto
 		WHERE produtos.id = produto_solicitado.id_produto 
 		AND solicitacao_produto.id = produto_solicitado.id_solicitacao_produto 
-		AND produto_solicitado.id_solicitacao_produto = '".$post['id_retirada']."'"); 
+		AND produto_solicitado.id_solicitacao_produto = '".$post['id_retirada']."'
+		ORDER BY descricao_produto ASC
+	"); 
 
 
 	while($resultado = mysqli_fetch_assoc($sql)){

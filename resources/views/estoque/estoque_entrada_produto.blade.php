@@ -26,15 +26,16 @@
                 url: url+'api/busca_produtos.php',
                 data: {busca:busca.value}
             }).done(function(data){
+                if(data==0){
+                    $('#tabela_produtos').append('<tr><td colspan="5"><p align="center">Nenhum resultado encontrado!</p></td>');
+                }
                 for(var i=0; data.length>i; i++){
-
                     var id = data[i].id;
                     var codigo_barras = data[i].codigo_barras;
                     var descricao = data[i].descricao;
                     var nome_marca = data[i].nome_marca;
                     var nome_departamento = data[i].nome_departamento;
                     var saldo = data[i].saldo;
-
                     $('#tabela_produtos').append('<tr><td>'+codigo_barras+'</td><td>'+descricao+'</td><td>'+nome_marca+'</td><td>'+nome_departamento+'</td><td>'+saldo+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#create-item" onclick="dados_modal('+id+')"><span class="glyphicon glyphicon-plus"></span></button></div></td></tr>');  
                 }
 
@@ -45,6 +46,7 @@
     function clearPageData(){
         $("#input_search").val('');
         $('#tabela_produtos').empty();
+        document.getElementById('input_search').focus();
     }
 
     function dados_modal(id){
@@ -110,20 +112,18 @@
                 }
 
                 for(var i=0; data.length>i; i++){
-
                     var id = data[i].id;
                     var id_entrada = data[i].id_entrada;
                     var descricao_produto = data[i].descricao_produto;
                     var quantidade_produto = data[i].quantidade;
-
-                    $('#tabela_item_entrada').append('<tr><td>'+descricao_produto+'</td><td>'+quantidade_produto+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
+                    var saldo = data[i].quantidade_produto;
+                    $('#tabela_item_entrada').append('<tr><td>'+descricao_produto+'</td><td>'+quantidade_produto+'</td><td>'+saldo+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
                 }
             });
         }
     }
 
     function delete_produto(id){
-        $('#tabela_item_entrada').empty();
         var id_entrada = "<?php print $entrada->id ?>";
 
         $.ajax({
@@ -132,15 +132,19 @@
                 url: url+'api/delete_item_entrada.php',
                 data:{id_entrada:id_entrada, id:id}
             }).done(function(data){
-                
+                $('#tabela_item_entrada').empty();
+                if(data=="0"){
+                    document.getElementById("btn_salvar").disabled = true;
+                }else{
+                    document.getElementById("btn_salvar").disabled = false;
+                } 
                 for(var i=0; data.length>i; i++){
-
                     var id = data[i].id;
                     var id_entrada = data[i].id_entrada;
                     var descricao_produto = data[i].descricao_produto;
                     var quantidade_produto = data[i].quantidade;
-
-                    $('#tabela_item_entrada').append('<tr><td>'+id_entrada+'</td><td>'+descricao_produto+'</td><td>'+quantidade_produto+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
+                    var saldo = data[i].quantidade_produto;
+                    $('#tabela_item_entrada').append('<tr><td>'+descricao_produto+'</td><td>'+quantidade_produto+'</td><td>'+saldo+'</td><td><div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon remove" onclick="delete_produto('+id+')"><span class="glyphicon glyphicon-trash"></span></button></div></td></tr>');  
                 }
             });
     }
@@ -234,6 +238,7 @@
                                     <tr>
                                         <th>Produto</th>
                                         <th>Quantidade</th>
+                                        <th>Saldo</th>
                                         <th></th>
                                     </tr>
                                 </thead>

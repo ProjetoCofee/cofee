@@ -1,74 +1,74 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script>
+
+    window.onload = function() {
+        document.getElementById('nome_fantasia').focus();
+    };
+
+    function formatar(mascara, documento, tipo){
+
+        if(documento.value.length == 10  &&  tipo == 'telefone'){
+            mascara = '##-####-####';
+        }else if(documento.value.length == 11  &&  tipo == 'telefone'){
+            mascara = '##-#####-####';
+        }
+
+        var i = documento.value.length;
+        var saida = mascara.substring(0,1);
+        var texto = mascara.substring(i)
+        
+        if (texto.substring(0,1) != saida){
+            documento.value += texto.substring(0,1);
+        }
+        
+        if(documento.value.length >= 9 && tipo == 'cep'){
+            getCep();
+        } else if(documento.value.length < 9 && tipo == 'cep'){
+            form.remove();
+        }
+        
+    }
+
+    function getPageDataEnter(event) {
+        if(event.keyCode == 13){
+            getCep();
+        } 
+    }
+
+    function getCep() {
+
+        busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
+
+        $.ajax({
+            dataType: 'json',
+            url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
+        }).done(function(data){
+            if(data.uf != 'undefined'){
+                document.querySelector("[name='uf']").value = data.uf;
+            }
+            if(data.localidade != 'undefined'){
+                document.querySelector("[name='cidade']").value = data.localidade;
+            }
+            if(data.bairro != 'undefined'){
+                document.querySelector("[name='bairro']").value = data.bairro;
+            }
+            if(data.logradouro != 'undefined'){
+                document.querySelector("[name='logradouro']").value = data.logradouro;
+            }
+        });
+    }
+
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
-
-                    <script>
-                        function formatar(mascara, documento, tipo){
-
-                            if(documento.value.length == 10  &&  tipo == 'telefone'){
-                                mascara = '##-####-####';
-                            }else if(documento.value.length == 11  &&  tipo == 'telefone'){
-                                mascara = '##-#####-####';
-                            }
-
-                            var i = documento.value.length;
-                            var saida = mascara.substring(0,1);
-                            var texto = mascara.substring(i)
-                            
-                            if (texto.substring(0,1) != saida){
-                                documento.value += texto.substring(0,1);
-                            }
-                            
-                            if(documento.value.length >= 9 && tipo == 'cep'){
-                                getCep();
-                            } else if(documento.value.length < 9 && tipo == 'cep'){
-                                form.remove();
-                            }
-                            
-                        }
-                    </script>
-
-                    <script type="text/javascript">
-
-                        var url = "http://localhost:8000/";
-
-                        function getPageDataEnter(event) {
-                            if(event.keyCode == 13){
-                                getCep();
-                            } 
-                        }
-
-                        function getCep() {
-
-                            busca = ({ "cep": $("#cep").val().replace(/[^\d]+/g,'') }); 
-
-                            $.ajax({
-                                dataType: 'json',
-                                url: 'http://viacep.com.br/ws/'+busca.cep+'/json/'
-                            }).done(function(data){
-                                if(data.uf != 'undefined'){
-                                    document.querySelector("[name='uf']").value = data.uf;
-                                }
-                                if(data.localidade != 'undefined'){
-                                    document.querySelector("[name='cidade']").value = data.localidade;
-                                }
-                                if(data.bairro != 'undefined'){
-                                    document.querySelector("[name='bairro']").value = data.bairro;
-                                }
-                                if(data.logradouro != 'undefined'){
-                                    document.querySelector("[name='logradouro']").value = data.logradouro;
-                                }
-                            });
-                        }
-
-                    </script>
-
                     <form class="form-horizontal" method="POST" action="/cadastro/pessoa/juridica/create">
                         {{ csrf_field() }}
 
@@ -96,7 +96,7 @@
                                     <label for="nome_fantasia" class="col-md-4 control-label">Nome Fantasia</label>
 
                                     <div class="col-md-6">
-                                        <input id="nome_fantasia" type="text" class="form-control" name="nome_fantasia" required autofocus>
+                                        <input id="nome_fantasia" type="text" class="form-control" name="nome_fantasia" placeholder="Ex: Mega atacados" required>
 
                                         @if ($errors->has('nome_fantasia'))
                                         <span class="help-block">
@@ -110,7 +110,7 @@
                                     <label for="razao_social" class="col-md-4 control-label">Razão Social</label>
 
                                     <div class="col-md-6">
-                                        <input id="razao_social" type="text" class="form-control" name="razao_social" required autofocus>
+                                        <input id="razao_social" type="text" class="form-control" name="razao_social" placeholder="Ex: Mega atacados ltda." required>
 
                                         @if ($errors->has('razao_social'))
                                         <span class="help-block">
@@ -124,7 +124,7 @@
                                     <label for="inscricao_estadual" class="col-md-4 control-label">Inscrição Estadual</label>
 
                                     <div class="col-md-6">
-                                        <input id="inscricao_estadual" type="text" maxlength="16" class="form-control" name="inscricao_estadual" required autofocus>
+                                        <input id="inscricao_estadual" type="text" maxlength="16" class="form-control" name="inscricao_estadual" placeholder="Ex: 000.000.000.000" required>
 
                                         @if ($errors->has('inscricao_estadual'))
                                         <span class="help-block">inscricao_estadual
@@ -138,7 +138,7 @@
                                     <label for="telefone" class="col-md-4 control-label">Telefone</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone" type="text" maxlength="16" class="form-control" OnKeyPress="formatar('##-#####-####', this, telefone)" name="telefone"  autofocus>
+                                        <input id="telefone" type="text" maxlength="16" class="form-control" OnKeyPress="formatar('##-#####-####', this, telefone)" name="telefone" placeholder="Ex: 00-0000-0000" required>
 
                                         @if ($errors->has('telefone'))
                                         <span class="help-block">
@@ -152,7 +152,7 @@
                                     <label for="telefone_sec" class="col-md-4 control-label">Telefone Secundário</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone_sec" type="text" maxlength="16" class="form-control" OnKeyPress="formatar('##-#####-####', this, 'telefone')" name="telefone_sec"  autofocus>
+                                        <input id="telefone_sec" type="text" maxlength="16" class="form-control" OnKeyPress="formatar('##-#####-####', this, 'telefone')"  placeholder="Ex: 00-0000-0000" name="telefone_sec">
 
                                         @if ($errors->has('telefone_sec'))
                                         <span class="help-block">
@@ -166,7 +166,7 @@
                                     <label for="email" class="col-md-4 control-label">Email</label>
 
                                     <div class="col-md-6">
-                                        <input id="email" type="text" class="form-control" name="email" required autofocus>
+                                        <input id="email" type="email" class="form-control" name="email"  placeholder="Ex: atacados@mega.com" required>
 
                                         @if ($errors->has('email'))
                                         <span class="help-block">
@@ -186,7 +186,7 @@
                                     <label for="cep" class="col-md-4 control-label">CEP</label>
 
                                     <div class="col-md-6">
-                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false" required>
+                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false"  placeholder="Digite o CEP" pattern="[0-9]{5}-[0-9]{3}$" required>
 
                                         @if ($errors->has('cep'))
                                         <span class="help-block">
@@ -236,35 +236,35 @@
                                 <div class="form-group">
                                     <label for="cidade" class="col-md-4 control-label required" id="cidadeL">Cidade</label>
                                     <div class="col-md-6">
-                                        <input id="cidade" type="text" class="form-control" name="cidade" required>
+                                        <input id="cidade" type="text" class="form-control" name="cidade" placeholder="Ex: Curitiba" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="bairro" class="col-md-4 control-label required" id="bairroL">Bairro</label>
+                                    <label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label>
                                     <div class="col-md-6">
-                                        <input id="bairro" type="text" class="form-control" name="bairro" required>
+                                        <input id="bairro" type="text" class="form-control" name="bairro" placeholder="Ex: Batel">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="logradouro" class="col-md-4 control-label required" id="logradouroL">Logradouro</label>
                                     <div class="col-md-6">
-                                        <input id="logradouro" type="text" class="form-control" name="logradouro" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
-                                    <div class="col-md-6">
-                                        <input id="complemento" type="text" class="form-control" name="complemento">
+                                        <input id="logradouro" type="text" class="form-control" name="logradouro" placeholder="Ex: Avenida do Batel" required>
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="numero" class="col-md-4 control-label required" id="numeroL">Número</label>
                                     <div class="col-md-6">
-                                        <input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false">
+                                        <input id="numero" type="number" class="form-control" name="numero" placeholder="Ex: 1203" required autocomplete = "false">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
+                                    <div class="col-md-6">
+                                        <input id="complemento" type="text" class="form-control" name="complemento" placeholder="Ex: Aos fundos">
                                     </div>
                                 </div>
 

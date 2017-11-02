@@ -3,6 +3,11 @@
 @section('content')
 
 <script>
+
+	window.onload = function() {
+        document.getElementById('nome_fantasia').focus();
+    };
+
     function formatar(mascara, documento, tipo){
         var i = documento.value.length;
         var saida = mascara.substring(0,1);
@@ -66,7 +71,7 @@
                                     <label for="cnpj" class="col-md-4 control-label">CNPJ</label>
 
                                     <div class="col-md-6">
-                                        <input id="cnpj" type="text" class="form-control" name="cnpj" OnKeyPress="formatar('###.###.##-##', this, 'cnpj')" readonly="true" value="{{$pessoa_juridica->cnpj}}" required>
+                                        <input id="cnpj" type="text" class="form-control" name="cnpj" OnKeyPress="formatar('###.###.##-##', this, 'cnpj')" readonly="true" value="{{$pessoa_juridica->cnpj}}" required readonly="true">
 
                                         @if ($errors->has('cnpj'))
                                         <span class="help-block">
