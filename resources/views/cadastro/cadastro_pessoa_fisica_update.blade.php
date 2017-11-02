@@ -97,7 +97,7 @@
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
 
-                    <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/create">
+                    <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/{{$pessoa_fisica->tipo}}/save">
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -255,7 +255,7 @@
                                     <div class="col-md-6">
 
                                         <select class="form-control" name="uf" id="ufL" required>
-                                            <option value="{{$pessoa_fisica->data_nascim}}">{{$pessoa_fisica->uf}}</option>
+                                            <option value="{{$pessoa_fisica->uf}}">{{$pessoa_fisica->uf}}</option>
                                             <option value="">Selecione</option>
                                             <option value="AC">AC</option>
                                             <option value="AL">AL</option>
