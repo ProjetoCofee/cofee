@@ -10,14 +10,43 @@
 
         if (value == "compra") {
 
-            $('#tipo_entrada').html('<div class="form-group{{ $errors->has('data_entrada') ? ' has-error' : '' }}"><br><br><label for="data_entrada" class="col-md-4 control-label">Data entrada</label><div class="col-md-6" style="padding-right: 15%;"><input id="data_entrada" type="date" class="form-control" name="data_entrada" value="{{ old('data_entrada') }}" autocomplete="off" autofocus="autofocus" required="true">@if ($errors->has('data_entrada'))<span class="help-block"><strong>{{ $errors->first('data_entrada') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('serie_nf') ? ' has-error' : '' }}"><label for="serie_nf" class="col-md-4 control-label">Série nota fiscal</label><div class="col-md-6" style="padding-right: 15%;"><input id="serie_nf" type="text" class="form-control" name="serie_nf" placeholder="Série nota fiscal" maxlength="9" value="{{ old('serie_nf') }}" autocomplete="off" autofocus="autofocus" required="true">@if ($errors->has('serie_nf'))<span class="help-block"><strong>{{ $errors->first('serie_nf') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('num_nota_fiscal') ? ' has-error' : '' }}"><label for="num_nota_fiscal" class="col-md-4 control-label">Nº nota fiscal</label><div class="col-md-6" style="padding-right: 15%;"><input id="num_nota_fiscal" type="text" class="form-control" name="num_nota_fiscal" placeholder="Nº nota fiscal" maxlength="9" value="{{ old('num_nota_fiscal') }}" autocomplete="off" autofocus="autofocus" required="true">@if ($errors->has('num_nota_fiscal'))<span class="help-block"><strong>{{ $errors->first('num_nota_fiscal') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('fornecedor') ? ' has-error' : '' }}"><label for="fornecedor" class="col-md-4 control-label">Fornecedor</label><div class="col-md-6" style="padding-right: 15%;"><select name="fornecedor" class="form-control" required><option value=""></option>@foreach($fornecedors as $fornecedor)<option value="{{$fornecedor->id}}">{{$fornecedor->nome}}</option>@endforeach</select>@if ($errors->has('fornecedor'))<span class="help-block"><strong>{{ $errors->first('fornecedor') }}</strong></span>@endif</div></div>');
+            $('#tipo_entrada').html('<div class="form-group{{ $errors->has('data_entrada') ? ' has-error' : '' }}"><br><br><label for="data_entrada" class="col-md-4 control-label">Data entrada</label><div class="col-md-6" style="padding-right: 15%;"><input id="data_entrada" type="date" class="form-control" name="data_entrada" value="{{ old('data_entrada') }}" autocomplete="off" required="true">@if ($errors->has('data_entrada'))<span class="help-block"><strong>{{ $errors->first('data_entrada') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('fornecedor') ? ' has-error' : '' }}"><label for="fornecedor" class="col-md-4 control-label">Fornecedor</label><div class="col-md-6" style="padding-right: 15%;"><select name="fornecedor" class="form-control" required><option value="">Escolha um fornecedor</option>@foreach($fornecedors as $fornecedor)<option value="{{$fornecedor->id}}">{{$fornecedor->nome}}</option>@endforeach</select>@if ($errors->has('fornecedor'))<span class="help-block"><strong>{{ $errors->first('fornecedor') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('serie_nf') ? ' has-error' : '' }}"><label for="serie_nf" class="col-md-4 control-label">Série nota fiscal</label><div class="col-md-6" style="padding-right: 15%;"><input id="serie_nf" type="text" class="form-control" name="serie_nf"  placeholder="Série nota fiscal" maxlength="3" value="{{ old('serie_nf') }}" onkeyup="consulta_nf()" autocomplete="off" required="true">@if ($errors->has('serie_nf'))<span class="help-block"><strong>{{ $errors->first('serie_nf') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('num_nota_fiscal') ? ' has-error' : '' }}"><label for="num_nota_fiscal" class="col-md-4 control-label">Nº nota fiscal</label><div class="col-md-6" style="padding-right: 15%;"><input id="num_nota_fiscal" type="text" class="form-control" name="num_nota_fiscal" placeholder="Nº nota fiscal" maxlength="9" pattern="[0-9]{1,9}" value="{{ old('num_nota_fiscal') }}" onkeyup="consulta_nf()" autocomplete="off" required="true">@if ($errors->has('num_nota_fiscal'))<span class="help-block"><strong>{{ $errors->first('num_nota_fiscal') }}</strong></span>@endif</div></div>');
+
+            document.getElementById('data_entrada').focus();
+            document.getElementById("btn_proximo").disabled = true;
 
         }else if (value == "retorno") {
-            $('#tipo_entrada').html('<div class="form-group{{ $errors->has('motivo') ? ' has-error' : '' }}"><br><br><label for="motivo" class="col-md-4 control-label">Motivo</label><div class="col-md-6" style="padding-right: 15%;"><input id="motivo" type="text" class="form-control" name="motivo" placeholder="Motivo do retorno" value="{{ old('motivo') }}" autocomplete="off" autofocus="autofocus" required="true">@if ($errors->has('motivo'))<span class="help-block"><strong>{{ $errors->first('motivo') }}</strong></span>@endif</div>');
+            $('#tipo_entrada').html('<div class="form-group{{ $errors->has('data_entrada') ? ' has-error' : '' }}"><br><br><label for="data_entrada" class="col-md-4 control-label">Data entrada</label><div class="col-md-6" style="padding-right: 15%;"><input id="data_entrada" type="date" class="form-control" name="data_entrada" value="{{ old('data_entrada') }}" autocomplete="off" required="true">@if ($errors->has('data_entrada'))<span class="help-block"><strong>{{ $errors->first('data_entrada') }}</strong></span>@endif</div></div><div class="form-group{{ $errors->has('motivo') ? ' has-error' : '' }}"><label for="motivo" class="col-md-4 control-label">Motivo</label><div class="col-md-6" style="padding-right: 15%;"><input id="motivo" type="text" class="form-control" name="motivo" placeholder="Motivo do retorno" value="{{ old('motivo') }}" autocomplete="off" required="true">@if ($errors->has('motivo'))<span class="help-block"><strong>{{ $errors->first('motivo') }}</strong></span>@endif</div>');
+
+            document.getElementById('data_entrada').focus();
+            document.getElementById("btn_proximo").disabled = false;
         }  
     }
 
+    function consulta_nf(){
+        $('#alerta').empty();
+        var serie_nf = document.getElementById('serie_nf').value;
+        var num_nota_fiscal = document.getElementById('num_nota_fiscal').value;
+
+        $.ajax({
+            dataType: 'json',
+            type:'POST',
+            url: url+'api/consulta_nf.php',
+            data:{serie_nf:serie_nf, num_nota_fiscal:num_nota_fiscal}
+        }).done(function(data){
+
+            if(data==1){
+                document.getElementById("btn_proximo").disabled = true;
+                $('#alerta').html('<div align="center" class="alert alert-warning" role="alert">Uma entrada com o mesmo número de nota fiscal e série já está cadastrada!</div>').focus;
+            }else if(data==0){                
+                document.getElementById("btn_proximo").disabled = false;
+            }
+        });
+    }
+
 </script>
+
+<div id="alerta"></div>
 
 <div class="container-fluid">
     <div class="row">
@@ -27,6 +56,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Estoque</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a>Entrada<span class="sr-only">(current)</span></a></li>
                             <ul class="nav nav-pills nav-stacked">
@@ -43,7 +73,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">Entrada de produtos</div>
                         <div class="panel-body">
-                            <form class="form-horizontal" method="POST" action="produto">
+                            <form class="form-horizontal" method="POST" action="/estoque/produto">
                                 {{ csrf_field() }}
                                
                                 <div class="form-group{{ $errors->has('tipo_entrada') ? ' has-error' : '' }}">
@@ -63,7 +93,7 @@
 
                                 <div class="form-group">
                                     <div align="center">
-                                        <button type="submit" class="btn btn-primary">
+                                        <button id="btn_proximo" type="submit" class="btn btn-primary" disabled="true">
                                             Próximo
                                         </button>
                                     </div>

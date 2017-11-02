@@ -32,6 +32,7 @@ class Estoque_Controller extends Controller
 				produtos.observacao 
 				FROM produtos, marcas, departamentos
 				WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+				ORDER BY descricao ASC
 				");
 
 			return view('estoque.estoque_show',compact('produtos'));
@@ -57,8 +58,9 @@ class Estoque_Controller extends Controller
 				SELECT fornecedors.id, pessoa_fisicas.nome FROM fornecedors
 				INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = fornecedors.id_pessoa_fisica
 				union
-				SELECT fornecedors.id, pessoa_juridicas.nome_fantasia FROM fornecedors
+				SELECT fornecedors.id, pessoa_juridicas.nome_fantasia as nome FROM fornecedors
 				INNER JOIN pessoa_juridicas ON pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+				ORDER BY nome ASC
 				");
 
 			return view('estoque.estoque_entrada',compact('fornecedors'));
@@ -73,7 +75,8 @@ class Estoque_Controller extends Controller
 				solicitacao_produto.data_solicitacao,
 				solicitacao_produto.data_aprovacao,
 				solicitacao_produto.status
-				FROM solicitacao_produto ORDER BY data_solicitacao DESC
+				FROM solicitacao_produto 
+				ORDER BY data_solicitacao DESC
 				");
 
 			foreach ($solicitacoes as $solicitacao) {
@@ -138,7 +141,10 @@ class Estoque_Controller extends Controller
 			foreach ($solicitacoes as $solicitacao) {
 
 				$solicitacao->data_solicitacao = date('d/m/Y', strtotime($solicitacao->data_solicitacao));
-				$solicitacao->data_confirmacao = date('d/m/Y', strtotime($solicitacao->data_confirmacao));
+				
+				if($solicitacao->data_confirmacao){
+					$solicitacao->data_confirmacao = date('d/m/Y', strtotime($solicitacao->data_confirmacao));
+				}
 			}
 
 			return view('estoque.estoque_compra',compact('solicitacoes'));
@@ -181,11 +187,12 @@ class Estoque_Controller extends Controller
 				FROM produtos, marcas, departamentos
 				WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
 				AND (
-				produtos.descricao LIKE '%".$busca."%' OR
-				produtos.codigo_barras LIKE '%".$busca."%' OR
-				marcas.nome LIKE '%".$busca."%' OR
-				departamentos.nome LIKE '%".$busca."%'
-			)
+					produtos.descricao LIKE '%".$busca."%' OR
+					produtos.codigo_barras LIKE '%".$busca."%' OR
+					marcas.nome LIKE '%".$busca."%' OR
+					departamentos.nome LIKE '%".$busca."%'
+				)
+				ORDER BY descricao ASC
 			");
 
 			if (count($produtos) != 0) {
@@ -286,6 +293,86 @@ class Estoque_Controller extends Controller
 		}
 	}
 
+	public function detalhes_entrada($id){
+
+		$entrada_id = DB::select("
+			SELECT * FROM entrada WHERE entrada.id = '".$id."'
+		");
+
+		foreach ($entrada_id as $entrada) {
+			$id_entrada = $entrada->id;
+			$data_entrada = date('d/m/Y', strtotime($entrada->data_entrada));
+			$responsavel = $entrada->id_usuario;
+			
+			$id_fornecedor = $entrada->id_fornecedor;
+			$serie_nf = $entrada->serie_nf;
+			$num_nota_fiscal = $entrada->num_nota_fiscal;
+
+			$motivo = $entrada->motivo;
+		}
+
+		$users = DB::select("
+			SELECT 
+			users.name as responsavel
+			FROM users
+			WHERE users.id = '".$responsavel."'
+			");
+
+		if($users){
+			foreach ($users as $user) {
+				$responsavel = strtoupper($user->responsavel);
+			}
+		}
+
+
+		$entradas = DB::select("
+			SELECT
+			entrada_produto.id,
+			entrada_produto.id_entrada,
+			entrada_produto.id_produto,
+			entrada_produto.quantidade,
+			produtos.codigo_barras,
+			produtos.descricao,
+			produtos.saldo,
+			produtos.unidade_medida
+			FROM entrada, entrada_produto, produtos
+			WHERE entrada.id = entrada_produto.id_entrada
+			AND entrada_produto.id_entrada = '".$id_entrada."'
+			AND produtos.id = entrada_produto.id_produto
+			");        
+
+		if($id_fornecedor){
+			$array = DB::select("
+				SELECT
+				pessoa_juridicas.nome_fantasia as nome
+				FROM pessoa_juridicas, fornecedors
+				WHERE pessoa_juridicas.id = fornecedors.id_pessoa_juridica 
+				AND fornecedors.id = '".$id_fornecedor."'
+				");
+
+			if($array){
+				foreach ($array as $fornecedor) {
+					$fornecedor = $fornecedor->nome;
+				}
+			}else{
+				$array = DB::select("
+					SELECT
+					pessoa_fisicas.nome
+					FROM pessoa_fisicas, fornecedors
+					WHERE pessoa_fisicas.id = fornecedors.id_pessoa_fisica 
+					AND fornecedors.id = '".$id_fornecedor."'
+					");
+				if($array){
+					foreach ($array as $fornecedor) {
+						$fornecedor = $fornecedor->nome;
+					}
+				}
+			}
+		}
+
+		return view('estoque.estoque_entrada_detalhes', compact('id_entrada','data_entrada','responsavel','serie_nf','num_nota_fiscal','fornecedor','motivo','entradas'));
+	}
+
 	//retirada
 	public function busca_retirada(Request $request){
 
@@ -305,9 +392,10 @@ class Estoque_Controller extends Controller
 				FROM solicitacao_produto, users as users_sol
 				WHERE solicitacao_produto.id_usuario_solicitante = users_sol.id
 				AND (
-				users_sol.name LIKE '%".$busca."%' OR
-				solicitacao_produto.id LIKE '%".$busca."%'
-			)
+					users_sol.name LIKE '%".$busca."%' OR
+					solicitacao_produto.id LIKE '%".$busca."%'
+				)
+				ORDER BY data_solicitacao DESC
 			");
 
 			foreach ($solicitacoes as $solicitacao) {
@@ -444,9 +532,10 @@ class Estoque_Controller extends Controller
 				WHERE solicitacao_compra.id_usuario_solicitante = users.id
 				AND solicitacao_compra.id_produto = produtos.id
 				AND (
-				users.name LIKE '%".$busca."%' OR
-				produtos.descricao LIKE '%".$busca."%'
-			)
+					users.name LIKE '%".$busca."%' OR
+					produtos.descricao LIKE '%".$busca."%'
+				)
+				ORDER BY data_solicitacao DESC
 			");
 
 			if (count($solicitacoes) != 0) {

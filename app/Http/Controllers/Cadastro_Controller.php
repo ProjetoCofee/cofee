@@ -63,13 +63,17 @@ class Cadastro_Controller extends Controller
 
         }else if($atributo == "fisica"){
             $tipo = "fisica";
-            $pessoas = \App\Pessoa_fisica::All();
+            $pessoas = DB::select("
+                    SELECT * FROM pessoa_fisicas ORDER BY nome ASC
+                ");
 
             return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
 
         }else if($atributo == "juridica"){
             $tipo = "juridica";
-            $pessoas = \App\Pessoa_juridica::All();
+            $pessoas = DB::select("
+                    SELECT * FROM pessoa_juridicas ORDER BY nome_fantasia ASC
+                ");
 
             return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
 
@@ -78,7 +82,7 @@ class Cadastro_Controller extends Controller
 
             $tipo = "fisica";
             $clientesF = DB::select("
-                select
+                SELECT
                 pessoa_fisicas.id,
                 clientes.id,
                 pessoa_fisicas.nome as nome, 
@@ -86,14 +90,16 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.telefone as telefone,
                 pessoa_fisicas.email as email
                 FROM clientes, pessoa_fisicas
-                WHERE clientes.id_pessoa_fisica = pessoa_fisicas.id;");
+                WHERE clientes.id_pessoa_fisica = pessoa_fisicas.id
+                ORDER BY nome ASC
+            ");
             return view('cadastro.cadastro_cliente', compact('clientesF', 'tipo'));
 
         } else if($atributo == "cliente-juridica"){
 
             $tipo = "juridica";
             $clientesJ = DB::select("
-                select
+                SELECT
                 pessoa_juridicas.id,
                 clientes.id,
                 pessoa_juridicas.nome_fantasia as nome_fantasia,
@@ -102,7 +108,9 @@ class Cadastro_Controller extends Controller
                 pessoa_juridicas.telefone as telefone,
                 pessoa_juridicas.email as email
                 FROM clientes, pessoa_juridicas
-                WHERE clientes.id_pessoa_juridica = pessoa_juridicas.id;");
+                WHERE clientes.id_pessoa_juridica = pessoa_juridicas.id
+                ORDER BY nome_fantasia ASC
+            ");
 
             return view('cadastro.cadastro_cliente', compact('clientesJ', 'tipo'));
 
@@ -110,7 +118,7 @@ class Cadastro_Controller extends Controller
 
             $tipo = "fisica";
             $fornecedorsF = DB::select("
-                select
+                SELECT
                 pessoa_fisicas.id,
                 fornecedors.id,
                 pessoa_fisicas.nome as nome, 
@@ -118,14 +126,16 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.telefone as telefone,
                 pessoa_fisicas.email as email
                 FROM fornecedors, pessoa_fisicas
-                WHERE fornecedors.id_pessoa_fisica = pessoa_fisicas.id;");
+                WHERE fornecedors.id_pessoa_fisica = pessoa_fisicas.id
+                ORDER BY nome ASC
+            ");
             return view('cadastro.cadastro_fornecedor', compact('fornecedorsF', 'tipo'));
 
         }else if($atributo == "fornecedor-juridica"){
 
             $tipo = "juridica";
             $fornecedorsJ = DB::select("
-                select
+                SELECT
                 pessoa_juridicas.id,
                 fornecedors.id,
                 pessoa_juridicas.nome_fantasia as nome_fantasia,
@@ -134,14 +144,21 @@ class Cadastro_Controller extends Controller
                 pessoa_juridicas.telefone as telefone,
                 pessoa_juridicas.email as email
                 FROM fornecedors, pessoa_juridicas
-                WHERE fornecedors.id_pessoa_juridica = pessoa_juridicas.id");
+                WHERE fornecedors.id_pessoa_juridica = pessoa_juridicas.id
+                ORDER BY nome_fantasia ASC
+            ");
             
             return view('cadastro.cadastro_fornecedor', compact('fornecedorsJ', 'tipo'));
 
         }else if($atributo == "usuario"){
 
-            $usuarios = \App\User::All();
-            $usuarios = $usuarios->sortBy('name');
+            $usuarios = DB::select("
+                SELECT
+                *
+                FROM users
+                WHERE users.id != '0'
+				ORDER BY name
+            ");
 
             return view('cadastro.cadastro_usuario',compact('usuarios'));
         }else{
@@ -344,6 +361,7 @@ class Cadastro_Controller extends Controller
 
         $busca = $request->search;
         trim($busca);
+        $tipo = 'produto';
 
         if($busca != ''){
             $produtos = DB::select("
@@ -365,7 +383,8 @@ class Cadastro_Controller extends Controller
                 produtos.codigo_barras LIKE '%".$busca."%' OR
                 marcas.nome LIKE '%".$busca."%' OR
                 departamentos.nome LIKE '%".$busca."%'
-            )
+                )
+                ORDER BY descricao ASC
             ");
 
             if (count($produtos) != 0) {
@@ -373,7 +392,7 @@ class Cadastro_Controller extends Controller
                 return view('cadastro.cadastro_produto_busca',compact('produtos','busca'));
             }else{
 
-                return view('cadastro.cadastro_produto_busca_vazia',compact('busca'));
+                return view('cadastro.cadastro_busca_vazia',compact('busca','tipo'));
             }
         }else{
 
@@ -514,6 +533,8 @@ class Cadastro_Controller extends Controller
                 $relacao = "c";
             }else if ($data['fornecedor']) {
                 $relacao = "f";
+            }else{
+                $relacao = '';
             }
 
             $data['nome_fantasia'] = mb_strtoupper($data['nome_fantasia']);
@@ -587,15 +608,15 @@ class Cadastro_Controller extends Controller
         }
 
         if(strlen($pessoa_fisica->telefone) == 10){
-            $pessoa_fisica->telefone = $this->Mask("(##)####-####",$pessoa_fisica->telefone);
+            $pessoa_fisica->telefone = $this->Mask("##-####-####",$pessoa_fisica->telefone);
         } else if(strlen($pessoa_fisica->telefone) == 11){
-            $pessoa_fisica->telefone = $this->Mask("(##)#####-####",$pessoa_fisica->telefone);
+            $pessoa_fisica->telefone = $this->Mask("##-#####-####",$pessoa_fisica->telefone);
         }
 
         if(strlen($pessoa_fisica->telefone_sec) == 10){
-            $pessoa_fisica->telefone_sec = $this->Mask("(##)####-####",$pessoa_fisica->telefone_sec);
+            $pessoa_fisica->telefone_sec = $this->Mask("##-####-####",$pessoa_fisica->telefone_sec);
         } else if(strlen($pessoa_fisica->telefone_sec) == 11){
-            $pessoa_fisica->telefone_sec = $this->Mask("(##)#####-####",$pessoa_fisica->telefone_sec);
+            $pessoa_fisica->telefone_sec = $this->Mask("##-#####-####",$pessoa_fisica->telefone_sec);
         }
 
         if(strlen($pessoa_fisica->cep) == 8){
@@ -612,15 +633,15 @@ class Cadastro_Controller extends Controller
         $pessoa_juridica = \App\Pessoa_juridica::find($id);
 
         if(strlen($pessoa_juridica->telefone) == 10){
-            $pessoa_juridica->telefone = $this->Mask("(##)####-####",$pessoa_juridica->telefone);
+            $pessoa_juridica->telefone = $this->Mask("##-####-####",$pessoa_juridica->telefone);
         } else if(strlen($pessoa_juridica->telefone) == 11){
-            $pessoa_juridica->telefone = $this->Mask("(##)#####-####",$pessoa_juridica->telefone);
+            $pessoa_juridica->telefone = $this->Mask("##-#####-####",$pessoa_juridica->telefone);
         }
 
         if(strlen($pessoa_juridica->telefone_sec) == 10){
-            $pessoa_juridica->telefone_sec = $this->Mask("(##)####-####",$pessoa_juridica->telefone_sec);
+            $pessoa_juridica->telefone_sec = $this->Mask("##-####-####",$pessoa_juridica->telefone_sec);
         } else if(strlen($pessoa_juridica->telefone_sec) == 11){
-            $pessoa_juridica->telefone_sec = $this->Mask("(##)#####-####",$pessoa_juridica->telefone_sec);
+            $pessoa_juridica->telefone_sec = $this->Mask("##-#####-####",$pessoa_juridica->telefone_sec);
         }
 
         if(strlen($pessoa_juridica->cnpj) == 14){
@@ -665,7 +686,7 @@ class Cadastro_Controller extends Controller
         $pessoa_fisica->rg = $request->input('rg');
         $pessoa_fisica->orgao_expedidor = $request->input('orgao_expedidor');
         $pessoa_fisica->sexo = $request->input('sexo');
-        $pessoa_fisica->data_nascim = $request->input('data_nascim');
+        $pessoa_fisica->data_nascim = $data_nascim;
         $pessoa_fisica->telefone = $request->input('telefone');
         $pessoa_fisica->telefone_sec = $request->input('telefone_sec');
         $pessoa_fisica->email = $request->input('email');
@@ -692,6 +713,8 @@ class Cadastro_Controller extends Controller
             $relacao = "c";
         }else if ($request['fornecedor']) {
             $relacao = "f";
+        }else{
+            $relacao = '';
         }
 
         $request['cep'] = preg_replace("/\D+/", "", $request['cep']);
@@ -765,7 +788,11 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.numero,
                 pessoa_fisicas.tipo 
                 FROM pessoa_fisicas
-                WHERE pessoa_fisicas.cpf LIKE '%".$busca."%' OR pessoa_fisicas.nome LIKE '%".$busca."%' OR pessoa_fisicas.rg LIKE '%".$busca."%'");
+                WHERE pessoa_fisicas.cpf LIKE '%".$busca."%' 
+                OR pessoa_fisicas.nome LIKE '%".$busca."%' 
+                OR pessoa_fisicas.rg LIKE '%".$busca."%'
+                ORDER BY nome ASC
+            ");
 
             if (count($pessoas) != 0) {
 
@@ -803,8 +830,12 @@ class Cadastro_Controller extends Controller
                 pessoa_juridicas.numero,
                 pessoa_juridicas.tipo 
                 FROM pessoa_juridicas
-                WHERE pessoa_juridicas.cnpj LIKE '%".$busca."%' OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' OR
-                pessoa_juridicas.razao_social LIKE '%".$busca."%' OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'");
+                WHERE pessoa_juridicas.cnpj LIKE '%".$busca."%' 
+                OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
+                OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
+                OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
+                ORDER BY nome_fantasia ASC
+            ");
 
             if (count($pessoas) != 0) {
 
@@ -845,8 +876,14 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.numero,
                 pessoa_fisicas.tipo 
                 FROM pessoa_fisicas, clientes
-                WHERE pessoa_fisicas.id = clientes.id
-                AND(pessoa_fisicas.cpf LIKE '%".$busca."%' OR pessoa_fisicas.nome LIKE '%".$busca."%' OR pessoa_fisicas.rg LIKE '%".$busca."%')");
+                WHERE pessoa_fisicas.id = clientes.id_pessoa_fisica
+                AND(
+                pessoa_fisicas.cpf LIKE '%".$busca."%' 
+                OR pessoa_fisicas.nome LIKE '%".$busca."%' 
+                OR pessoa_fisicas.rg LIKE '%".$busca."%'
+                )
+                ORDER BY nome ASC
+            ");
 
             if (count($clientesF) != 0) {
 
@@ -884,9 +921,15 @@ class Cadastro_Controller extends Controller
                 pessoa_juridicas.numero,
                 pessoa_juridicas.tipo
                 FROM pessoa_juridicas, clientes
-                WHERE pessoa_juridicas.id = clientes.id
-                AND(pessoa_juridicas.cnpj LIKE '%".$busca."%' OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' OR
-                pessoa_juridicas.razao_social LIKE '%".$busca."%' OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%')");
+                WHERE pessoa_juridicas.id = clientes.id_pessoa_juridica
+                AND(
+                pessoa_juridicas.cnpj LIKE '%".$busca."%' 
+                OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
+                OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
+                OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
+                )
+                ORDER BY nome_fantasia ASC
+            ");
 
             if (count($clientesJ) != 0) {
 
@@ -927,8 +970,14 @@ class Cadastro_Controller extends Controller
                 pessoa_fisicas.numero,
                 pessoa_fisicas.tipo 
                 FROM pessoa_fisicas, fornecedors
-                WHERE pessoa_fisicas.id = fornecedors.id
-                AND(pessoa_fisicas.cpf LIKE '%".$busca."%' OR pessoa_fisicas.nome LIKE '%".$busca."%' OR pessoa_fisicas.rg LIKE '%".$busca."%')");
+                WHERE pessoa_fisicas.id = fornecedors.id_pessoa_fisica
+                AND(
+                pessoa_fisicas.cpf LIKE '%".$busca."%' 
+                OR pessoa_fisicas.nome LIKE '%".$busca."%' 
+                OR pessoa_fisicas.rg LIKE '%".$busca."%'
+                )
+                ORDER BY nome ASC
+            ");
 
             if (count($fornecedorsF) != 0) {
 
@@ -966,9 +1015,15 @@ class Cadastro_Controller extends Controller
                 pessoa_juridicas.numero,
                 pessoa_juridicas.tipo
                 FROM pessoa_juridicas, fornecedors
-                WHERE pessoa_juridicas.id = fornecedors.id
-                AND(pessoa_juridicas.cnpj LIKE '%".$busca."%' OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' OR
-                pessoa_juridicas.razao_social LIKE '%".$busca."%' OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%')");
+                WHERE pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+                AND(
+                pessoa_juridicas.cnpj LIKE '%".$busca."%' 
+                OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
+                OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
+                OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
+                )
+                ORDER BY nome_fantasia ASC
+            ");
 
             if (count($fornecedorsJ) != 0) {
 
@@ -995,8 +1050,11 @@ class Cadastro_Controller extends Controller
                 users.name, 
                 users.email
                 FROM users
-                WHERE users.name LIKE '%".$busca."%' OR users.id LIKE '%".$busca."%' OR
-                users.email LIKE '%".$busca."%'");
+                WHERE users.id != '0'
+                AND users.name LIKE '%".$busca."%' OR users.id LIKE '%".$busca."%' 
+                OR users.email LIKE '%".$busca."%'
+				ORDER BY name
+                ");
 
             if (count($usuarios) != 0) {
 
@@ -1022,7 +1080,10 @@ class Cadastro_Controller extends Controller
                 marcas.id,
                 marcas.nome
                 FROM marcas
-                WHERE marcas.nome LIKE '%".$busca."%' OR marcas.id LIKE '%".$busca."%'");
+                WHERE marcas.nome LIKE '%".$busca."%' 
+                OR marcas.id LIKE '%".$busca."%'
+                ORDER BY nome ASC
+            ");
 
             if (count($marcas) != 0) {
 
@@ -1048,7 +1109,10 @@ class Cadastro_Controller extends Controller
                 departamentos.id,
                 departamentos.nome
                 FROM departamentos
-                WHERE departamentos.nome LIKE '%".$busca."%' OR departamentos.id LIKE '%".$busca."%'");
+                WHERE departamentos.nome LIKE '%".$busca."%' 
+                OR departamentos.id LIKE '%".$busca."%'
+                ORDER BY nome ASC
+            ");
 
             if (count($departamentos) != 0) {
 

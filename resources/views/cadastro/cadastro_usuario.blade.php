@@ -17,6 +17,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
                         <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a href="#">Usuários<span class="sr-only">(current)</span></a></li>
@@ -32,14 +33,14 @@
                             
                             <table>
                                 <tr>
-                                    <td>
+<!--                                     <td>
                                         <form class="btn-convidar" method="get" action="usuario/convidar">
                                             <button type="submit" class="btn btn-primary">Convidar</button>
                                         </form>
-                                    </td>
+                                    </td> -->
 
                                     <td>
-                                        <form class="btn-new" method="get" action="usuario/cadastrar">
+                                        <form class="btn-new" method="get" action="/cadastro/usuario/cadastrar">
                                             <button type="submit" class="btn btn-primary">Novo</button>
                                         </form>
                                     </td>
@@ -81,9 +82,9 @@
                                             <div style="display: inline-flex; float: right;">
                                                 <form method="GET" action="mailto:{{$usuario->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
 
-                                                <form method="GET" action="usuario/{{$usuario->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+                                                <form method="GET" action="/cadastro/usuario/{{$usuario->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
 
-                                                <form method="GET" action="usuario/{{$usuario->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                                <form method="GET" action="/cadastro/usuario/{{$usuario->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
                                             </div>
                                         </td>
                                     </tr>

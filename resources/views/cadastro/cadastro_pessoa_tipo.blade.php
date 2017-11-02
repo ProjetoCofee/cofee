@@ -89,7 +89,6 @@
             url: url+'api/consulta_cpf.php',
             data:{cpf:cpf}
         }).done(function(data){
-            console.log(data);
             if(data==1){
                 document.getElementById("btn_proximo").disabled = true;
                 $('#alerta').html('<div align="center" class="alert alert-warning" role="alert">O CPF informado já está cadastrado!</div>');

@@ -91,9 +91,9 @@ Route::get('/cadastro/pessoa/fisica/{id}/update', 'Cadastro_Controller@update_pe
 
 Route::get('/cadastro/pessoa/juridica/{id}/update', 'Cadastro_Controller@update_pessoa_juridica')->name('update_pessoa_juridica');
 
-Route::post('/cadastro/pessoa/fisica/{tipo}/save', 'Cadastro_Controller@pessoa_fisica_save')->name('pessoa_fisica_save');
+Route::post('/cadastro/pessoa/fisica/{id}/save', 'Cadastro_Controller@pessoa_fisica_save')->name('pessoa_fisica_save');
 
-Route::post('/cadastro/pessoa/juridica/{tipo}/save', 'Cadastro_Controller@pessoa_juridica_save')->name('pessoa_juridica_save');
+Route::post('/cadastro/pessoa/juridica/{id}/save', 'Cadastro_Controller@pessoa_juridica_save')->name('pessoa_juridica_save');
 
 Route::get('/cadastro/pessoa/fisica/{id}/delete', 'Cadastro_Controller@delete_pessoa_fisica')->name('delete_pessoa_fisica');
 
@@ -118,6 +118,7 @@ Route::post('/cadastro/fornecedor_juridica/busca', 'Cadastro_Controller@busca_fo
 //estoque
 //get
 Route::get('/estoque/retirada/detalhes/{id}', 'Estoque_Controller@detalhes_retirada')->name('detalhes_retirada');
+Route::get('/estoque/entrada/detalhes/{id}', 'Estoque_Controller@detalhes_entrada')->name('detalhes_entrada');
 
 //post
 Route::post('/estoque/busca', 'Estoque_Controller@busca_produto')->name('busca_produto');

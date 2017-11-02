@@ -97,7 +97,11 @@
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
 
+<<<<<<< HEAD
                     <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/{{$pessoa_fisica->tipo}}/save">
+=======
+                    <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/{{$pessoa_fisica->id}}/save">
+>>>>>>> origin/ronald
                         {{ csrf_field() }}
 
                         <div class="form-group">
@@ -194,7 +198,7 @@
                                     <label for="telefone" class="col-md-4 control-label required">Telefone</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" pattern="[0-9]{2}-[0-9]{4,6}-[0-9]{3,4}$" value="{{$pessoa_fisica->telefone}}" required>
+                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" pattern="[0-9]{2}-[0-9]{4,5}-[0-9]{4,5}$" value="{{$pessoa_fisica->telefone}}" required>
 
                                         @if ($errors->has('telefone'))
                                         <span class="help-block">
@@ -208,7 +212,7 @@
                                     <label for="telefone_sec" class="col-md-4 control-label">Telefone Secundário</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone_sec" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone_sec" pattern="[0-9]{2}-[0-9]{4,6}-[0-9]{3,4}$" value="{{$pessoa_fisica->telefone_sec}}">
+                                        <input id="telefone_sec" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone_sec" pattern="[0-9]{2}-[0-9]{4,5}-[0-9]{4,5}$" value="{{$pessoa_fisica->telefone_sec}}">
 
                                         @if ($errors->has('telefone_sec'))
                                         <span class="help-block">
@@ -355,7 +359,7 @@
                                 <div class="form-group">
                                     <div align="center">
                                         <button id="btn_salvar" type="submit" class="btn btn-primary">
-                                            Registrar
+                                            Salvar
                                         </button>
                                         <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">
                                             Cancelar

@@ -7,6 +7,7 @@
     window.onload = function() {
         document.getElementById('search').focus();
     };
+
 </script>
 
 <div class="container-fluid">
@@ -17,6 +18,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Estoque</div>
                     <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                         <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
                         <li class="active"><a href="#">Entrada<span class="sr-only">(current)</span></a></li>
                             <ul class="nav nav-pills nav-stacked">
@@ -90,6 +92,25 @@
                 </div>
             </div>
             
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="detail_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">Detalhes da entrada</div>
+                <div class="panel-body">
+                    <div id="modal_detalhes" class="modal-body" style="color: #1E3973;">
+                    <!-- conteudo js -->
+                    </div>
+                    </div>
+                    <div align="center">
+                        <button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button>
+                    </div>
+                
+            </div>
         </div>
     </div>
 </div>

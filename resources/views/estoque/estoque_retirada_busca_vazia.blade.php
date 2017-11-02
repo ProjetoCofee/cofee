@@ -10,6 +10,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Estoque</div>
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
                             <li><a href="/estoque/historico_entrada">Entrada<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Retirada<span class="sr-only">(current)</span></a>
@@ -31,7 +32,8 @@
 
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
-                                    <td>
+                                    <td><a href="/estoque/solicita_retirada"><button type="submit" class="btn btn-primary">Solicitar retirada</button></td>
+                                    <td style="padding-bottom: 1em;">
                                     <form method="post" action="/estoque/retirada/busca" class="form-inline" role="search">
                                         <div class="form-group">
                                             <input type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar: número ou solicitante" value="{{$busca}}" autofocus="true" autocomplete="off">
@@ -40,7 +42,7 @@
                                         {{ csrf_field() }}
                                     </form>
                                     </td>
-                                    <td>
+                                    <td style="padding-bottom: 1em;">
                                     <form method="get" action="/estoque/retirada" class="form-inline">
                                         <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
                                         {{ csrf_field() }}

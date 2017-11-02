@@ -25,6 +25,7 @@ $sql = mysqli_query($mysqli, "SELECT
 				marcas.nome LIKE '%".$busca."%' OR
 				departamentos.nome LIKE '%".$busca."%'
 			)
+			AND produtos.saldo > 0
 			ORDER BY descricao ASC
 			"); 
 

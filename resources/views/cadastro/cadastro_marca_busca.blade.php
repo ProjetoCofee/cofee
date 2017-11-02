@@ -16,6 +16,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
                                     <li style = "padding-left: 10px"><a href="/cadastro/departamento"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 

@@ -17,6 +17,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Estoque</div>
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
                             <li><a href="/estoque/historico_entrada">Entrada<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Retirada<span class="sr-only">(current)</span></a>
@@ -76,7 +77,9 @@
                                             <td>{{$solicitacao->solicitante}}</td>
                                             <td>{{$solicitacao->data_solicitacao}}</td>
                                             <td>{{$solicitacao->aprovador}}</td>
-                                            <td>{{$solicitacao->data_aprovacao}}</td>
+                                            <td>@if($solicitacao->status=='p')
+                                                @else{{$solicitacao->data_aprovacao}}
+                                                @endif</td>
                                             <td>@if($solicitacao->status=='p')Pendente
                                                 @else Finalizada
                                                 @endif</td>

@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+
+<script type="text/javascript">
+    window.onload = function() {
+        document.getElementById('nome').focus();
+    };
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -14,7 +20,7 @@
                             <label for="name" class="col-md-4 control-label">Nome</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Ex: Joao Carlos Santos" required>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -28,7 +34,7 @@
                             <label for="email" class="col-md-4 control-label">E-Mail</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Ex: email123@email.com" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -42,7 +48,7 @@
                             <label for="password" class="col-md-4 control-label">Senha</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control" name="password" placeholder="Digite uma senha com no mínimo 6 dígitos" minlength="6" required>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -56,7 +62,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">Confirmar Senha</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirme sua senha" minlength="6" required>
                             </div>
                         </div>
 

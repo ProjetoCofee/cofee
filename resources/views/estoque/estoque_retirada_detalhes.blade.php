@@ -5,19 +5,16 @@
 <script type="text/javascript">
 
     function modal_retirada(id){
-
         $.ajax({
             dataType: 'json',
             url: url+'api/busca_retirada_id.php',
             data: {busca:id}
         }).done(function(data){
-
             var id = data[0].id;
             var codigo_barras = data[0].codigo_barras;
             var descricao = data[0].descricao;
             var qtd_solicitada = data[0].qtd_solicitada;
             var qtd_atendida = data[0].qtd_atendida;
-
             $('#modal_retirada').html('<form class="form-horizontal"><div class="form-group"><label for="codigo_barras" class="col-md-4 control-label">Código</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="'+codigo_barras+'" readonly></div><label for="descricao" class="col-md-4 control-label">Descrição</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly></div><label for="qtd_solicitada" class="col-md-4 control-label">Solicitado</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="qtd_solicitada" type="text" class="form-control" name="qtd_solicitada" value="'+qtd_solicitada+'" readonly></div><label for="qtd_atendida" class="col-md-4 control-label">Atender</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="qtd_atendida" type="number" class="form-control" name="qtd_atendida" autocomplete="off" onkeyup="calcula_saldo()" required></div><div align="center"><button data-toggle="modal" data-target="#create_modal_compra" id="btn_retirar" type="button" class="btn crud-submit btn-primary" onclick="aprova_retirada('+id+')" data-dismiss="modal" aria-label="Close">Retirar</button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></div></div></form>');    
         });
     }
@@ -25,8 +22,7 @@
     function calcula_saldo(){
         var qtd_solicitada =  parseInt(document.getElementById('qtd_solicitada').value);
         var qtd_atendida =  parseInt(document.getElementById('qtd_atendida').value);
-
-        if(qtd_atendida>qtd_solicitada){
+        if(qtd_atendida>qtd_solicitada || qtd_atendida<=0){
             document.getElementById("btn_retirar").disabled = true; 
         }else{
             document.getElementById("btn_retirar").disabled = false;
@@ -34,13 +30,11 @@
     }
 
     function aprova_retirada(id){
-
         var id_solicitacao = "<?php print $id_solicitacao ?>";
         var id_retirada = id;
         var qtd_atendida = document.getElementById('qtd_atendida').value;
         var id_usuario_aprova = "<?php print Auth::user()->id ?>";
         var codigo_produto = document.getElementById('codigo_barras').value;
-
         if(id_solicitacao != '' && id_retirada != '' && qtd_atendida != '' && id_usuario_aprova != ''){
             $.ajax({
                 dataType: 'json',
@@ -53,9 +47,6 @@
                         qtd_atendida:qtd_atendida
                     }
             }).done(function(data){
-
-                console.log(data);
-
                 var id = data[0].id;
                 var descricao = data[0].descricao;
                 var saldo = data[0].saldo;
@@ -63,28 +54,26 @@
 
                 var saldo = parseInt(saldo);
                 var minimo = parseInt(minimo);
-
                 if(saldo<=minimo){
-
                     $('#modal_compra').html('<div align="center"><p>Com esta retirada o saldo de '+descricao+'<br>é '+saldo+' enquanto o mínimo deve ser '+minimo+'.<br><br>Gostaria de adicionar este produto à lista para compra?</p></div><br><br><div align="center"><button id="btn_retirar" type="button" class="btn crud-submit btn-primary" onclick="inserir_compra('+id+')" data-dismiss="modal" aria-label="Close">Adicionar</button><button type="button" class="btn crud-submit btn-default" onclick="ignorar_compra()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Ignorar</span></button></div>');
+                }else{
+                    $('#create_modal_compra').empty();
+                    $('#create_modal_compra').hide();
+                    location.reload();
                 }
-                         
             });
         }
     }
 
     function inserir_compra(id){
-
         var id_produto = id;
         var id_usuario_solicitante = "<?php print Auth::user()->id ?>";
-
         $.ajax({
             dataType: 'json',
             type:'POST',
             url: url+'api/create_item_compra.php',
-            data:{  id_produto:id_produto, id_usuario_solicitante:id_usuario_solicitante
-                }
-        }).done(function(){
+            data:{id_produto:id_produto, id_usuario_solicitante:id_usuario_solicitante}
+        }).done(function(data){
             location.reload();
         });
     }
@@ -94,11 +83,9 @@
     }
 
     function recusa_retirada(id){
-
         var id_solicitacao = "<?php print $id_solicitacao ?>";
         var id_retirada = id;
         var id_usuario_aprova = "<?php print Auth::user()->id ?>";
-
         if(id_solicitacao != '' && id_retirada != '' && id_usuario_aprova != ''){
            $.ajax({
                 dataType: 'json',
@@ -115,9 +102,7 @@
     }
 
     function salvar_retirada(){
-
         var id_solicitacao = "<?php print $id_solicitacao ?>";
-
         if(id_solicitacao != ''){
             $.ajax({
                 dataType: 'json',
@@ -131,9 +116,7 @@
     }
 
     function cancelar_retirada(){
-
         var id_solicitacao = "<?php print $id_solicitacao ?>";
-
         if(id_solicitacao != ''){
            $.ajax({
                 dataType: 'json',
@@ -157,6 +140,7 @@
                     <div class="panel-heading">Estoque</div>
                         @if($status == 'p')
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a>Estoque<span class="sr-only">(current)</span></a></li>
                             <li><a>Entrada<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Retirada<span class="sr-only">(current)</span></a>
@@ -169,6 +153,7 @@
                         </ul>
                         @else
                         <ul class="nav nav-pills nav-stacked">
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
                             <li><a href="/estoque/historico_entrada">Entrada<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Retirada<span class="sr-only">(current)</span></a>
