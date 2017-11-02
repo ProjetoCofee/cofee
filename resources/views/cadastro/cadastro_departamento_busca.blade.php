@@ -8,6 +8,10 @@
         document.getElementById('search').focus();
     };
 
+    function delete_departamento(id,nome){
+
+        $('#modal_delete').html('<div align="center"><p>Tem certeza que deseja excluir o departamento "'+nome+'"?</p></div><br><br><div align="center"><table><tr><td><form method="GET" action="/cadastro/departamento/'+id+'/delete"><button type="submit" class="btn crud-submit btn-primary remove">Excluir</button></form></td><td><button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></td></tr></table></div>');    
+    }
 </script>
 
 <div class="container-fluid">
@@ -80,7 +84,7 @@
                                             <div style="display: inline-flex; float: right;">
                                             <form method="GET" action="/cadastro/departamento/{{$departamento->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
                                             
-                                            <form method="GET" action="/cadastro/departamento/{{$departamento->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            <button type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_departamento('{{$departamento->id}}','{{$departamento->nome}}')"><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>
                                             </td>                                      
                                         </tr>
@@ -96,5 +100,18 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="delete_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">Atenção!</div>
+                <div class="panel-body">
+                    <div id="modal_delete" class="modal-body" style="color: #1E3973;">
+                    <!-- conteudo js -->
+                    </div>
+                </div>                
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -21,6 +21,7 @@ $sql = mysqli_query($mysqli, "SELECT
 				pessoa_juridicas.bairro,
 				pessoa_juridicas.logradouro,
 				pessoa_juridicas.numero,
+				pessoa_juridicas.complemento,
 				pessoa_juridicas.tipo,
 				pessoa_juridicas.created_at,
 				pessoa_juridicas.updated_at

@@ -85,6 +85,8 @@ class Cadastro_Controller extends Controller
                 SELECT
                 pessoa_fisicas.id,
                 clientes.id,
+                clientes.id_pessoa_fisica,
+                clientes.id_pessoa_juridica,
                 pessoa_fisicas.nome as nome, 
                 pessoa_fisicas.cpf as cpf,
                 pessoa_fisicas.telefone as telefone,
@@ -102,6 +104,8 @@ class Cadastro_Controller extends Controller
                 SELECT
                 pessoa_juridicas.id,
                 clientes.id,
+                clientes.id_pessoa_fisica,
+                clientes.id_pessoa_juridica,
                 pessoa_juridicas.nome_fantasia as nome_fantasia,
                 pessoa_juridicas.razao_social as razao_social,
                 pessoa_juridicas.cnpj as cnpj,
@@ -121,6 +125,8 @@ class Cadastro_Controller extends Controller
                 SELECT
                 pessoa_fisicas.id,
                 fornecedors.id,
+                fornecedors.id_pessoa_fisica,
+                fornecedors.id_pessoa_juridica,
                 pessoa_fisicas.nome as nome, 
                 pessoa_fisicas.cpf as cpf,
                 pessoa_fisicas.telefone as telefone,
@@ -138,6 +144,8 @@ class Cadastro_Controller extends Controller
                 SELECT
                 pessoa_juridicas.id,
                 fornecedors.id,
+                fornecedors.id_pessoa_fisica,
+                fornecedors.id_pessoa_juridica,
                 pessoa_juridicas.nome_fantasia as nome_fantasia,
                 pessoa_juridicas.razao_social as razao_social,
                 pessoa_juridicas.cnpj as cnpj,
@@ -858,6 +866,8 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $clientesF = DB::select("
                 SELECT
+                clientes.id_pessoa_fisica,
+                clientes.id_pessoa_juridica,
                 pessoa_fisicas.id,
                 pessoa_fisicas.nome, 
                 pessoa_fisicas.cpf, 
@@ -906,6 +916,8 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $clientesJ = DB::select("
                 SELECT
+                clientes.id_pessoa_fisica,
+                clientes.id_pessoa_juridica,
                 pessoa_juridicas.id,
                 pessoa_juridicas.nome_fantasia, 
                 pessoa_juridicas.cnpj, 
@@ -952,6 +964,8 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $fornecedorsF = DB::select("
                 SELECT
+                fornecedors.id_pessoa_fisica,
+                fornecedors.id_pessoa_juridica,
                 pessoa_fisicas.id,
                 pessoa_fisicas.nome, 
                 pessoa_fisicas.cpf, 
@@ -1000,6 +1014,8 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $fornecedorsJ = DB::select("
                 SELECT
+                fornecedors.id_pessoa_fisica,
+                fornecedors.id_pessoa_juridica,
                 pessoa_juridicas.id,
                 pessoa_juridicas.nome_fantasia, 
                 pessoa_juridicas.cnpj, 
