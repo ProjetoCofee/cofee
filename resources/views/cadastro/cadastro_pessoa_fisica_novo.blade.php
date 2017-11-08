@@ -36,7 +36,8 @@
 
     function formatar(mascara, documento, tipo){
 
-        if(documento.value.length > 12  &&  tipo == 'telefone'){
+        if(tipo == 'telefone'){
+            documento = documento.
             mascara = '##-#####-####';
         }
 
@@ -189,7 +190,7 @@
                                     <label for="telefone" class="col-md-4 control-label required">Telefone</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" pattern="[0-9]{2}-[0-9]{4,6}-[0-9]{3,4}$" required>
+                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####',this,'telefone')" name="telefone"  required>
 
                                         @if ($errors->has('telefone'))
                                         <span class="help-block">

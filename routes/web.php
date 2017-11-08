@@ -108,6 +108,13 @@ Route::post('/cadastro/cliente_fisica/busca', 'Cadastro_Controller@busca_cliente
 
 Route::post('/cadastro/cliente_juridica/busca', 'Cadastro_Controller@busca_cliente_juridica')->name('busca_cliente_juridica');
 
+Route::get('/cadastro/departamento/{id}/delete', 'Cadastro_Controller@delete_departamento')->name('delete_departamento');
+
+Route::get('/cadastro/cliente-fisica/{id}/delete', 'Cadastro_Controller@delete_cliente_fisica')->name('delete_cliente');
+
+Route::get('/cadastro/cliente-juridica/{id}/delete', 'Cadastro_Controller@delete_cliente_juridica')->name('delete_cliente');
+
+
 
 //Fornecedores
 Route::post('/cadastro/fornecedor_fisica/busca', 'Cadastro_Controller@busca_fornecedor_fisica')->name('busca_fornecedor_fisica');

@@ -87,6 +87,9 @@
                                     @endforeach
                                 @endif
                             </TABLE>
+                            <div align="center">
+                                {!! $marcas->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

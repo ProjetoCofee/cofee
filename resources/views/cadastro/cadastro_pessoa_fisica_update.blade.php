@@ -97,11 +97,7 @@
                 <div class="panel-heading">Cadastrar Pessoa</div>
                 <div class="panel-body">
 
-<<<<<<< HEAD
-                    <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/{{$pessoa_fisica->tipo}}/save">
-=======
                     <form class="form-horizontal" method="POST" action="/cadastro/pessoa/fisica/{{$pessoa_fisica->id}}/save">
->>>>>>> origin/ronald
                         {{ csrf_field() }}
 
                         <div class="form-group">

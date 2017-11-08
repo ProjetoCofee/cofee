@@ -16,27 +16,27 @@
             <div class="col-md-2 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
-                            <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
-                            </li>
-                            <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
-                                <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px " class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Clientes</a></li> 
-                                    <li style = "padding-left: 10px "><a href="/cadastro/fornecedor-fisica"> <span class="glyphicon glyphicon-menu-right"></span> Fornecedores</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
-                        </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
+                        <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
+                        </li>
+                        <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
+                            <ul class="nav nav-pills nav-stacked"> 
+                                <li style = "padding-left: 10px " class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Clientes</a></li> 
+                                <li style = "padding-left: 10px "><a href="/cadastro/fornecedor-fisica"> <span class="glyphicon glyphicon-menu-right"></span> Fornecedores</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
+                    </ul>
                 </div>
             </div>
-                  
+
             <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
                         <div class="panel-heading">Cadastro de Clientes</div>
                         <div class="panel-body">
-                        @if($tipo == "fisica")
+                            @if($tipo == "fisica")
 
                             <table>
                                 <tr>
@@ -71,7 +71,7 @@
                                 </tr>
                             </table>
                             @if($clientesF)
-                                <TABLE  class="table table-hover">
+                            <TABLE  class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -80,29 +80,34 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                            
+
                                 @foreach($clientesF as $cliente)
 
-                                    <tbody>
-                                        <tr>
-                                            <td>{{$cliente->nome}}</td>
-                                            <td>{{substr($cliente->cpf,0,3) . "." . substr($cliente->cpf,3,3) . "." . substr($cliente->cpf,6,3) . "-" . substr($cliente->cpf,9,3)}}</td>
-                                            <td>{{$cliente->telefone}}</td>
-                                            <td>
-                                                <div style="display: inline-flex; float: right;">
+                                <tbody>
+                                    <tr>
+                                        <td>{{$cliente->nome}}</td>
+                                        <td>{{substr($cliente->cpf,0,3) . "." . substr($cliente->cpf,3,3) . "." . substr($cliente->cpf,6,3) . "-" . substr($cliente->cpf,9,3)}}</td>
+                                        <td>{{$cliente->telefone}}</td>
+                                        <td>
+                                            <div style="display: inline-flex; float: right;">
                                                 <form method="GET" action="mailto:{{$cliente->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
                                                 
-                                                <form method="GET" action="cliente/{{$cliente->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                                <form method="GET" action="cliente-fisica/{{$cliente->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
                                 @endforeach
-                                </TABLE>
-                            @endif
-                        @endif
+                            </TABLE>
 
-                        @if($tipo == "juridica")
+                            <div align="center">
+                                {!! $clientesF->links() !!}
+                            </div>
+
+                            @endif
+                            @endif
+
+                            @if($tipo == "juridica")
                             <table>
                                 <tr>
                                     <td>
@@ -137,7 +142,7 @@
                                 </tr>
                             </table>
                             <TABLE  class="table table-hover">
-                            @if($clientesJ)
+                                @if($clientesJ)
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -148,24 +153,29 @@
                                 </thead>
 
                                 @foreach($clientesJ as $cliente)
-                                    <tbody>
-                                        <tr>
-                                            <td>{{$cliente->nome_fantasia}}</td>
-                                            <td>{{$cliente->razao_social}}</td>
-                                            <td>{{substr($cliente->cnpj,0,2) . "." . substr($cliente->cnpj,2,3) . "." . substr($cliente->cnpj,5,3) . "/" . substr($cliente->cnpj,8,4)  . "-" . substr($cliente->cnpj,12,2)}}</td>
-                                            <td>
-                                                <div style="display: inline-flex; float: right;">
+                                <tbody>
+                                    <tr>
+                                        <td>{{$cliente->nome_fantasia}}</td>
+                                        <td>{{$cliente->razao_social}}</td>
+                                        <td>{{substr($cliente->cnpj,0,2) . "." . substr($cliente->cnpj,2,3) . "." . substr($cliente->cnpj,5,3) . "/" . substr($cliente->cnpj,8,4)  . "-" . substr($cliente->cnpj,12,2)}}</td>
+                                        <td>
+                                            <div style="display: inline-flex; float: right;">
                                                 <form method="GET" action="mailto:{{$cliente->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
                                                 
-                                                <form method="GET" action="cliente/{{$cliente->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
+                                                <form method="GET" action="cliente-juridica/{{$cliente->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
                                 @endforeach
-                            @endif
+                                @endif
                             </TABLE>
-                        @endif
+
+                            <div align="center">
+                                {!! $clientesJ->links() !!}
+                            </div>
+
+                            @endif
                         </div>
                     </div>
                 </div>
