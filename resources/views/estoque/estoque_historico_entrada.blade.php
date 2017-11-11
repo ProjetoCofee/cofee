@@ -86,7 +86,9 @@
                                     @endforeach
                                 @endif
                             </TABLE>
-
+                            <div align="center">
+                                {!! $entradas->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

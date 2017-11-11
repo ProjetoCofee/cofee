@@ -94,7 +94,9 @@
                                     @endforeach
                                 @endif
                             </TABLE>
-
+                            <div align="center">
+                                {!! $solicitacoes->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>
