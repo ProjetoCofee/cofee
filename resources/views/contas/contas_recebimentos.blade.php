@@ -10,9 +10,10 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Contas</div>
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="/contas/inicio">Início<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
+                            <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/despesas">Despesas<span class="sr-only">(current)</span></a></li>
-                            <li class="active"><a href="#">Recebimentos<span class="sr-only">(current)</span></a></li>
+                            <li class="active"><a href="#">Receitas<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>

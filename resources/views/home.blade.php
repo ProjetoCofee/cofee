@@ -10,7 +10,7 @@
                     <ul class="nav nav-pills nav-justified">
                         <li><a href="/cadastro/produto"><span class="glyphicon glyphicon-folder-open" aria-hidden="true" style="font-size: 30px;"></span><br>Cadastros</a></li>
                         <li><a href="/estoque/show"><span class="glyphicon glyphicon-home" aria-hidden="true" style="font-size: 30px;"></span><br>Estoque</a></li>
-                        <li><a href="/contas/inicio"><span class="glyphicon glyphicon-usd" aria-hidden="true" style="font-size: 30px;"></span><br>Contas</a></li>
+                        <li><a href="/contas/resumo"><span class="glyphicon glyphicon-usd" aria-hidden="true" style="font-size: 30px;"></span><br>Contas</a></li>
                     </ul>
                 </div>
             </div>

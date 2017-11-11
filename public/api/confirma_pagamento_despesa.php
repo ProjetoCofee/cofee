@@ -11,12 +11,21 @@ $mysqli = new mysqli("localhost", "root", "root", "teste");
 	$result = $mysqli->query($sql);
 
 	$sql = "UPDATE contas_pagar 
-			SET valor_pago = '".$post['valor_pago']."', qtd_parcelas_pagas += 1
+			SET valor_pago = valor_pago + '".$post['valor_pago']."', qtd_parcelas_pagas = qtd_parcelas_pagas + 1
 			WHERE id = '".$post['id_conta_pagar']."'
 		";
 
 	$result = $mysqli->query($sql);
-	
-    echo json_encode($result);
+
+	if($post['status'] == '1'){
+		$sql = "UPDATE contas_pagar 
+			SET status = 1
+			WHERE id = '".$post['id_conta_pagar']."'
+		";
+
+		$result = $mysqli->query($sql);
+	}
+
+	echo json_encode("ok");    
 
 ?>
