@@ -62,76 +62,19 @@ class Cadastro_Controller extends Controller
 
                     $pessoas = DB::table('pessoa_fisicas')->orderByRaw('nome ASC')->paginate(7);
 
-<<<<<<< HEAD
                     return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
-=======
-            $tipo = "fisica";
-            $clientesF = DB::select("
-                SELECT
-                pessoa_fisicas.id,
-                clientes.id,
-                clientes.id_pessoa_fisica,
-                clientes.id_pessoa_juridica,
-                pessoa_fisicas.nome as nome, 
-                pessoa_fisicas.cpf as cpf,
-                pessoa_fisicas.telefone as telefone,
-                pessoa_fisicas.email as email
-                FROM clientes, pessoa_fisicas
-                WHERE clientes.id_pessoa_fisica = pessoa_fisicas.id
-                ORDER BY nome ASC
-            ");
-            return view('cadastro.cadastro_cliente', compact('clientesF', 'tipo'));
->>>>>>> origin/ronald
 
                 }else if($atributo == "juridica"){
                     $tipo = "juridica";
 
-<<<<<<< HEAD
                     $pessoas = DB::table('pessoa_juridicas')->orderByRaw('nome_fantasia ASC')->paginate(7);
-=======
-            $tipo = "juridica";
-            $clientesJ = DB::select("
-                SELECT
-                pessoa_juridicas.id,
-                clientes.id,
-                clientes.id_pessoa_fisica,
-                clientes.id_pessoa_juridica,
-                pessoa_juridicas.nome_fantasia as nome_fantasia,
-                pessoa_juridicas.razao_social as razao_social,
-                pessoa_juridicas.cnpj as cnpj,
-                pessoa_juridicas.telefone as telefone,
-                pessoa_juridicas.email as email
-                FROM clientes, pessoa_juridicas
-                WHERE clientes.id_pessoa_juridica = pessoa_juridicas.id
-                ORDER BY nome_fantasia ASC
-            ");
->>>>>>> origin/ronald
 
                     return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
 
                 }
                 else if($atributo == "cliente-fisica"){
 
-<<<<<<< HEAD
                     $tipo = "fisica";
-=======
-            $tipo = "fisica";
-            $fornecedorsF = DB::select("
-                SELECT
-                pessoa_fisicas.id,
-                fornecedors.id,
-                fornecedors.id_pessoa_fisica,
-                fornecedors.id_pessoa_juridica,
-                pessoa_fisicas.nome as nome, 
-                pessoa_fisicas.cpf as cpf,
-                pessoa_fisicas.telefone as telefone,
-                pessoa_fisicas.email as email
-                FROM fornecedors, pessoa_fisicas
-                WHERE fornecedors.id_pessoa_fisica = pessoa_fisicas.id
-                ORDER BY nome ASC
-            ");
-            return view('cadastro.cadastro_fornecedor', compact('fornecedorsF', 'tipo'));
->>>>>>> origin/ronald
 
                     $clientesF = DB::table('pessoa_fisicas')->join(
                         'clientes', 'pessoa_fisicas.id', '=', 'clientes.id_pessoa_fisica')->select(
@@ -142,28 +85,7 @@ class Cadastro_Controller extends Controller
                             'pessoa_fisicas.telefone as telefone',
                             'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->paginate(7);
 
-<<<<<<< HEAD
                         return view('cadastro.cadastro_cliente', compact('clientesF', 'tipo'));
-=======
-            $tipo = "juridica";
-            $fornecedorsJ = DB::select("
-                SELECT
-                pessoa_juridicas.id,
-                fornecedors.id,
-                fornecedors.id_pessoa_fisica,
-                fornecedors.id_pessoa_juridica,
-                pessoa_juridicas.nome_fantasia as nome_fantasia,
-                pessoa_juridicas.razao_social as razao_social,
-                pessoa_juridicas.cnpj as cnpj,
-                pessoa_juridicas.telefone as telefone,
-                pessoa_juridicas.email as email
-                FROM fornecedors, pessoa_juridicas
-                WHERE fornecedors.id_pessoa_juridica = pessoa_juridicas.id
-                ORDER BY nome_fantasia ASC
-            ");
-            
-            return view('cadastro.cadastro_fornecedor', compact('fornecedorsJ', 'tipo'));
->>>>>>> origin/ronald
 
                     } else if($atributo == "cliente-juridica"){
 
@@ -916,8 +838,6 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $clientesF = DB::select("
                 SELECT
-                clientes.id_pessoa_fisica,
-                clientes.id_pessoa_juridica,
                 pessoa_fisicas.id,
                 pessoa_fisicas.nome, 
                 pessoa_fisicas.cpf, 
@@ -966,8 +886,6 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $clientesJ = DB::select("
                 SELECT
-                clientes.id_pessoa_fisica,
-                clientes.id_pessoa_juridica,
                 pessoa_juridicas.id,
                 pessoa_juridicas.nome_fantasia, 
                 pessoa_juridicas.cnpj, 
@@ -1061,8 +979,6 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $fornecedorsF = DB::select("
                 SELECT
-                fornecedors.id_pessoa_fisica,
-                fornecedors.id_pessoa_juridica,
                 pessoa_fisicas.id,
                 pessoa_fisicas.nome, 
                 pessoa_fisicas.cpf, 
@@ -1111,8 +1027,6 @@ class Cadastro_Controller extends Controller
         if($busca != ''){
             $fornecedorsJ = DB::select("
                 SELECT
-                fornecedors.id_pessoa_fisica,
-                fornecedors.id_pessoa_juridica,
                 pessoa_juridicas.id,
                 pessoa_juridicas.nome_fantasia, 
                 pessoa_juridicas.cnpj, 
