@@ -28,7 +28,8 @@ $sql = mysqli_query($mysqli, "SELECT
 				pessoa_fisicas.created_at,
 				pessoa_fisicas.updated_at
 			FROM pessoa_fisicas
-			WHERE pessoa_fisicas.id = ".$busca); 
+			WHERE pessoa_fisicas.id = ".$busca
+		); 
 
    
     while($resultado = mysqli_fetch_assoc($sql)){

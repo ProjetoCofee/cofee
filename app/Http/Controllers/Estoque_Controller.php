@@ -322,6 +322,8 @@ class Estoque_Controller extends Controller
 			foreach ($users as $user) {
 				$responsavel = strtoupper($user->responsavel);
 			}
+		}else{
+			$responsavel = "Excluído";
 		}
 
 
@@ -366,6 +368,8 @@ class Estoque_Controller extends Controller
 					foreach ($array as $fornecedor) {
 						$fornecedor = $fornecedor->nome;
 					}
+				}else{
+					$fornecedor = "Excluído";
 				}
 			}
 		}
@@ -463,10 +467,22 @@ class Estoque_Controller extends Controller
 
 			if($users){
 				foreach ($users as $user) {
-					$solicitante = $user->solicitante;
-					$aprovador = $user->aprovador;
+					if($user->solicitante && $user->aprovador){
+						$solicitante = $user->solicitante;
+						$aprovador = $user->aprovador;
+					}else if($user->solicitante){
+						$solicitante = $user->solicitante;
+						$aprovador = "Excluído";
+					}else if($user->aprovador){
+						$solicitante = "Excluído";
+						$aprovador = $user->aprovador;
+					}
 				}
+			}else{
+				$solicitante = "Excluído";
+				$aprovador = "Excluído";
 			}
+
 		}elseif($status == 'p'){
 
 			$users = DB::select("
