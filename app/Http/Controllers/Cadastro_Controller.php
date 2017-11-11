@@ -96,7 +96,7 @@ class Cadastro_Controller extends Controller
                             'clientes', 'pessoa_juridicas.id', '=', 'clientes.id_pessoa_juridica')->select(
                                 'pessoa_juridicas.id',
                                 'clientes.id',
-                                'clientes.id_pessoa_fisica',
+                                'clientes.id_pessoa_juridica',
                                 'pessoa_juridicas.nome_fantasia as nome_fantasia',
                                 'pessoa_juridicas.razao_social as razao_social',
                                 'pessoa_juridicas.cnpj as cnpj',
