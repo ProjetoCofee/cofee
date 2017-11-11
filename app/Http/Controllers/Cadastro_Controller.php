@@ -113,6 +113,7 @@ class Cadastro_Controller extends Controller
                                 'fornecedors', 'pessoa_fisicas.id', '=', 'fornecedors.id_pessoa_fisica')->select(
                                     'pessoa_fisicas.id',
                                     'fornecedors.id',
+                                    'fornecedors.id_pessoa_fisica',
                                     'pessoa_fisicas.nome as nome', 
                                     'pessoa_fisicas.cpf as cpf',
                                     'pessoa_fisicas.telefone as telefone',
@@ -128,6 +129,7 @@ class Cadastro_Controller extends Controller
                                     'fornecedors', 'pessoa_juridicas.id', '=', 'fornecedors.id_pessoa_juridica')->select(
                                         'pessoa_juridicas.id',
                                         'fornecedors.id',
+                                        'fornecedors.id_pessoa_juridica',
                                         'pessoa_juridicas.nome_fantasia as nome_fantasia',
                                         'pessoa_juridicas.razao_social as razao_social',
                                         'pessoa_juridicas.cnpj as cnpj',
