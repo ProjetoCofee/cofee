@@ -134,5 +134,7 @@ Route::post('/estoque/compra/busca', 'Estoque_Controller@busca_compra')->name('b
 //contas
 //get
 Route::get('/contas/despesas/novo', 'Contas_Controller@nova_despesa')->name('despesa');
+
+Route::get('/contas/despesas/parcelas/{id}', 'Contas_Controller@detalhes_despesa')->name('detalhes_despesa');
 //post
 Route::post('/contas/despesas/novo', 'Contas_Controller@create_despesa')->name('create_despesa');

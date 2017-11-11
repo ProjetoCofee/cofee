@@ -18,11 +18,53 @@ class Contas_Controller extends Controller
 {
     public function index($atributo){
         
-        if($atributo == "inicio"){
+        if($atributo == "resumo"){
 
-            return view('contas.contas_inicio');
+            return view('contas.contas_resumo');
 
         }elseif($atributo == "despesas"){
+
+            $despesas = DB::select("
+                SELECT
+                contas_pagar.*,
+                categoria.nome as categoria
+                FROM contas_pagar, categoria
+                WHERE contas_pagar.id_categoria = categoria.id
+                ORDER BY contas_pagar.id DESC
+            ");
+
+            foreach ($despesas as $despesa) {
+
+                $fornecedores = DB::select("
+                    SELECT
+                    pessoa_fisicas.nome
+                    FROM pessoa_fisicas, fornecedors
+                    WHERE fornecedors.id = '".$despesa->id_fornecedor."' 
+                    AND pessoa_fisicas.id = fornecedors.id_pessoa_fisica
+                ");
+
+                if($fornecedores){
+                    foreach ($fornecedores as $fornecedor) {
+                        $despesa->fornecedor = $fornecedor->nome;
+                    }
+                }else{
+                    $fornecedores = DB::select("
+                        SELECT
+                        pessoa_juridicas.nome_fantasia
+                        FROM pessoa_juridicas, fornecedors
+                        WHERE fornecedors.id = '".$despesa->id_fornecedor."' 
+                        AND pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+                    ");
+
+                    foreach ($fornecedores as $fornecedor) {
+                        $despesa->fornecedor = $fornecedor->nome_fantasia;
+                    }
+                }
+            }    
+
+            return view('contas.contas_depesas',compact('despesas'));
+
+        }elseif($atributo == "despesas_parcelas"){
 
             $despesas = DB::select("
                 SELECT
@@ -85,7 +127,7 @@ class Contas_Controller extends Controller
             $formas_pagamento = DB::select("
                 SELECT * FROM forma_pagamento");     
 
-            return view('contas.contas_depesas',compact('despesas','formas_pagamento'));
+            return view('contas.contas_despesas_parcelas',compact('despesas','formas_pagamento'));
 
         }elseif($atributo == "recebimentos"){
             
@@ -130,7 +172,8 @@ class Contas_Controller extends Controller
                 'valor'=> $despesa['valor'],
                 'valor_pago'=> 0,
                 'qtd_parcelas'=> $qtd_parcelas,
-                'qtd_parcelas_pagas'=> 0
+                'qtd_parcelas_pagas'=> 0,
+                'status'=> 0
             ]);
 
             Parcela::create([
@@ -193,6 +236,82 @@ class Contas_Controller extends Controller
             return redirect('contas/despesas');
         }
 
+    }
+
+    public function detalhes_despesa ($id){
+
+        $parcelas = DB::select("
+                SELECT
+                    contas_pagar.id as id_conta_pagar,
+                    contas_pagar.id_categoria,
+                    contas_pagar.id_fornecedor as fornecedor,
+                    contas_pagar.descricao,
+                    contas_pagar.valor,
+                    contas_pagar.valor_pago as total_pago,
+                    contas_pagar.qtd_parcelas,
+                    contas_pagar.qtd_parcelas_pagas,
+                    parcelas.id as id_parcela,
+                    parcelas.id_conta_receber,
+                    parcelas.id_forma_pagamento,
+                    parcelas.valor_pago,
+                    parcelas.valor_parcela,
+                    parcelas.num_parcela,
+                    parcelas.data_vencimento,
+                    parcelas.data_pagamento,
+                    parcelas.status,
+                    categoria.nome as categoria
+                FROM contas_pagar, parcelas, categoria
+                WHERE contas_pagar.id_categoria = categoria.id
+                AND parcelas.id_conta_pagar = contas_pagar.id
+                AND contas_pagar.id = '".$id."'
+                ORDER BY data_vencimento ASC
+            ");
+
+            foreach ($parcelas as $parcela) {
+
+                $id_despesa = $parcela->id_conta_pagar;
+                $categoria = $parcela->categoria;
+                $descricao = $parcela->descricao;
+                $qtd_parcelas = $parcela->qtd_parcelas;
+                $qtd_parcelas_pagas = $parcela->qtd_parcelas_pagas;
+                $valor_total = $parcela->valor;
+                $total_pago = $parcela->total_pago;
+
+                $parcela->data_vencimento = date('d/m/Y', strtotime($parcela->data_vencimento));
+                $parcela->data_pagamento = date('d/m/Y', strtotime($parcela->data_pagamento));
+
+                $fornecedores = DB::select("
+                    SELECT
+                    pessoa_fisicas.nome
+                    FROM pessoa_fisicas, fornecedors
+                    WHERE fornecedors.id = '".$parcela->fornecedor."' 
+                    AND pessoa_fisicas.id = fornecedors.id_pessoa_fisica
+                ");
+
+                if($fornecedores){
+                    foreach ($fornecedores as $fornecedor) {
+                        $fornecedor = $fornecedor->nome;
+                    }
+                }else{
+                    $fornecedores = DB::select("
+                        SELECT
+                        pessoa_juridicas.nome_fantasia
+                        FROM pessoa_juridicas, fornecedors
+                        WHERE fornecedors.id = '".$parcela->fornecedor."' 
+                        AND pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+                    ");
+
+                    foreach ($fornecedores as $fornecedor) {
+                        $fornecedor = $fornecedor->nome_fantasia;
+                    }
+                }
+
+            }
+
+            $formas_pagamento = DB::select("
+                SELECT * FROM forma_pagamento");
+
+            return view('contas.contas_despesas_detalhes',compact('id_despesa','categoria','descricao','qtd_parcelas','valor_total','fornecedor','qtd_parcelas_pagas','total_pago','parcelas','formas_pagamento'));
     }
 
 }
