@@ -547,7 +547,7 @@ class Contas_Controller extends Controller
 
             foreach ($parcelas as $parcela) {
 
-                $id_despesa = $parcela->id;
+                $id_receita = $parcela->id;
                 $categoria = $parcela->categoria;
                 $descricao = $parcela->descricao;
                 $qtd_parcelas = $parcela->qtd_parcelas;
@@ -589,7 +589,7 @@ class Contas_Controller extends Controller
             $formas_pagamento = DB::select("
                 SELECT * FROM forma_pagamento");
 
-            return view('contas.contas_receitas_detalhes',compact('id_despesa','categoria','descricao','qtd_parcelas','valor_total','cliente','qtd_parcelas_pagas','total_pago','parcelas','formas_pagamento'));
+            return view('contas.contas_receitas_detalhes',compact('id_receita','categoria','descricao','qtd_parcelas','valor_total','cliente','qtd_parcelas_pagas','total_pago','parcelas','formas_pagamento'));
     }
 
     public function delete_receita(Request $request, $id){

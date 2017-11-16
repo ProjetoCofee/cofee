@@ -5,7 +5,7 @@ $mysqli = new mysqli("localhost", "root", "root", "teste");
 
 	if($post['tipo'] == '0'){
 		
-		$sql = "UPDATE parcelas 
+		$sql = "UPDATE parcelas_despesa 
 			SET valor_parcela = '".$post['valor_parcela']."', 
 				data_vencimento = '".$post['data_vencimento']."'
 			WHERE id = '".$post['id_parcela']."'
@@ -13,11 +13,11 @@ $mysqli = new mysqli("localhost", "root", "root", "teste");
 
 		$result = $mysqli->query($sql);
 
-		$count = "pendente";
+		$tipo = "pendente";
 
 	}else if($post['tipo'] == '1'){
 
-		$sql = "UPDATE parcelas 
+		$sql = "UPDATE parcelas_despesa 
 			SET valor_parcela = '".$post['valor_parcela']."', 
 				data_vencimento = '".$post['data_vencimento']."',
 				data_pagamento = '".$post['data_pagamento']."',
@@ -27,9 +27,9 @@ $mysqli = new mysqli("localhost", "root", "root", "teste");
 
 		$result = $mysqli->query($sql);
 
-		$count = "pago";
+		$tipo = "pago";
 	}
 
-	echo json_encode($count);    
+	echo json_encode($tipo);    
 
 ?>

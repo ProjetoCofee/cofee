@@ -204,7 +204,7 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right; min-width: 150px;">Nº receita</label>
                                         <div class="col-md-6">
-                                            <input class="form-control number" type="text" value="{{$id_despesa}}" readonly style="min-width: 200px;">
+                                            <input class="form-control number" type="text" value="{{$id_receita}}" readonly style="min-width: 200px;">
                                         </div>
                                     </td>
                                     <td style="float: left; padding-bottom: 1em;">
@@ -295,9 +295,9 @@
                                             <td>PAGO</td>
                                             <td>
                                             <div style="display: inline-flex; float: right;">
-                                                <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','{{$parcela->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
+                                                <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$parcela->id}}','{{$parcela->id_conta_receber}}','{{$parcela->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
 
-                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','pago')"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id}}','{{$parcela->id_conta_receber}}','pago')"><span class="glyphicon glyphicon-pencil"></span></button>
 
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" disabled><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>

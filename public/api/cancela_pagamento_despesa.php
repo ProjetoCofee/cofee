@@ -3,7 +3,7 @@ $mysqli = new mysqli("localhost", "root", "root", "teste");
 
 	$post = $_POST;
 
-	$sql = "UPDATE parcelas 
+	$sql = "UPDATE parcelas_despesa 
 			SET id_forma_pagamento = null, valor_pago = '0', data_pagamento = null, status = '0'
 			WHERE id = '".$post['id_parcela']."'
 		";
