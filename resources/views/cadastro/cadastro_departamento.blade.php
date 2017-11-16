@@ -92,6 +92,10 @@
                                 @endforeach
                                 @endif
                             </TABLE>
+
+                            <div align="center">
+                                {!! $departamentos->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

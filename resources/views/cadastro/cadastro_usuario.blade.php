@@ -98,6 +98,9 @@
                                 @endif
                             </TABLE>
                             
+                            <div align="center">
+                                {!! $usuarios->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -147,6 +147,9 @@
                                     @endforeach
                                 @endif
                             </TABLE>
+                            <div align="center">
+                                {!! $produtos->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>

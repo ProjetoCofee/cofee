@@ -13,7 +13,7 @@
                             <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li class="active"><a href="#">Resumo<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/despesas">Despesas<span class="sr-only">(current)</span></a></li>
-                            <li><a href="/contas/recebimentos">Receitas<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>

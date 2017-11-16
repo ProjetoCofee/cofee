@@ -19,7 +19,7 @@
             var categoria = data[0].categoria;
             var data_pagamento = data[0].data_pagamento;
             var descricao = data[0].descricao;
-            var fornecedor = data[0].fornecedor;
+            var cliente = data[0].cliente;
             var forma_pagamento = data[0].id_forma_pagamento;
             var num_parcela = data[0].num_parcela;
             var qtd_parcelas = data[0].qtd_parcelas;
@@ -105,11 +105,12 @@
                             <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/despesas">Despesas<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
                                     <li class="active" style = "padding-left: 10px"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>
@@ -117,21 +118,21 @@
             <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Parcelas de despesas</div>
+                        <div class="panel-heading">Parcelas de receitas</div>
                         <div class="panel-body">
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
                                     <td style="padding-bottom: 1em;">
-                                    <form method="post" action="/contas/despesas/busca" class="form-inline" role="search">
+                                    <form method="post" action="/contas/receitas/busca" class="form-inline" role="search">
                                         <div class="form-group">
-                                            <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Data, valor, fornecedor ou categoria" autofocus="true">
+                                            <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Data, valor, cliente ou categoria" autofocus="true">
                                         </div>
                                             <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
                                         {{ csrf_field() }}
                                     </form>
                                     </td>
                                     <td style="padding-bottom: 1em;">
-                                    <form method="get" action="/contas/despesas_parcelas" class="form-inline">
+                                    <form method="get" action="/contas/receitas_parcelas" class="form-inline">
                                         <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
                                         {{ csrf_field() }}
                                     </form>
@@ -142,7 +143,7 @@
                                 <thead>
                                     <tr>
                                         <th>Descrição</th>
-                                        <th>Fornecedor</th>
+                                        <th>Cliente</th>
                                         <th>Categoria</th>
                                         <th>Valor</th>
                                         <th>Valor total</th>
@@ -152,26 +153,26 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                                @if($despesas)
-                                    @foreach($despesas as $despesa)
+                                @if($receitas)
+                                    @foreach($receitas as $receita)
                                     <tbody>
                                         <tr>
-                                            <td>{{$despesa->descricao}}</td>
-                                            <td>{{$despesa->fornecedor}}</td>
-                                            <td>{{$despesa->categoria}}</td>
-                                            <td>{{$despesa->valor_parcela}}</td>
-                                            <td>{{$despesa->valor}}</td>
-                                            <td>{{$despesa->num_parcela."/".$despesa->qtd_parcelas}}</td>
-                                            <td>{{$despesa->data_vencimento}}</td>
+                                            <td>{{$receita->descricao}}</td>
+                                            <td>{{$receita->cliente}}</td>
+                                            <td>{{$receita->categoria}}</td>
+                                            <td>{{$receita->valor_parcela}}</td>
+                                            <td>{{$receita->valor}}</td>
+                                            <td>{{$receita->num_parcela."/".$receita->qtd_parcelas}}</td>
+                                            <td>{{$receita->data_vencimento}}</td>
                                              
-                                            @if($despesa->status == '0')
+                                            @if($receita->status == '0')
                                             <td>PENDENTE</td>
                                             <td>
                                             <div style="display: inline-flex; float: right;">
-                                                <form class="btn-new" method="get" action="/contas/despesas/parcelas/{{$despesa->id_conta_pagar}}">
+                                                <form class="btn-new" method="get" action="/contas/receitas/parcelas/{{$receita->id_conta_pagar}}">
                                                     <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-eye-open"></span></button>
                                                 </form>
-                                                <button type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#confirm_item" onclick="confirmar_pagamento('{{$despesa->id_parcela}}','{{$despesa->id_conta_pagar}}','{{$despesa->data_vencimento}}')"><span class="glyphicon glyphicon-ok"></span></button>
+                                                <button type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#confirm_item" onclick="confirmar_pagamento('{{$receita->id_parcela}}','{{$receita->id_conta_pagar}}','{{$receita->data_vencimento}}')"><span class="glyphicon glyphicon-ok"></span></button>
                                             </div>
                                             </td>
 
@@ -179,10 +180,10 @@
                                             <td>PAGO</td>
                                             <td>
                                             <div style="display: inline-flex; float: right;">
-                                                <form class="btn-new" method="get" action="/contas/despesas/parcelas/{{$despesa->id_conta_pagar}}">
+                                                <form class="btn-new" method="get" action="/contas/receitas/parcelas/{{$receita->id_conta_pagar}}">
                                                     <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-eye-open"></span></button>
                                                 </form>
-                                                <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$despesa->id_parcela}}','{{$despesa->id_conta_pagar}}','{{$despesa->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
+                                                <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$receita->id_parcela}}','{{$receita->id_conta_pagar}}','{{$receita->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
                                             </div>
                                             </td>
                                             @endif

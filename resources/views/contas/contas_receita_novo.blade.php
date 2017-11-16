@@ -5,7 +5,7 @@
 <script type="text/javascript">
 
     window.onload = function() {
-        document.getElementById('fornecedor').focus();
+        document.getElementById('cliente').focus();
     };
 
     function atualiza_campos_repete(value){
@@ -27,26 +27,26 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Cadastrar despesa</div>
+                <div class="panel-heading">Cadastrar receita</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="/contas/despesas/novo">
+                    <form class="form-horizontal" method="POST" action="/contas/receitas/novo">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('fornecedor') ? ' has-error' : '' }}">
-                            <label for="fornecedor" class="col-md-4 control-label required">Fornecedor</label>
+                        <div class="form-group{{ $errors->has('cliente') ? ' has-error' : '' }}">
+                            <label for="cliente" class="col-md-4 control-label required">Cliente</label>
 
                             <div class="col-md-6">
-                                <select id="fornecedor" name="fornecedor" class="form-control" required>
-                                    <option value="">Escolha um fornecedor</option>
+                                <select id="cliente" name="cliente" class="form-control" required>
+                                    <option value="">Escolha um cliente</option>
 
-                                    @foreach($fornecedors as $fornecedor)
-                                        <option value="{{$fornecedor->id}}">{{$fornecedor->nome}}</option>
+                                    @foreach($clientes as $cliente)
+                                        <option value="{{$cliente->id}}">{{$cliente->nome}}</option>
                                     @endforeach
                                 </select>
 
-                                @if ($errors->has('fornecedor'))
+                                @if ($errors->has('cliente'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('fornecedor') }}</strong>
+                                        <strong>{{ $errors->first('cliente') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -56,7 +56,7 @@
                             <label for="descricao" class="col-md-4 control-label required">Descrição</label>
 
                             <div class="col-md-6">
-                                <input id="descricao" type="text" class="form-control" name="descricao" value="{{ old('descricao') }}" placeholder="Ex: Compras de estoque" required>
+                                <input id="descricao" type="text" class="form-control" name="descricao" value="{{ old('descricao') }}" placeholder="Ex: Venda para cliente" required>
 
                                 @if ($errors->has('descricao'))
                                     <span class="help-block">

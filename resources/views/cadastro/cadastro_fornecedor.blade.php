@@ -124,24 +124,24 @@
             <div class="col-md-2 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
-                            <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
-                            <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
-                                <li style = "padding-left: 10px "><a href="/cadastro/cliente-fisica"> <span class="glyphicon glyphicon-menu-right"></span>  Clientes</a></li> 
-                                <li style = "padding-left: 10px "  class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span> Fornecedores</a></li>
-                            </li>
-                            <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
-                        </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
+                        <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a></li>
+                        <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a>
+                            <li style = "padding-left: 10px "><a href="/cadastro/cliente-fisica"> <span class="glyphicon glyphicon-menu-right"></span>  Clientes</a></li> 
+                            <li style = "padding-left: 10px "  class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span> Fornecedores</a></li>
+                        </li>
+                        <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
+                    </ul>
                 </div>
             </div>
-                  
+
             <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
                         <div class="panel-heading">Cadastro de Fornecedores</div>
                         <div class="panel-body">
-                        @if($tipo == "fisica")
+                            @if($tipo == "fisica")
                             
                             <table>
                                 <tr>
@@ -176,7 +176,7 @@
                                 </tr>
                             </table>
                             @if($fornecedorsF)
-                                <TABLE  class="table table-hover">
+                            <TABLE  class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -185,9 +185,25 @@
                                         <th></th>
                                     </tr>
                                 </thead>
-                            
+
                                 @foreach($fornecedorsF as $fornecedor)
 
+<<<<<<< HEAD
+                                <tbody>
+                                    <tr>
+                                        <td>{{$fornecedor->nome}}</td>
+                                        <td>{{substr($fornecedor->cpf,0,3) . "." . substr($fornecedor->cpf,3,3) . "." . substr($fornecedor->cpf,6,3) . "-" . substr($fornecedor->cpf,9,3)}}</td>
+                                        <td>{{$fornecedor->telefone}}</td>
+                                        <td>
+                                            <div style="display: inline-flex; float: right;">
+                                                <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
+                                                
+                                                <form method="GET" action="fornecedor/{{$fornecedor->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+=======
                                     <tbody>
                                         <tr>
                                             <td>{{$fornecedor->nome}}</td>
@@ -202,12 +218,17 @@
                                             </td>
                                         </tr>
                                     </tbody>
+>>>>>>> origin/ronald
                                 @endforeach
-                                </TABLE>
+                            </TABLE>
+
+                            <div align="center">
+                                {!! $fornecedorsF->links() !!}
+                            </div>
                             @endif
-                        @endif
-                        
-                        @if($tipo == "juridica")
+                            @endif
+
+                            @if($tipo == "juridica")
                             <table>
                                 <tr>
                                     <td>
@@ -241,7 +262,7 @@
                                 </tr>
                             </table>
                             <TABLE  class="table table-hover">
-                            @if($fornecedorsJ)
+                                @if($fornecedorsJ)
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -252,6 +273,22 @@
                                 </thead>
 
                                 @foreach($fornecedorsJ as $fornecedor)
+<<<<<<< HEAD
+                                <tbody>
+                                    <tr>
+                                        <td>{{$fornecedor->nome_fantasia}}</td>
+                                        <td>{{$fornecedor->razao_social}}</td>
+                                        <td>{{substr($fornecedor->cnpj,0,2) . "." . substr($fornecedor->cnpj,2,3) . "." . substr($fornecedor->cnpj,5,3) . "/" . substr($fornecedor->cnpj,8,4)  . "-" . substr($fornecedor->cnpj,12,2)}}</td>
+                                        <td>
+                                            <div style="display: inline-flex; float: right;">
+                                                <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
+                                                
+                                                <form method="GET" action="fornecedor/{{$fornecedor->id}}/delete"><button type="submit" class="btn btn-icon remove"><span class="glyphicon glyphicon-trash"></span></button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+=======
                                     <tbody>
                                         <tr>
                                             <td>{{$fornecedor->nome_fantasia}}</td>
@@ -266,10 +303,14 @@
                                             </td>
                                         </tr>
                                     </tbody>
+>>>>>>> origin/ronald
                                 @endforeach
-                            @endif
+                                @endif
                             </TABLE>
-                        @endif
+                            <div align="center">
+                                {!! $fornecedorsJ->links() !!}
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>

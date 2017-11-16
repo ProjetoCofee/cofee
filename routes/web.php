@@ -108,6 +108,13 @@ Route::post('/cadastro/cliente_fisica/busca', 'Cadastro_Controller@busca_cliente
 
 Route::post('/cadastro/cliente_juridica/busca', 'Cadastro_Controller@busca_cliente_juridica')->name('busca_cliente_juridica');
 
+Route::get('/cadastro/departamento/{id}/delete', 'Cadastro_Controller@delete_departamento')->name('delete_departamento');
+
+Route::get('/cadastro/cliente-fisica/{id}/delete', 'Cadastro_Controller@delete_cliente_fisica')->name('delete_cliente');
+
+Route::get('/cadastro/cliente-juridica/{id}/delete', 'Cadastro_Controller@delete_cliente_juridica')->name('delete_cliente');
+
+
 
 //Fornecedores
 Route::post('/cadastro/fornecedor_fisica/busca', 'Cadastro_Controller@busca_fornecedor_fisica')->name('busca_fornecedor_fisica');
@@ -115,7 +122,7 @@ Route::post('/cadastro/fornecedor_fisica/busca', 'Cadastro_Controller@busca_forn
 Route::post('/cadastro/fornecedor_juridica/busca', 'Cadastro_Controller@busca_fornecedor_juridica')->name('busca_fornecedor_juridica');
 
 
-//estoque
+//Estoque
 //get
 Route::get('/estoque/retirada/detalhes/{id}', 'Estoque_Controller@detalhes_retirada')->name('detalhes_retirada');
 Route::get('/estoque/entrada/detalhes/{id}', 'Estoque_Controller@detalhes_entrada')->name('detalhes_entrada');
@@ -131,10 +138,25 @@ Route::post('/estoque/retirada/busca', 'Estoque_Controller@busca_retirada')->nam
 
 Route::post('/estoque/compra/busca', 'Estoque_Controller@busca_compra')->name('busca_compra');
 
-//contas
+//Contas
 //get
 Route::get('/contas/despesas/novo', 'Contas_Controller@nova_despesa')->name('despesa');
 
 Route::get('/contas/despesas/parcelas/{id}', 'Contas_Controller@detalhes_despesa')->name('detalhes_despesa');
+
+Route::get('/contas/despesas_parcelas/{id}/delete', 'Contas_Controller@delete_parcela_despesa')->name('delete_parcela_despesa');
+
+Route::get('/contas/despesas/{id}/delete', 'Contas_Controller@delete_despesa')->name('delete_despesa');
+
+
+Route::get('/contas/receitas/novo', 'Contas_Controller@nova_receita')->name('receita');
+
+Route::get('/contas/receitas/parcelas/{id}', 'Contas_Controller@detalhes_receita')->name('detalhes_receita');
+
+Route::get('/contas/receitas_parcelas/{id}/delete', 'Contas_Controller@delete_parcela_receita')->name('delete_parcela_receita');
+
+Route::get('/contas/receitas/{id}/delete', 'Contas_Controller@delete_receita')->name('delete_receita');
 //post
 Route::post('/contas/despesas/novo', 'Contas_Controller@create_despesa')->name('create_despesa');
+
+Route::post('/contas/receitas/novo', 'Contas_Controller@create_receita')->name('create_receita');
