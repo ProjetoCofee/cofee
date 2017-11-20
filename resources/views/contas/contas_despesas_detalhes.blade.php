@@ -11,7 +11,6 @@
             url: url+'api/busca_despesa_id_detalhes.php',
             data: {busca:id_parcela}
         }).done(function(data){
-            
             var categoria = data[0].categoria;
             var data_pagamento = data[0].data_pagamento;
             var descricao = data[0].descricao;
@@ -27,30 +26,17 @@
             var valor = data[0].valor;
             var valor_pago = data[0].valor_pago;
             var valor_parcela = data[0].valor_parcela;
+            var hoje = "<?php print date("Y-m-d") ?>";
 
-            $('#modal_pagamento').html('<form class="form-horizontal"><div class="form-group">            <label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly>            </div>            <label for="descricao" class="col-md-4 control-label">Descrição</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly>            </div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'" readonly>            </div>            <label for="data_vencimento" class="col-md-4 control-label">Vencimento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_vencimento" type="text" class="form-control" name="data_vencimento" value="'+data_vencimento+'" readonly>            </div>        <label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="A VISTA">À VISTA</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div>        </div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_pagamento('+id_parcela+','+id_conta_pagar+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
+            $('#modal_pagamento').html('<form class="form-horizontal"><div class="form-group"><label for="descricao" class="col-md-4 control-label">Descrição</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly>            </div>            <label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly>            </div>            <label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'" readonly>            </div>            <label for="data_vencimento" class="col-md-4 control-label">Vencimento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_vencimento" type="text" class="form-control" name="data_vencimento" value="'+data_vencimento+'" readonly>            </div>        <label for="data_pagamento" class="col-md-4 control-label">Pagamento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_pagamento" type="date" class="form-control" name="data_pagamento" value="'+hoje+'">            </div>        <label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="DINHEIRO">DINHEIRO</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div>        </div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_pagamento('+id_parcela+','+id_conta_pagar+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
         });
     }
-
-    // function calcula_valor(){
-
-    //     var valor_parcela =  parseInt(document.getElementById('valor_parcela').value);
-    //     var valor_pago =  parseInt(document.getElementById('valor_pago').value);
-    //     var forma_pagamento = document.getElementById('valor_pago').value;
-
-    //     if(valor_pago == ''||forma_pagamento == ''){
-    //         document.getElementById("btn_salvar").disabled = true; 
-    //     }else if(valor_pago>valor_parcela || valor_pago<=0){
-    //         document.getElementById("btn_salvar").disabled = true; 
-    //     }else{
-    //         document.getElementById("btn_salvar").disabled = false;
-    //     }
-    // }
 
     function salvar_pagamento(id_parcela, id_conta_pagar){
 
         var forma_pagamento = document.getElementById('forma_pagamento').value;
-        var valor_pago = parseInt(document.getElementById('valor_parcela').value);
+        var data_pagamento = document.getElementById('data_pagamento').value;
+        var valor_pago = parseFloat(document.getElementById('valor_parcela').value);
         var status = 0;
         var qtd_parcelas = parseInt("<?php print $qtd_parcelas ?>");
         var qtd_parcelas_pagas = parseInt("<?php print $qtd_parcelas_pagas ?>")+1;
@@ -63,7 +49,8 @@
             dataType: 'json',
             type:'POST',
             url: url+'api/confirma_pagamento_despesa.php',
-            data:{  forma_pagamento : forma_pagamento, 
+            data:{  forma_pagamento : forma_pagamento,
+                    data_pagamento : data_pagamento,
                     valor_pago : valor_pago,
                     id_parcela : id_parcela,
                     id_conta_pagar : id_conta_pagar,
@@ -89,14 +76,13 @@
         });
     }
 
-    function update_parcela(id_parcela,id_conta_pagar,tipo){
+    function update_parcela(id_parcela,id_conta_pagar){
 
         $.ajax({
             dataType: 'json',
             url: url+'api/busca_despesa_id_detalhes.php',
             data: {busca:id_parcela}
         }).done(function(data){
-
             var categoria = data[0].categoria;
             var data_pagamento = data[0].data_pagamento;
             var data_vencimento = data[0].data_vencimento;
@@ -110,56 +96,26 @@
             var valor_pago = data[0].valor_pago;
             var valor_parcela = data[0].valor_parcela;
 
-            if(tipo == 'pendente'){
-                tipo = '0';
-                $('#modal_update').html('<form class="form-horizontal"><div class="form-group"><label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly></div><label for="data_vencimento" class="col-md-4 control-label">Vencimento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="data_vencimento" type="date" class="form-control" name="data_vencimento" value="'+data_vencimento+'"></div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'"></div></div></div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_update('+id_parcela+','+tipo+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
-            }else  if(tipo == 'pago'){
-                tipo = '1';
-                $('#modal_update').html('<form class="form-horizontal"><div class="form-group"><label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly></div><label for="data_vencimento" class="col-md-4 control-label">Vencimento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="data_vencimento" type="date" class="form-control" name="data_vencimento" value="'+data_vencimento+'"></div><label for="data_pagamento" class="col-md-4 control-label">Pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="data_pagamento" type="date" class="form-control" name="data_pagamento" value="'+data_pagamento+'"></div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'"></div><label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="A VISTA">À VISTA</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div></div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_update('+id_parcela+','+tipo+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
-            }
+            $('#modal_update').html('<form class="form-horizontal"><div class="form-group"><label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly></div><label for="data_vencimento" class="col-md-4 control-label">Vencimento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="data_vencimento" type="date" class="form-control" name="data_vencimento" value="'+data_vencimento+'" required></div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number dinheiro" name="valor_parcela" value="'+valor_parcela+'" required></div></div></div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_update('+id_parcela+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
         });
     }
 
-    function salvar_update(id_parcela,tipo){
+    function salvar_update(id_parcela){
 
-        if(tipo == '0'){
-            var data_vencimento = document.getElementById('data_vencimento').value;
-            var valor_parcela = parseFloat(document.getElementById('valor_parcela').value);
+        var data_vencimento = document.getElementById('data_vencimento').value;
+        var valor_parcela = parseFloat(document.getElementById('valor_parcela').value);
 
-            $.ajax({
-            dataType: 'json',
-            type:'POST',
-            url: url+'api/confirma_update_parcela.php',
-            data:{  id_parcela : id_parcela,
-                    data_vencimento : data_vencimento,
-                    valor_parcela : valor_parcela,
-                    tipo : tipo
-                }
-            }).done(function(data){
-                console.log(data);
-            });
-        }
-        else if(tipo == '1'){
-            var data_vencimento = document.getElementById('data_vencimento').value;
-            var data_pagamento = document.getElementById('data_pagamento').value;
-            var valor_parcela = parseFloat(document.getElementById('valor_parcela').value);
-            var forma_pagamento = document.getElementById('forma_pagamento').value;            
-            $.ajax({
-            dataType: 'json',
-            type:'POST',
-            url: url+'api/confirma_update_parcela.php',
-            data:{  id_parcela : id_parcela,
-                    data_vencimento : data_vencimento,
-                    data_pagamento : data_pagamento,
-                    forma_pagamento : forma_pagamento, 
-                    valor_parcela : valor_parcela,
-                    tipo : tipo
-                }
-            }).done(function(data){
-                console.log(data);
-            });
-        }
-        location.reload();
+        $.ajax({
+        dataType: 'json',
+        type:'POST',
+        url: url+'api/confirma_update_parcela_despesa.php',
+        data:{  id_parcela : id_parcela,
+                data_vencimento : data_vencimento,
+                valor_parcela : valor_parcela
+            }
+        }).done(function(data){
+            location.reload();
+        });
     }
 
     function delete_parcela(id){
@@ -181,7 +137,7 @@
                             <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/despesas">Despesas<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
+                                    <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas?filter=all"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
                                     <li class="active" style = "padding-left: 10px"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Detalhes</a></li>
                                 </ul>
                             </li>
@@ -232,7 +188,7 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Valor despesa (R$)</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" class="form-control number" type="text" value="{{$valor_total}}" readonly style="text-align: right;min-width: 200px;">
+                                            <input type="text" step="any" class="form-control number" type="text" value="{{$valor_total}}" readonly style="text-align: right;min-width: 200px;">
                                         </div>
                                     </td>
                                     <tr>
@@ -245,7 +201,7 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Valor pago (R$)</label>
                                         <div class="col-md-6">
-                                            <input type="number" step="any" class="form-control number" type="text" value="{{$total_pago}}" readonly style="text-align: right;min-width: 200px;">
+                                            <input type="text" step="any" class="form-control number" type="text" value="{{$total_pago}}" readonly style="text-align: right;min-width: 200px;">
                                         </div>
                                     </td>
                                 </table>
@@ -266,10 +222,10 @@
                                     @foreach($parcelas as $parcela)
                                     <tbody>
                                         <tr>
-                                            <td>{{$parcela->num_parcela."/".$parcela->qtd_parcelas}}</td>
-                                            <td>{{$parcela->valor_parcela}}</td>
+                                            <td>{{$count++."/".$parcela->qtd_parcelas}}</td>
+                                            <td>{{number_format($parcela->valor_parcela, 2, ',', '.')}}</td>
                                             <td>{{$parcela->data_vencimento}}</td>
-                                            
+
                                             @if($parcela->status == '0')
                                             <td></td>
                                             <td></td>
@@ -278,9 +234,12 @@
                                             <div style="display: inline-flex; float: right;">
                                                 <button title="Confirmar pagamento" type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#confirm_item" onclick="confirmar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','{{$parcela->data_vencimento}}')"><span class="glyphicon glyphicon-ok"></span></button>
 
-                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','pendente')"><span class="glyphicon glyphicon-pencil"></span></button>
-
+                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}')"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                @if($qtd_parcelas > 1)
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_parcela('{{$parcela->id_parcela}}')"><span class="glyphicon glyphicon-trash"></span></button>
+                                                @else
+                                                <button title="Excluir parcela" type="submit" class="btn btn-icon remove" disabled><span class="glyphicon glyphicon-trash"></span></button>
+                                                @endif
                                                 
                                             </div>
                                             </td>
@@ -293,7 +252,7 @@
                                             <div style="display: inline-flex; float: right;">
                                                 <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','{{$parcela->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
 
-                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','pago')"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" disabled><span class="glyphicon glyphicon-pencil"></span></button>
 
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" disabled><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>

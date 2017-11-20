@@ -29,7 +29,7 @@
                             </li>
                             <li class="active"><a href="#">Receitas<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px"><a href="/contas/receitas_parcelas"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
+                                    <li style = "padding-left: 10px"><a href="/contas/receitas_parcelas?filter=all"> <span class="glyphicon glyphicon-menu-right"></span> Todas parcelas</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -84,7 +84,7 @@
                                             <td>{{$receita->descricao}}</td>
                                             <td>{{$receita->cliente}}</td>
                                             <td>{{$receita->categoria}}</td>
-                                            <td>{{$receita->valor}}</td>
+                                            <td>{{number_format($receita->valor, 2, ',', '.')}}</td>
                                             <td>{{$receita->qtd_parcelas}}</td>          
                                             @if($receita->status == '0')
                                             <td>Pendente</td>

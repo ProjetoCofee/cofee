@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
                         <div class="panel-heading">Cadastro de Clientes</div>
@@ -199,6 +199,8 @@
                                         <td>
                                             <div style="display: inline-flex; float: right;">
                                                 <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$cliente->id_pessoa_fisica}}','fisica')"><span class="glyphicon glyphicon-eye-open"></span></button>
+
+                                                <form method="GET" action="/cadastro/pessoa/fisica/{{$cliente->id_pessoa_fisica}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
 
                                                 <form method="GET" action="mailto:{{$cliente->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
                                             </div>
@@ -271,6 +273,8 @@
                                         <td>
                                             <div style="display: inline-flex; float: right;">
                                                 <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$cliente->id_pessoa_juridica}}','juridica')"><span class="glyphicon glyphicon-eye-open"></span></button>
+
+                                                <form method="GET" action="/cadastro/pessoa/juridica/{{$cliente->id_pessoa_juridica}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
 
                                                 <form method="GET" action="mailto:{{$cliente->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
                                             </div>

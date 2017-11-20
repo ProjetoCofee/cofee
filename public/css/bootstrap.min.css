@@ -65,6 +65,27 @@ th, td {
 	font-weight: 800;
 }
 
+.table-hover>tbody>tr:hover {
+    background-color: #f1f4f4;
+}
+
+.table-despesa {/*corpo tabela*/
+	background-color: #e3e8e8;
+	color:  #990000;
+	font-weight: 800;
+}
+
+.table-receita {/*corpo tabela*/
+	background-color: #e3e8e8;
+	color: #009900;
+	font-weight: 800;
+}
+
+.table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>th{/*cabeçalho tabela*/
+	background-color: #e3e8e8;	
+	font-weight: 800;
+}
+
 .btn-primary:hover {
 	background-color: #2a50a2; 
 }
