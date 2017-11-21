@@ -1,12 +1,80 @@
 @extends('layouts.app')
-
 @section('content')
+
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
 
 <script type="text/javascript">
 
-    window.onload = function() {
-        document.getElementById('search').focus();
-    };
+    $(document).ready(function() {
+
+        $('#example').dataTable({
+            initComplete: function () {
+                this.api().columns([0, 1, 2, 3]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "sPaginationType": "full_numbers",
+            "sDom": '<"H"Tlfr>t<"F"ip>',
+            "oLanguage": {
+                "sLengthMenu": "Registros por páginas: _MENU_",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
+</script>
+
+<script type="text/javascript">
+
+    function formatar_Data(data, tipo){
+        var d = new Date(data),
+        ano = ''  +  d.getFullYear(),
+        mes = ''  + (d.getMonth() + 1),
+        dia = ''  +  d.getDate(),
+        hora = '' +  d.getHours(),
+        min = ''  +  d.getMinutes();
+
+        if(mes.length  < 2) mes  = '0' + mes;
+        if(dia.length  < 2) dia  = '0' + dia;
+        if(hora.length < 2) hora = '0' + hora;
+        if(min.length  < 2) min  = '0' + min;
+
+        if(tipo == 'nasc') return [dia, mes, ano].join('/');
+
+        return [dia, mes, ano].join('/') + " Horas: " + [hora, min].join(':');
+    }
 
     function detalhes_produto(id){
 
@@ -25,8 +93,8 @@
             var prateleira = data[0].prateleira;
             var minimo = data[0].minimo;
             var observacao = data[0].observacao;
-            var created_at = data[0].created_at;
-            var updated_at = data[0].updated_at;
+            var created_at = formatar_Data(data[0].created_at);
+            var updated_at = formatar_Data(data[0].updated_at);
             var nome_marca = data[0].nome_marca;
             var nome_departamento = data[0].nome_departamento;
 
@@ -59,24 +127,10 @@
                         <div class="panel-body">
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
-                                    <td>
-                                    <form method="post" action="busca" class="form-inline" role="search">
-                                        <div class="form-group">
-                                            <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Código, descrição, marca ou departamento" autofocus="true">
-                                        </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
-                                    <td>
-                                    <form method="get" action="show" class="form-inline">
-                                        <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
+
                                 </table>
                             </div>
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 <thead>
                                     <tr>
                                         <th>Código</th>
@@ -88,9 +142,21 @@
                                         <th></th>
                                     </tr>
                                 </thead>
+
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Marca</th>
+                                        <th>Departamento</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                                 @if($produtos)
-                                    @foreach($produtos as $produto)
                                     <tbody>
+                                        @foreach($produtos as $produto)
                                         <tr>
                                             <td>{{$produto->codigo_barras}}</td>
                                             <td>{{$produto->descricao}}</td>
@@ -102,13 +168,10 @@
                                             <div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_produto('{{$produto->id}}')"><span class="glyphicon glyphicon-eye-open"></span></button></div>
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
-                                    @endforeach
                                 @endif
                             </TABLE>
-                            <div align="center">
-                                {!! $produtos->links() !!}
-                            </div>
                         </div>
                     </div>
                 </div>

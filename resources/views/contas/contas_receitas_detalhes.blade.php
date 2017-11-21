@@ -4,18 +4,18 @@
 
 <script type="text/javascript">
 
-    function confirmar_pagamento(id,id_conta_pagar,data_vencimento){
+    function confirmar_pagamento(id,id_conta_receber,data_vencimento){
 
         $.ajax({
             dataType: 'json',
-            url: url+'api/busca_despesa_id_detalhes.php',
+            url: url+'api/busca_receita_id_detalhes.php',
             data: {busca:id}
         }).done(function(data){
             
             var categoria = data[0].categoria;
             var data_pagamento = data[0].data_pagamento;
             var descricao = data[0].descricao;
-            var fornecedor = data[0].fornecedor;
+            var cliente = data[0].cliente;
             var forma_pagamento = data[0].id_forma_pagamento;
             var num_parcela = data[0].num_parcela;
             var qtd_parcelas = data[0].qtd_parcelas;
@@ -28,7 +28,7 @@
             var valor_pago = data[0].valor_pago;
             var valor_parcela = data[0].valor_parcela;
 
-            $('#modal_pagamento').html('<form class="form-horizontal"><div class="form-group">            <label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly>            </div>            <label for="descricao" class="col-md-4 control-label">Descrição</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly>            </div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'" readonly>            </div>            <label for="data_vencimento" class="col-md-4 control-label">Vencimento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_vencimento" type="text" class="form-control" name="data_vencimento" value="'+data_vencimento+'" readonly>            </div>        <label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="A VISTA">À VISTA</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div>        </div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_pagamento('+id+','+id_conta_pagar+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
+            $('#modal_pagamento').html('<form class="form-horizontal"><div class="form-group">            <label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly>            </div>            <label for="descricao" class="col-md-4 control-label">Descrição</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly>            </div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'" readonly>            </div>            <label for="data_vencimento" class="col-md-4 control-label">Vencimento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_vencimento" type="text" class="form-control" name="data_vencimento" value="'+data_vencimento+'" readonly>            </div>        <label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="A VISTA">À VISTA</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div>        </div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_pagamento('+id+','+id_conta_receber+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
         });
     }
 
@@ -47,7 +47,7 @@
     //     }
     // }
 
-    function salvar_pagamento(id_parcela, id_conta_pagar){
+    function salvar_pagamento(id_parcela, id_conta_receber){
 
         var forma_pagamento = document.getElementById('forma_pagamento').value;
         var valor_pago = parseInt(document.getElementById('valor_parcela').value);
@@ -62,11 +62,11 @@
         $.ajax({
             dataType: 'json',
             type:'POST',
-            url: url+'api/confirma_pagamento_despesa.php',
+            url: url+'api/confirma_pagamento_receita.php',
             data:{  forma_pagamento : forma_pagamento, 
                     valor_pago : valor_pago,
                     id_parcela : id_parcela,
-                    id_conta_pagar : id_conta_pagar,
+                    id_conta_receber : id_conta_receber,
                     status : status
                 }
         }).done(function(data){
@@ -74,7 +74,7 @@
         });
     }
 
-    function cancelar_pagamento(id_parcela, id_conta_pagar, valor_pago){
+    function cancelar_pagamento(id_parcela, id_conta_receber, valor_pago){
 
         $.ajax({
             dataType: 'json',
@@ -82,14 +82,14 @@
             url: url+'api/cancela_pagamento_despesa.php',
             data:{  valor_pago : valor_pago,
                     id_parcela : id_parcela,
-                    id_conta_pagar : id_conta_pagar
+                    id_conta_receber : id_conta_receber
                 }
         }).done(function(data){
             location.reload();
         });
     }
 
-    function update_parcela(id,id_conta_pagar,tipo){
+    function update_parcela(id,id_conta_receber,tipo){
 
         $.ajax({
             dataType: 'json',
@@ -167,7 +167,7 @@
 
     function delete_parcela(id){
 
-        $('#modal_delete').html('<div align="center"><p>Tem certeza que deseja excluir esta parcela?</p></div><br><br><div align="center"><table><tr><td><form method="GET" action="/contas/despesas_parcelas/'+id+'/delete"><button type="submit" class="btn crud-submit btn-primary remove">Excluir</button></form></td><td><button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></td></tr></table></div>');    
+        $('#modal_delete').html('<div align="center"><p>Tem certeza que deseja excluir esta parcela?</p></div><br><br><div align="center"><table><tr><td><form method="GET" action="/contas/receitas_parcelas/'+id+'/delete"><button type="submit" class="btn crud-submit btn-primary remove">Excluir</button></form></td><td><button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></td></tr></table></div>');    
     }
 
 </script>
@@ -183,12 +183,13 @@
                             <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
                             <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/despesas">Despesas<span class="sr-only">(current)</span></a>
+                            </li>
+                            <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
+                                    <li style = "padding-left: 10px"><a href="/contas/receitas_parcelas"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
                                     <li class="active" style = "padding-left: 10px"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Detalhes</a></li>
                                 </ul>
                             </li>
-                            <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>
@@ -196,12 +197,12 @@
             <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Detalhes da despesa</div>
+                        <div class="panel-heading">Detalhes da receita</div>
                         <div class="panel-body">
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
                                     <td style="float: left; padding-bottom: 1em;">
-                                        <label class="col-md-3 control-label" style="text-align: right; min-width: 150px;">Nº despesa</label>
+                                        <label class="col-md-3 control-label" style="text-align: right; min-width: 150px;">Nº receita</label>
                                         <div class="col-md-6">
                                             <input class="form-control number" type="text" value="{{$id_despesa}}" readonly style="min-width: 200px;">
                                         </div>
@@ -222,7 +223,7 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Fornecedor</label>
                                         <div class="col-md-6">
-                                            <input class="form-control" type="text" value="{{$fornecedor}}" readonly style="min-width: 200px;">
+                                            <input class="form-control" type="text" value="{{$cliente}}" readonly style="min-width: 200px;">
                                         </div>
                                     </td>
                                     <tr>
@@ -279,9 +280,9 @@
                                             <td>PENDENTE</td>
                                             <td>
                                             <div style="display: inline-flex; float: right;">
-                                                <button title="Confirmar pagamento" type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#confirm_item" onclick="confirmar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','{{$parcela->data_vencimento}}')"><span class="glyphicon glyphicon-ok"></span></button>
+                                                <button title="Confirmar pagamento" type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#confirm_item" onclick="confirmar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','{{$parcela->data_vencimento}}')"><span class="glyphicon glyphicon-ok"></span></button>
 
-                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','pendente')"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','pendente')"><span class="glyphicon glyphicon-pencil"></span></button>
 
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_parcela('{{$parcela->id_parcela}}')"><span class="glyphicon glyphicon-trash"></span></button>
                                                 
@@ -294,9 +295,9 @@
                                             <td>PAGO</td>
                                             <td>
                                             <div style="display: inline-flex; float: right;">
-                                                <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','{{$parcela->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
+                                                <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','{{$parcela->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
 
-                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_pagar}}','pago')"><span class="glyphicon glyphicon-pencil"></span></button>
+                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','pago')"><span class="glyphicon glyphicon-pencil"></span></button>
 
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" disabled><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>

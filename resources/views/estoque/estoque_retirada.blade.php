@@ -1,12 +1,59 @@
 @extends('layouts.app')
-
 @section('content')
+
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
 
 <script type="text/javascript">
 
-    window.onload = function() {
-        document.getElementById('search').focus();
-    };
+    $(document).ready(function() {
+
+        $('#example').dataTable({
+            initComplete: function () {
+                this.api().columns([1, 2, 3, 4, 5]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "sPaginationType": "full_numbers",
+            "sDom": '<"H"Tlfr>t<"F"ip>',
+            "oLanguage": {
+                "sLengthMenu": "Registros por páginas: _MENU_",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
 </script>
 
 <div class="container-fluid">
@@ -31,7 +78,7 @@
                 </div>
             </div>
                   
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
                         <div class="panel-heading">Solicitações de retirada</div>
@@ -40,24 +87,9 @@
                             <div style="float: left;">
                                 <table>
                                     <td><a href="/estoque/solicita_retirada"><button type="submit" class="btn btn-primary">Solicitar retirada</button></td>
-                                    <td style="padding-bottom: 1em;">
-                                    <form method="post" action="/estoque/retirada/busca" class="form-inline" role="search">
-                                        <div class="form-group">
-                                            <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Número ou solicitante" autofocus="true" autocomplete="off">
-                                        </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
-                                    <td style="padding-bottom: 1em;">
-                                    <form method="get" action="/estoque/retirada" class="form-inline">
-                                        <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
                                 </table>
                             </div>
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 <thead>
                                     <tr>
                                         <th>Nº solicitação</th>
@@ -69,9 +101,22 @@
                                         <th></th>
                                     </tr>
                                 </thead>
+
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th>Solicitante</th>
+                                        <th>Data solicitação</th>
+                                        <th>Usuário aprovador</th>
+                                        <th>Data aprovação</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+
                                 @if($solicitacoes)
-                                    @foreach($solicitacoes as $solicitacao)
                                     <tbody>
+                                        @foreach($solicitacoes as $solicitacao)
                                         <tr>
                                             <td>{{$solicitacao->id}}</td>
                                             <td>{{$solicitacao->solicitante}}</td>
@@ -90,13 +135,11 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
-                                    @endforeach
                                 @endif
                             </TABLE>
-                            <div align="center">
-                                {!! $solicitacoes->links() !!}
-                            </div>
+
                         </div>
                     </div>
                 </div>

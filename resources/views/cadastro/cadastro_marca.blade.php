@@ -1,18 +1,66 @@
 @extends('layouts.app')
-
 @section('content')
 
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+
 <script type="text/javascript">
-    
-    window.onload = function() {
-        document.getElementById('search').focus();
-    };
 
+    $(document).ready(function() {
+
+        $('#example').dataTable({
+            initComplete: function () {
+                this.api().columns([0, 1]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "sPaginationType": "full_numbers",
+            "sDom": '<"H"Tlfr>t<"F"ip>',
+            "oLanguage": {
+                "sLengthMenu": "Registros por páginas: _MENU_",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
+</script>
+
+<script>
     function delete_marca(id,nome){
-
-        $('#modal_delete').html('<div align="center"><p>Tem certeza que deseja excluir a marca "'+nome+'"?</p></div><br><br><div align="center"><table><tr><td><form method="GET" action="/cadastro/marca/'+id+'/delete"><button type="submit" class="btn crud-submit btn-primary remove">Excluir</button></form></td><td><button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></td></tr></table></div>');    
+        $('span.nome').text(nome);
+        document.getElementById('delete').action = "/cadastro/marca/" + id + "/delete";  
     }
-
 </script>
 
 <div class="container-fluid">
@@ -22,20 +70,20 @@
             <div class="col-md-2 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-heading">Cadastros</div>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
-                            <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
-                                <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px"><a href="/cadastro/departamento"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 
-                                    <li style = "padding-left: 10px" class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span> Marca</a></li> 
-                                </ul>
-                            </li>
-                            <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a></li>
-                            <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
-                        </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
+                        <li><a href="/cadastro/produto">Produtos<span class="sr-only">(current)</span></a>
+                            <ul class="nav nav-pills nav-stacked"> 
+                                <li style = "padding-left: 10px"><a href="/cadastro/departamento"> <span class="glyphicon glyphicon-menu-right"></span>  Departamento</a></li> 
+                                <li style = "padding-left: 10px" class="active"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span> Marca</a></li> 
+                            </ul>
+                        </li>
+                        <li><a href="/cadastro/fisica">Pessoas<span class="sr-only">(current)</span></a></li>
+                        <li><a href="/cadastro/usuario">Usuários<span class="sr-only">(current)</span></a></li>
+                    </ul>
                 </div>
             </div>
-                  
+
             <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
@@ -48,53 +96,44 @@
                                             <button type="submit" class="btn btn-primary">Nova Marca</button>
                                         </form>
                                     </td>
-
-                                    <td style="padding-bottom: 1em; padding-left: 1em;">
-                                        <form method="post" action="/cadastro/marca/busca" class="form-inline" role="search">
-                                            <div class="form-group">
-                                                <input id="search" type="text" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
-                                            </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
-
-                                    <td style="padding-bottom: 1em;">
-                                        <form method="get" action="/cadastro/marca" class="form-inline">
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
                                 </tr>
-                            <TABLE  class="table table-hover">
+                            </table>
+                            <TABLE id="example" class="table table-hover compact order-column">
                                 <thead>
+                                    <tr>
+                                        <th>Número</th>
+                                        <th>Nome</th>
+                                        <th style="text-align: right; padding-right: 1.4em">Opções</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tfoot>
                                     <tr>
                                         <th>Número</th>
                                         <th>Nome</th>
                                         <th></th>
                                     </tr>
-                                </thead>
-                                @if($marcas)
+                                </tfoot>
+
+                                <tbody>
+                                    @if($marcas)
                                     @foreach($marcas as $marca)
-                                    <tbody>
-                                        <tr>
-                                            <td>{{$marca->id}}</td>
-                                            <td>{{$marca->nome}}</td>
-                                            <td>
+                                    <tr>
+                                        <td>{{$marca->id}}</td>
+                                        <td>{{$marca->nome}}</td>  
+                                        <td>
                                             <div style="display: inline-flex; float: right;">
-                                            <form method="GET" action="/cadastro/marca/{{$marca->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
-                                            
-                                            <button type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_marca('{{$marca->id}}','{{$marca->nome}}')"><span class="glyphicon glyphicon-trash"></span></button>
+                                                <form method="GET" action="/cadastro/marca/{{$marca->id}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+
+                                                <button type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_marca('{{$marca->id}}','{{$marca->nome}}')"><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>
-                                            </td>                                      
-                                        </tr>
-                                    </tbody>
+                                        </td>
+                                    </tr>
                                     @endforeach
-                                @endif
+                                    @endif
+                                </tbody>
+
                             </TABLE>
-                            <div align="center">
-                                {!! $marcas->links() !!}
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,6 +142,8 @@
         </div>
     </div>
 </div>
+
+<form method="GET" id="delete">
 <div class="modal fade" id="delete_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -110,11 +151,28 @@
                 <div class="panel-heading" align="center">Atenção!</div>
                 <div class="panel-body">
                     <div id="modal_delete" class="modal-body" style="color: #1E3973;">
-                    <!-- conteudo js -->
+                        <div align="center">
+                            <p>Tem certeza que deseja excluir a marca <span class="nome"></span>?</p>
+                        </div>
+                        <br><br>
+                        <div align="center">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="btn crud-submit btn-primary remove delete-yes">Excluir</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>                
             </div>
         </div>
     </div>
 </div>
+</form>
 @endsection

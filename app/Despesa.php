@@ -15,6 +15,7 @@ class Despesa extends Model
         'valor',
         'valor_pago',
         'qtd_parcelas',
-        'qtd_parcelas_pagas'
+        'qtd_parcelas_pagas',
+        'status'
     ];
 }

@@ -2,13 +2,61 @@
 
 @section('content')
 
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+
 <script type="text/javascript">
 
-    window.onload = function() {
-        document.getElementById('search').focus();
-    };
+    $(document).ready(function() {
 
+        $('#example').dataTable({
+            initComplete: function () {
+                this.api().columns([0, 1, 2, 3]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "sPaginationType": "full_numbers",
+            "sDom": '<"H"Tlfr>t<"F"ip>',
+            "oLanguage": {
+                "sLengthMenu": "Registros por páginas: _MENU_",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
 </script>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -38,24 +86,9 @@
                             <div style="float: left;">
                                 <table>
                                     <td><a href="/estoque/entrada"><button type="submit" class="btn btn-primary">Nova entrada</button></td>
-                                    <td style="padding-bottom: 1em;">
-                                    <form method="post" action="/estoque/entrada/busca" class="form-inline" role="search">
-                                        <div class="form-group">
-                                            <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Número ou responsável" autofocus="true" autocomplete="off">
-                                        </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
-                                    <td style="padding-bottom: 1em;">
-                                    <form method="get" action="/estoque/historico_entrada" class="form-inline">
-                                        <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
                                 </table>
                             </div>
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 <thead>
                                     <tr>
                                         <th>Nº entrada</th>
@@ -65,13 +98,24 @@
                                         <th></th>
                                     </tr>
                                 </thead>
+
+                                <tfoot>
+                                    <tr>
+                                        <th>Nº entrada</th>
+                                        <th>Responsável</th>
+                                        <th>Data</th>
+                                        <th>Tipo</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                
                                 @if($entradas)
-                                    @foreach($entradas as $entrada)
                                     <tbody>
+                                        @foreach($entradas as $entrada)
                                         <tr>
                                             <td>{{$entrada->id}}</td>
                                             <td>{{$entrada->responsavel}}</td>
-                                            <td>{{$entrada->data_entrada}}</td>
+                                            <td>{{$entrada->data_entrada = date('d/m/Y', strtotime($entrada->data_entrada))}}</td>
                                             <td>@if($entrada->motivo=='')Compra
                                                 @else Retorno
                                                 @endif</td>
@@ -82,37 +126,16 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        @endforeach
                                     </tbody>
-                                    @endforeach
                                 @endif
                             </TABLE>
-                            <div align="center">
-                                {!! $entradas->links() !!}
-                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
             
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="detail_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="panel panel-default">
-                <div class="panel-heading" align="center">Detalhes da entrada</div>
-                <div class="panel-body">
-                    <div id="modal_detalhes" class="modal-body" style="color: #1E3973;">
-                    <!-- conteudo js -->
-                    </div>
-                    </div>
-                    <div align="center">
-                        <button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button>
-                    </div>
-                
-            </div>
         </div>
     </div>
 </div>

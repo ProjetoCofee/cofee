@@ -2,11 +2,62 @@
 
 @section('content')
 
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+
 <script type="text/javascript">
 
-    window.onload = function() {
-        document.getElementById('search').focus();
-    };
+    $(document).ready(function() {
+
+        $('#example').dataTable({
+            initComplete: function () {
+                this.api().columns([0, 1]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "sPaginationType": "full_numbers",
+            "sDom": '<"H"Tlfr>t<"F"ip>',
+            "oLanguage": {
+                "sLengthMenu": "Registros por páginas: _MENU_",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
+</script>
+
+<script type="text/javascript">
 
     function formatar_Data(data, tipo){
         var d = new Date(data),
@@ -142,7 +193,6 @@
                         <div class="panel-heading">Cadastro de Fornecedores</div>
                         <div class="panel-body">
                             @if($tipo == "fisica")
-                            
                             <table>
                                 <tr>
                                     <td>
@@ -156,38 +206,30 @@
                                             <option value="fornecedor-juridica">Pessoa Jurídica</option>
                                         </select>
                                     </td>
-
-                                    <td style="padding-bottom: 1em; padding-left: 1em;">
-                                        <form method="post" action="/cadastro/fornecedor_fisica/busca" class="form-inline" role="search">
-                                            <div class="form-group">
-                                                <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
-                                            </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
-
-                                    <td style="padding-bottom: 1em;">
-                                        <form method="get" action="/cadastro/fornecedor-fisica" class="form-inline">
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
                                 </tr>
                             </table>
                             @if($fornecedorsF)
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>Telefone</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+
+                                <tfoot>
                                     <tr>
                                         <th>Nome</th>
                                         <th>CPF</th>
                                         <th>Telefone</th>
                                         <th></th>
                                     </tr>
-                                </thead>
+                                </tfoot>
 
-                                @foreach($fornecedorsF as $fornecedor)
                                 <tbody>
+                                    @foreach($fornecedorsF as $fornecedor)
                                     <tr>
                                         <td>{{$fornecedor->nome}}</td>
                                         <td>{{substr($fornecedor->cpf,0,3) . "." . substr($fornecedor->cpf,3,3) . "." . substr($fornecedor->cpf,6,3) . "-" . substr($fornecedor->cpf,9,3)}}</td>
@@ -200,13 +242,9 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
-                                @endforeach
                             </TABLE>
-
-                            <div align="center">
-                                {!! $fornecedorsF->links() !!}
-                            </div>
                             @endif
                             @endif
 
@@ -224,39 +262,30 @@
                                             <option value="fornecedor-juridica" selected>Pessoa Jurídica</option>
                                         </select>
                                     </td>
-
-                                    <td style="padding-bottom: 1em; padding-left: 1em;">
-                                        <form method="post" action="/cadastro/fornecedor_juridica/busca" class="form-inline" role="search">
-                                            <div class="form-group">
-                                                <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
-                                            </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
-
-                                    <td style="padding-bottom: 1em;">
-                                        <form method="get" action="/cadastro/fornecedor-juridica" class="form-inline">
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
                                 </tr>
                             </table>
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 @if($fornecedorsJ)
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
                                         <th>Razão Social</th>
                                         <th>CNPJ</th>
-                                        <th></th>
+                                        <th>Opções</th>
                                     </tr>
                                 </thead>
-
-                                @foreach($fornecedorsJ as $fornecedor)
+                                
+                                <tfoot>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Razão Social</th>
+                                        <th>CNPJ</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                                 
                                 <tbody>
+                                    @foreach($fornecedorsJ as $fornecedor)
                                     <tr>
                                         <td>{{$fornecedor->nome_fantasia}}</td>
                                         <td>{{$fornecedor->razao_social}}</td>
@@ -269,13 +298,11 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    @endforeach
                                 </tbody>
-                                @endforeach
+                                
                                 @endif
                             </TABLE>
-                            <div align="center">
-                                {!! $fornecedorsJ->links() !!}
-                            </div>
                             @endif
                         </div>
                     </div>
@@ -285,6 +312,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="detail_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
