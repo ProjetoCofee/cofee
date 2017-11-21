@@ -16,20 +16,20 @@ $sql = mysqli_query($mysqli, "
                 contas_pagar.valor_pago,
                 contas_pagar.qtd_parcelas,
                 contas_pagar.qtd_parcelas_pagas,
-                parcelas.id,
-                parcelas.id_conta_receber,
-                parcelas.id_forma_pagamento,
-                parcelas.valor_pago,
-                parcelas.valor_parcela,
-                parcelas.num_parcela,
-                parcelas.data_vencimento,
-                parcelas.data_pagamento,
-                parcelas.status,
+                parcelas_despesa.id,
+                parcelas_despesa.id_conta_pagar,
+                parcelas_despesa.id_forma_pagamento,
+                parcelas_despesa.valor_pago,
+                parcelas_despesa.valor_parcela,
+                parcelas_despesa.num_parcela,
+                parcelas_despesa.data_vencimento,
+                parcelas_despesa.data_pagamento,
+                parcelas_despesa.status,
                 categoria.nome as categoria
-            FROM contas_pagar, parcelas, categoria
+            FROM contas_pagar, parcelas_despesa, categoria
             WHERE contas_pagar.id_categoria = categoria.id
-            AND parcelas.id_conta_pagar = contas_pagar.id
-			AND parcelas.id = ".$busca
+            AND parcelas_despesa.id_conta_pagar = contas_pagar.id
+			AND parcelas_despesa.id = ".$busca
 		); 
 
    

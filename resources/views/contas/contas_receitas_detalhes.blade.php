@@ -4,14 +4,24 @@
 
 <script type="text/javascript">
 
+<<<<<<< HEAD
     function confirmar_pagamento(id,id_conta_receber,data_vencimento){
+=======
+    function confirmar_pagamento(id_parcela,id_conta_receber,data_vencimento){
+>>>>>>> origin/ronald
 
         $.ajax({
             dataType: 'json',
             url: url+'api/busca_receita_id_detalhes.php',
+<<<<<<< HEAD
             data: {busca:id}
         }).done(function(data){
             
+=======
+            data: {busca:id_parcela}
+        }).done(function(data){
+console.log(data);
+>>>>>>> origin/ronald
             var categoria = data[0].categoria;
             var data_pagamento = data[0].data_pagamento;
             var descricao = data[0].descricao;
@@ -27,6 +37,7 @@
             var valor = data[0].valor;
             var valor_pago = data[0].valor_pago;
             var valor_parcela = data[0].valor_parcela;
+<<<<<<< HEAD
 
             $('#modal_pagamento').html('<form class="form-horizontal"><div class="form-group">            <label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly>            </div>            <label for="descricao" class="col-md-4 control-label">Descrição</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly>            </div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'" readonly>            </div>            <label for="data_vencimento" class="col-md-4 control-label">Vencimento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_vencimento" type="text" class="form-control" name="data_vencimento" value="'+data_vencimento+'" readonly>            </div>        <label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="A VISTA">À VISTA</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div>        </div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_pagamento('+id+','+id_conta_receber+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
         });
@@ -51,6 +62,19 @@
 
         var forma_pagamento = document.getElementById('forma_pagamento').value;
         var valor_pago = parseInt(document.getElementById('valor_parcela').value);
+=======
+            var hoje = "<?php print date("Y-m-d") ?>";
+
+           $('#modal_pagamento').html('<form class="form-horizontal"><div class="form-group"><label for="descricao" class="col-md-4 control-label">Descrição</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly>            </div>            <label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly>            </div>            <label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'" readonly>            </div>            <label for="data_vencimento" class="col-md-4 control-label">Vencimento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_vencimento" type="text" class="form-control" name="data_vencimento" value="'+data_vencimento+'" readonly>            </div>        <label for="data_pagamento" class="col-md-4 control-label">Pagamento</label>            <div class="col-md-6" style="padding-bottom: 1em;">                <input id="data_pagamento" type="date" class="form-control" name="data_pagamento" value="'+hoje+'">            </div>        <label for="forma_pagamento" class="col-md-4 control-label">Forma de pagamento</label><div class="col-md-6" style="padding-bottom: 1em;"><select id="forma_pagamento" name="forma_pagamento" class="form-control" autocomplete="autofocus" required><option value="DINHEIRO">DINHEIRO</option><option value="CREDITO">CRÉDITO</option><option value="DEBITO">DÉBITO</option><option value="CHEQUE">CHEQUE</option></select></div>        </div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_pagamento('+id_parcela+','+id_conta_receber+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
+        });
+    }
+
+    function salvar_pagamento(id_parcela, id_conta_receber){
+
+        var forma_pagamento = document.getElementById('forma_pagamento').value;
+        var data_pagamento = document.getElementById('data_pagamento').value;
+        var valor_pago = parseFloat(document.getElementById('valor_parcela').value);
+>>>>>>> origin/ronald
         var status = 0;
         var qtd_parcelas = parseInt("<?php print $qtd_parcelas ?>");
         var qtd_parcelas_pagas = parseInt("<?php print $qtd_parcelas_pagas ?>")+1;
@@ -63,7 +87,12 @@
             dataType: 'json',
             type:'POST',
             url: url+'api/confirma_pagamento_receita.php',
+<<<<<<< HEAD
             data:{  forma_pagamento : forma_pagamento, 
+=======
+            data:{  forma_pagamento : forma_pagamento,
+                    data_pagamento : data_pagamento,
+>>>>>>> origin/ronald
                     valor_pago : valor_pago,
                     id_parcela : id_parcela,
                     id_conta_receber : id_conta_receber,
@@ -79,7 +108,11 @@
         $.ajax({
             dataType: 'json',
             type:'POST',
+<<<<<<< HEAD
             url: url+'api/cancela_pagamento_despesa.php',
+=======
+            url: url+'api/cancela_pagamento_receita.php',
+>>>>>>> origin/ronald
             data:{  valor_pago : valor_pago,
                     id_parcela : id_parcela,
                     id_conta_receber : id_conta_receber
@@ -89,6 +122,7 @@
         });
     }
 
+<<<<<<< HEAD
     function update_parcela(id,id_conta_receber,tipo){
 
         $.ajax({
@@ -97,11 +131,24 @@
             data: {busca:id}
         }).done(function(data){
             
+=======
+    function update_parcela(id_parcela,id_conta_receber){
+
+        $.ajax({
+            dataType: 'json',
+            url: url+'api/busca_receita_id_detalhes.php',
+            data: {busca:id_parcela}
+        }).done(function(data){
+>>>>>>> origin/ronald
             var categoria = data[0].categoria;
             var data_pagamento = data[0].data_pagamento;
             var data_vencimento = data[0].data_vencimento;
             var descricao = data[0].descricao;
+<<<<<<< HEAD
             var fornecedor = data[0].fornecedor;
+=======
+            var cliente = data[0].cliente;
+>>>>>>> origin/ronald
             var forma_pagamento = data[0].id_forma_pagamento;
             var num_parcela = data[0].num_parcela;
             var qtd_parcelas = data[0].qtd_parcelas;
@@ -110,6 +157,7 @@
             var valor_pago = data[0].valor_pago;
             var valor_parcela = data[0].valor_parcela;
 
+<<<<<<< HEAD
             if(tipo == 'pendente'){
                 tipo = '0';
                 $('#modal_update').html('<form class="form-horizontal"><div class="form-group"><label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly></div><label for="data_vencimento" class="col-md-4 control-label">Vencimento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="data_vencimento" type="date" class="form-control" name="data_vencimento" value="'+data_vencimento+'"></div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number" name="valor_parcela" value="'+valor_parcela+'"></div></div></div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_update('+id+','+tipo+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
@@ -163,6 +211,28 @@
             });
             location.reload();
         }
+=======
+            $('#modal_update').html('<form class="form-horizontal"><div class="form-group"><label for="num_parcela" class="col-md-4 control-label">Nº Parcela</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="num_parcela" type="text" class="form-control number" name="num_parcela" value="'+num_parcela+'" readonly></div><label for="data_vencimento" class="col-md-4 control-label">Vencimento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="data_vencimento" type="date" class="form-control" name="data_vencimento" value="'+data_vencimento+'" required></div><label for="valor_parcela" class="col-md-4 control-label">Valor parcela (R$)</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="valor_parcela" type="number" min="0,01" step="any" class="form-control number dinheiro" name="valor_parcela" value="'+valor_parcela+'" required></div></div></div></form><div align="center"><button id="btn_salvar" type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close" onclick="salvar_update('+id_parcela+')"><span aria-hidden="true">Salvar</span></button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Fechar</span></button></div>');
+        });
+    }
+
+    function salvar_update(id_parcela){
+
+        var data_vencimento = document.getElementById('data_vencimento').value;
+        var valor_parcela = parseFloat(document.getElementById('valor_parcela').value);
+
+        $.ajax({
+        dataType: 'json',
+        type:'POST',
+        url: url+'api/confirma_update_parcela_receita.php',
+        data:{  id_parcela : id_parcela,
+                data_vencimento : data_vencimento,
+                valor_parcela : valor_parcela
+            }
+        }).done(function(data){
+            location.reload();
+        });
+>>>>>>> origin/ronald
     }
 
     function delete_parcela(id){
@@ -186,7 +256,11 @@
                             </li>
                             <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
+<<<<<<< HEAD
                                     <li style = "padding-left: 10px"><a href="/contas/receitas_parcelas"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
+=======
+                                    <li style = "padding-left: 10px"><a href="/contas/receitas_parcelas?filter=all"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
+>>>>>>> origin/ronald
                                     <li class="active" style = "padding-left: 10px"><a href="#"> <span class="glyphicon glyphicon-menu-right"></span>  Detalhes</a></li>
                                 </ul>
                             </li>
@@ -204,7 +278,11 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right; min-width: 150px;">Nº receita</label>
                                         <div class="col-md-6">
+<<<<<<< HEAD
                                             <input class="form-control number" type="text" value="{{$id_despesa}}" readonly style="min-width: 200px;">
+=======
+                                            <input class="form-control number" type="text" value="{{$id_receita}}" readonly style="min-width: 200px;">
+>>>>>>> origin/ronald
                                         </div>
                                     </td>
                                     <td style="float: left; padding-bottom: 1em;">
@@ -221,7 +299,11 @@
                                         </div>
                                     </td>
                                     <td style="float: left; padding-bottom: 1em;">
+<<<<<<< HEAD
                                         <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Fornecedor</label>
+=======
+                                        <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Cliente</label>
+>>>>>>> origin/ronald
                                         <div class="col-md-6">
                                             <input class="form-control" type="text" value="{{$cliente}}" readonly style="min-width: 200px;">
                                         </div>
@@ -236,7 +318,11 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Valor despesa (R$)</label>
                                         <div class="col-md-6">
+<<<<<<< HEAD
                                             <input type="number" step="any" class="form-control number" type="text" value="{{$valor_total}}" readonly style="text-align: right;min-width: 200px;">
+=======
+                                            <input type="text" step="any" class="form-control number" type="text" value="{{$valor_total}}" readonly style="text-align: right;min-width: 200px;">
+>>>>>>> origin/ronald
                                         </div>
                                     </td>
                                     <tr>
@@ -249,7 +335,11 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="text-align: right;min-width: 180px;">Valor pago (R$)</label>
                                         <div class="col-md-6">
+<<<<<<< HEAD
                                             <input type="number" step="any" class="form-control number" type="text" value="{{$total_pago}}" readonly style="text-align: right;min-width: 200px;">
+=======
+                                            <input type="text" step="any" class="form-control number" type="text" value="{{$total_pago}}" readonly style="text-align: right;min-width: 200px;">
+>>>>>>> origin/ronald
                                         </div>
                                     </td>
                                 </table>
@@ -270,8 +360,13 @@
                                     @foreach($parcelas as $parcela)
                                     <tbody>
                                         <tr>
+<<<<<<< HEAD
                                             <td>{{$parcela->num_parcela."/".$parcela->qtd_parcelas}}</td>
                                             <td>{{$parcela->valor_parcela}}</td>
+=======
+                                            <td>{{$count++."/".$parcela->qtd_parcelas}}</td>
+                                            <td>{{number_format($parcela->valor_parcela, 2, ',', '.')}}</td>
+>>>>>>> origin/ronald
                                             <td>{{$parcela->data_vencimento}}</td>
                                             
                                             @if($parcela->status == '0')
@@ -284,7 +379,15 @@
 
                                                 <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','pendente')"><span class="glyphicon glyphicon-pencil"></span></button>
 
+<<<<<<< HEAD
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_parcela('{{$parcela->id_parcela}}')"><span class="glyphicon glyphicon-trash"></span></button>
+=======
+                                                @if($qtd_parcelas > 1)
+                                                <button title="Excluir parcela" type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_parcela('{{$parcela->id_parcela}}')"><span class="glyphicon glyphicon-trash"></span></button>
+                                                @else
+                                                <button title="Excluir parcela" type="submit" class="btn btn-icon remove" disabled><span class="glyphicon glyphicon-trash"></span></button>
+                                                @endif
+>>>>>>> origin/ronald
                                                 
                                             </div>
                                             </td>
@@ -297,7 +400,11 @@
                                             <div style="display: inline-flex; float: right;">
                                                 <button title="Cancelar pagamento" type="submit" class="btn btn-icon remove" onclick="cancelar_pagamento('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','{{$parcela->valor_pago}}')"><span class="glyphicon glyphicon-remove"></span></button>
 
+<<<<<<< HEAD
                                                 <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" onclick="update_parcela('{{$parcela->id_parcela}}','{{$parcela->id_conta_receber}}','pago')"><span class="glyphicon glyphicon-pencil"></span></button>
+=======
+                                                <button title="Editar parcela" type="submit" class="btn btn-icon" data-toggle="modal" data-target="#update_item" disabled><span class="glyphicon glyphicon-pencil"></span></button>
+>>>>>>> origin/ronald
 
                                                 <button title="Excluir parcela" type="submit" class="btn btn-icon remove" disabled><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>

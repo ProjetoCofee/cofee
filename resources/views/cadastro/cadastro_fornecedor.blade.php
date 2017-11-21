@@ -187,12 +187,20 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
             <div class="col-md-9 col-md-offset-0">
+=======
+            <div class="col-md-10 col-md-offset-0">
+>>>>>>> origin/ronald
                 <div class="well well-lg">
                     <div class="panel panel-default">
                         <div class="panel-heading">Cadastro de Fornecedores</div>
                         <div class="panel-body">
                             @if($tipo == "fisica")
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> origin/ronald
                             <table>
                                 <tr>
                                     <td>
@@ -209,7 +217,11 @@
                                 </tr>
                             </table>
                             @if($fornecedorsF)
+<<<<<<< HEAD
                             <TABLE  id="example" class="table table-hover compact order-column">
+=======
+                            <TABLE  class="table table-hover">
+>>>>>>> origin/ronald
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
@@ -219,6 +231,7 @@
                                     </tr>
                                 </thead>
 
+<<<<<<< HEAD
                                 <tfoot>
                                     <tr>
                                         <th>Nome</th>
@@ -247,6 +260,33 @@
                             </TABLE>
                             @endif
                             @endif
+=======
+                                @foreach($fornecedorsF as $fornecedor)
+                                    <tbody>
+                                        <tr>
+                                            <td>{{$fornecedor->nome}}</td>
+                                            <td>{{substr($fornecedor->cpf,0,3) . "." . substr($fornecedor->cpf,3,3) . "." . substr($fornecedor->cpf,6,3) . "-" . substr($fornecedor->cpf,9,3)}}</td>
+                                            <td>{{$fornecedor->telefone}}</td>
+                                            <td>
+                                                <div style="display: inline-flex; float: right;">
+                                                    <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_fisica}}','fisica')"><span class="glyphicon glyphicon-eye-open"></span></button>
+
+                                                    <form method="GET" action="/cadastro/pessoa/fisica/{{$fornecedor->id_pessoa_fisica}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+
+                                                    <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                @endforeach
+                            </TABLE>
+
+                            <div align="center">
+                                {!! $fornecedorsF->links() !!}
+                            </div>
+                            @endif
+                            @endif
+>>>>>>> origin/ronald
 
                             @if($tipo == "juridica")
                             <table>
@@ -264,7 +304,11 @@
                                     </td>
                                 </tr>
                             </table>
+<<<<<<< HEAD
                             <TABLE  id="example" class="table table-hover compact order-column">
+=======
+                            <TABLE  class="table table-hover">
+>>>>>>> origin/ronald
                                 @if($fornecedorsJ)
                                 <thead>
                                     <tr>
@@ -294,6 +338,7 @@
                                             <div style="display: inline-flex; float: right;">
                                                 <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_juridica}}','juridica')"><span class="glyphicon glyphicon-eye-open"></span></button>
 
+<<<<<<< HEAD
                                                 <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
                                             </div>
                                         </td>
@@ -303,6 +348,31 @@
                                 
                                 @endif
                             </TABLE>
+=======
+                                @foreach($fornecedorsJ as $fornecedor)
+                                    <tbody>
+                                        <tr>
+                                            <td>{{$fornecedor->nome_fantasia}}</td>
+                                            <td>{{$fornecedor->razao_social}}</td>
+                                            <td>{{substr($fornecedor->cnpj,0,2) . "." . substr($fornecedor->cnpj,2,3) . "." . substr($fornecedor->cnpj,5,3) . "/" . substr($fornecedor->cnpj,8,4)  . "-" . substr($fornecedor->cnpj,12,2)}}</td>
+                                            <td>
+                                                <div style="display: inline-flex; float: right;">
+                                                    <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_juridica}}','juridica')"><span class="glyphicon glyphicon-eye-open"></span></button>
+
+                                                    <form method="GET" action="/cadastro/pessoa/juridica/{{$fornecedor->id_pessoa_juridica}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
+
+                                                    <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                @endforeach
+                                @endif
+                            </TABLE>
+                            <div align="center">
+                                {!! $fornecedorsJ->links() !!}
+                            </div>
+>>>>>>> origin/ronald
                             @endif
                         </div>
                     </div>

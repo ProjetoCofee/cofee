@@ -21,9 +21,141 @@
             <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Página Inicial</div>
                         <div class="panel-body">
-<!--  -->
+                            <div class="panel panel-default col-md-6">
+                                <div class="panel-heading">Receitas</div>
+                                <div class="panel-body">
+                                    <TABLE  class="table table-hover">
+                                        <tr>
+                                            <th colspan="2" class="table-receita">Hoje<br>{{$hoje}}</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$receita_valor_hoje}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$receita_valor_hoje_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$receita_delta_hoje}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="table-receita">Semana<br>{{$hoje}} - {{$semana}}</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$receita_valor_semana}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$receita_valor_semana_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$receita_delta_semana}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="table-receita">Mês<br>{{$hoje}} - {{$mes}}</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$receita_valor_mes}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$receita_valor_mes_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$receita_delta_mes}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="table-receita">Total</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$receita_valor_total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$receita_valor_total_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$receita_delta_total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Em atraso (R$)</td>
+                                            <td class="number">{{$receita_valor_atraso}}</td>
+                                        </tr>
+                                    </TABLE>
+                                </div>
+                            </div>
+                            <div class="panel panel-default col-md-6">
+                                <div class="panel-heading">Despesas</div>
+                                <div class="panel-body">
+                                    <TABLE  class="table table-hover">
+                                        <tr>
+                                            <th colspan="2" class="table-despesa">Hoje<br>{{$hoje}}</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$despesa_valor_hoje}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$despesa_valor_hoje_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$despesa_delta_hoje}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="table-despesa">Semana<br>{{$hoje}} - {{$semana}}</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$despesa_valor_semana}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$despesa_valor_semana_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$despesa_delta_semana}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="table-despesa">Mês<br>{{$hoje}} - {{$mes}}</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$despesa_valor_mes}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$despesa_valor_mes_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$despesa_delta_mes}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2" class="table-despesa">Total</th>
+                                            <tr>
+                                            <td>Valor total (R$)</td>
+                                            <td class="number">{{$despesa_valor_total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Valor pago (R$)</td>
+                                            <td class="number">{{$despesa_valor_total_pago}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Delta (R$)</td>
+                                            <td class="number">{{$despesa_delta_total}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Em atraso (R$)</td>
+                                            <td class="number">{{$despesa_valor_atraso}}</td>
+                                        </tr>
+                                    </TABLE>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

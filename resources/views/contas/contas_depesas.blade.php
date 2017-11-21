@@ -27,7 +27,7 @@
                             <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a href="#">Despesas<span class="sr-only">(current)</span></a>
                                 <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas"> <span class="glyphicon glyphicon-menu-right"></span>  Todas parcelas</a></li>
+                                    <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas?filter=all"> <span class="glyphicon glyphicon-menu-right"></span> Todas parcelas</a></li>
                                 </ul>
                             </li>
                             <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
@@ -58,7 +58,7 @@
                                     </td>
                                     <td style="padding-bottom: 1em;">
                                     <form method="get" action="/contas/despesas" class="form-inline">
-                                        <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                                        <button type="submit" class="btn btn-icon" style="margin-right: 1em;"><span class="glyphicon glyphicon-arrow-left"></span></button>
                                         {{ csrf_field() }}
                                     </form>
                                     </td>
@@ -83,7 +83,7 @@
                                             <td>{{$despesa->descricao}}</td>
                                             <td>{{$despesa->fornecedor}}</td>
                                             <td>{{$despesa->categoria}}</td>
-                                            <td>{{$despesa->valor}}</td>
+                                            <td>{{number_format($despesa->valor, 2, ',', '.')}}</td>
                                             <td>{{$despesa->qtd_parcelas}}</td>          
                                             @if($despesa->status == '0')
                                             <td>Pendente</td>

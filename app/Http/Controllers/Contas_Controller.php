@@ -22,7 +22,162 @@ class Contas_Controller extends Controller
         
         if($atributo == "resumo"){
 
-            return view('contas.contas_resumo');
+            $hoje = date("Y-m-d");
+            $semana = date('Y-m-d', strtotime($hoje. ' + 7 days'));
+            $mes = date('Y-m-d', strtotime($hoje. ' + 30 days'));
+
+// despesas
+            // despesas hoje
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_despesa
+                WHERE parcelas_despesa.data_vencimento = '".$hoje."';
+            ");
+            foreach ($query as $q) {
+                $despesa_valor_hoje = $q->valor_total;
+                $despesa_valor_hoje_pago = $q->valor_pago;
+                $despesa_delta_hoje = $q->valor_total-$q->valor_pago;
+
+                $despesa_valor_hoje = number_format($despesa_valor_hoje, 2, ',', '.');
+                $despesa_valor_hoje_pago = number_format($despesa_valor_hoje_pago, 2, ',', '.');
+                $despesa_delta_hoje = number_format($despesa_delta_hoje, 2, ',', '.');
+            } 
+            // despesas semana
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_despesa
+                WHERE parcelas_despesa.data_vencimento >= '".$hoje."'
+                AND parcelas_despesa.data_vencimento <= '".$semana."';
+            ");
+            foreach ($query as $q) {
+                $despesa_valor_semana = $q->valor_total;
+                $despesa_valor_semana_pago = $q->valor_pago;
+                $despesa_delta_semana = $q->valor_total-$q->valor_pago;
+
+                $despesa_valor_semana = number_format($despesa_valor_semana, 2, ',', '.');
+                $despesa_valor_semana_pago = number_format($despesa_valor_semana_pago, 2, ',', '.');
+                $despesa_delta_semana = number_format($despesa_delta_semana, 2, ',', '.');
+            } 
+            // despesas mes
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_despesa
+                WHERE parcelas_despesa.data_vencimento >= '".$hoje."'
+                AND parcelas_despesa.data_vencimento <= '".$mes."';
+            ");
+            foreach ($query as $q) {
+                $despesa_valor_mes = $q->valor_total;
+                $despesa_valor_mes_pago = $q->valor_pago;
+                $despesa_delta_mes = $q->valor_total-$q->valor_pago;
+
+                $despesa_valor_mes = number_format($despesa_valor_mes, 2, ',', '.');
+                $despesa_valor_mes_pago = number_format($despesa_valor_mes_pago, 2, ',', '.');
+                $despesa_delta_mes = number_format($despesa_delta_mes, 2, ',', '.');
+            }
+            // despesas total
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_despesa;
+            ");
+            foreach ($query as $q) {
+                $despesa_valor_total = $q->valor_total;
+                $despesa_valor_total_pago = $q->valor_pago;
+                $despesa_delta_total = $q->valor_total-$q->valor_pago;
+
+                $despesa_valor_total = number_format($despesa_valor_total, 2, ',', '.');
+                $despesa_valor_total_pago = number_format($despesa_valor_total_pago, 2, ',', '.');
+                $despesa_delta_total = number_format($despesa_delta_total, 2, ',', '.');
+            }
+            // despesas em atraso
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total
+                FROM parcelas_despesa
+                WHERE parcelas_despesa.data_vencimento < '".$hoje."'
+                AND parcelas_despesa.status = '0'
+            ");
+            foreach ($query as $q) {
+                $despesa_valor_atraso = $q->valor_total;
+                $despesa_valor_atraso = number_format($despesa_valor_atraso, 2, ',', '.');
+            }
+// receitas
+            // receitas hoje
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_receita
+                WHERE parcelas_receita.data_vencimento = '".$hoje."';
+            ");
+            foreach ($query as $q) {
+                $receita_valor_hoje = $q->valor_total;
+                $receita_valor_hoje_pago = $q->valor_pago;
+                $receita_delta_hoje = $q->valor_total-$q->valor_pago;
+
+                $receita_valor_hoje = number_format($receita_valor_hoje, 2, ',', '.');
+                $receita_valor_hoje_pago = number_format($receita_valor_hoje_pago, 2, ',', '.');
+                $receita_delta_hoje = number_format($receita_delta_hoje, 2, ',', '.');
+            } 
+            // receitas semana
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_receita
+                WHERE parcelas_receita.data_vencimento >= '".$hoje."'
+                AND parcelas_receita.data_vencimento <= '".$semana."';
+            ");
+            foreach ($query as $q) {
+                $receita_valor_semana = $q->valor_total;
+                $receita_valor_semana_pago = $q->valor_pago;
+                $receita_delta_semana = $q->valor_total-$q->valor_pago;
+
+                $receita_valor_semana = number_format($receita_valor_semana, 2, ',', '.');
+                $receita_valor_semana_pago = number_format($receita_valor_semana_pago, 2, ',', '.');
+                $receita_delta_semana = number_format($receita_delta_semana, 2, ',', '.');
+            } 
+            // receitas mes
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_receita
+                WHERE parcelas_receita.data_vencimento >= '".$hoje."'
+                AND parcelas_receita.data_vencimento <= '".$mes."';
+            ");
+            foreach ($query as $q) {
+                $receita_valor_mes = $q->valor_total;
+                $receita_valor_mes_pago = $q->valor_pago;
+                $receita_delta_mes = $q->valor_total-$q->valor_pago;
+
+                $receita_valor_mes = number_format($receita_valor_mes, 2, ',', '.');
+                $receita_valor_mes_pago = number_format($receita_valor_mes_pago, 2, ',', '.');
+                $receita_delta_mes = number_format($receita_delta_mes, 2, ',', '.');
+            }
+            // receitas total
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total, SUM(valor_pago) as valor_pago
+                FROM parcelas_receita;
+            ");
+            foreach ($query as $q) {
+                $receita_valor_total = $q->valor_total;
+                $receita_valor_total_pago = $q->valor_pago;
+                $receita_delta_total = $q->valor_total-$q->valor_pago;
+
+                $receita_valor_total = number_format($receita_valor_total, 2, ',', '.');
+                $receita_valor_total_pago = number_format($receita_valor_total_pago, 2, ',', '.');
+                $receita_delta_total = number_format($receita_delta_total, 2, ',', '.');
+            }
+            // receitas em atraso
+            $query = DB::select("
+                SELECT SUM(valor_parcela) as valor_total
+                FROM parcelas_receita
+                WHERE parcelas_receita.data_vencimento < '".$hoje."'
+                AND parcelas_receita.status = '0'
+            ");
+            foreach ($query as $q) {
+                $receita_valor_atraso = $q->valor_total;
+                $receita_valor_atraso = number_format($receita_valor_atraso, 2, ',', '.');
+            }
+
+            $hoje = date('d/m/Y', strtotime($hoje));
+            $semana = date('d/m/Y', strtotime($semana));
+            $mes = date('d/m/Y', strtotime($mes));
+
+            return view('contas.contas_resumo', compact('despesa_valor_hoje','despesa_valor_hoje_pago','despesa_delta_hoje','despesa_valor_semana','despesa_valor_semana_pago','despesa_delta_semana','despesa_valor_mes','despesa_valor_mes_pago','despesa_delta_mes','despesa_valor_total', 'despesa_valor_total_pago','despesa_delta_total','despesa_valor_atraso','receita_valor_hoje','receita_valor_hoje_pago','receita_delta_hoje','receita_valor_semana','receita_valor_semana_pago','receita_delta_semana','receita_valor_mes','receita_valor_mes_pago','receita_delta_mes','receita_valor_total', 'receita_valor_total_pago','receita_delta_total','receita_valor_atraso','hoje','semana','mes'));
 
         }elseif($atributo == "despesas"){
 
@@ -68,6 +223,7 @@ class Contas_Controller extends Controller
 
         }elseif($atributo == "despesas_parcelas"){
 
+<<<<<<< HEAD
             $despesas = DB::select("
                 SELECT
                     contas_pagar.id,
@@ -93,6 +249,94 @@ class Contas_Controller extends Controller
                 AND parcelas_despesa.id_conta_pagar = contas_pagar.id
                 ORDER BY data_vencimento ASC
             ");
+=======
+            $hoje = date("Y-m-d");
+            $filter = $_GET["filter"];
+
+            if($filter == "all"){
+                $despesas = DB::select("
+                    SELECT
+                        contas_pagar.id,
+                        contas_pagar.id_categoria,
+                        contas_pagar.id_fornecedor as fornecedor,
+                        contas_pagar.descricao,
+                        contas_pagar.valor,
+                        contas_pagar.valor_pago,
+                        contas_pagar.qtd_parcelas,
+                        contas_pagar.qtd_parcelas_pagas,
+                        parcelas_despesa.id as id_parcela,
+                        parcelas_despesa.id_conta_pagar,
+                        parcelas_despesa.id_forma_pagamento,
+                        parcelas_despesa.valor_pago,
+                        parcelas_despesa.valor_parcela,
+                        parcelas_despesa.num_parcela,
+                        parcelas_despesa.data_vencimento,
+                        parcelas_despesa.data_pagamento,
+                        parcelas_despesa.status,
+                        categoria.nome as categoria
+                    FROM contas_pagar, parcelas_despesa, categoria
+                    WHERE contas_pagar.id_categoria = categoria.id
+                    AND parcelas_despesa.id_conta_pagar = contas_pagar.id
+                    ORDER BY data_vencimento ASC
+                ");
+            }else if($filter == "intime"){
+                $despesas = DB::select("
+                    SELECT
+                        contas_pagar.id,
+                        contas_pagar.id_categoria,
+                        contas_pagar.id_fornecedor as fornecedor,
+                        contas_pagar.descricao,
+                        contas_pagar.valor,
+                        contas_pagar.valor_pago,
+                        contas_pagar.qtd_parcelas,
+                        contas_pagar.qtd_parcelas_pagas,
+                        parcelas_despesa.id as id_parcela,
+                        parcelas_despesa.id_conta_pagar,
+                        parcelas_despesa.id_forma_pagamento,
+                        parcelas_despesa.valor_pago,
+                        parcelas_despesa.valor_parcela,
+                        parcelas_despesa.num_parcela,
+                        parcelas_despesa.data_vencimento,
+                        parcelas_despesa.data_pagamento,
+                        parcelas_despesa.status,
+                        categoria.nome as categoria
+                    FROM contas_pagar, parcelas_despesa, categoria
+                    WHERE contas_pagar.id_categoria = categoria.id
+                    AND parcelas_despesa.id_conta_pagar = contas_pagar.id
+                    AND parcelas_despesa.status = '0'
+                    AND parcelas_despesa.data_vencimento >= '".$hoje."'
+                    ORDER BY data_vencimento ASC
+                ");
+            }else if($filter == "timeout"){
+                $despesas = DB::select("
+                    SELECT
+                        contas_pagar.id,
+                        contas_pagar.id_categoria,
+                        contas_pagar.id_fornecedor as fornecedor,
+                        contas_pagar.descricao,
+                        contas_pagar.valor,
+                        contas_pagar.valor_pago,
+                        contas_pagar.qtd_parcelas,
+                        contas_pagar.qtd_parcelas_pagas,
+                        parcelas_despesa.id as id_parcela,
+                        parcelas_despesa.id_conta_pagar,
+                        parcelas_despesa.id_forma_pagamento,
+                        parcelas_despesa.valor_pago,
+                        parcelas_despesa.valor_parcela,
+                        parcelas_despesa.num_parcela,
+                        parcelas_despesa.data_vencimento,
+                        parcelas_despesa.data_pagamento,
+                        parcelas_despesa.status,
+                        categoria.nome as categoria
+                    FROM contas_pagar, parcelas_despesa, categoria
+                    WHERE contas_pagar.id_categoria = categoria.id
+                    AND parcelas_despesa.id_conta_pagar = contas_pagar.id
+                    AND parcelas_despesa.status = '0'
+                    AND parcelas_despesa.data_vencimento < '".$hoje."'
+                    ORDER BY data_vencimento ASC
+                ");
+            }
+>>>>>>> origin/ronald
 
             foreach ($despesas as $despesa) {
 
@@ -127,9 +371,9 @@ class Contas_Controller extends Controller
             }
 
             $formas_pagamento = DB::select("
-                SELECT * FROM forma_pagamento");     
+                SELECT * FROM forma_pagamento"); 
 
-            return view('contas.contas_despesas_parcelas',compact('despesas','formas_pagamento'));
+            return view('contas.contas_despesas_parcelas',compact('despesas','formas_pagamento','hoje','filter'));
 
         }elseif($atributo == "receitas"){
             
@@ -174,6 +418,7 @@ class Contas_Controller extends Controller
             return view('contas.contas_receitas',compact('receitas'));
         }elseif($atributo == "receitas_parcelas"){
 
+<<<<<<< HEAD
             $receitas = DB::select("
                 SELECT
                     contas_receber.id,
@@ -199,6 +444,94 @@ class Contas_Controller extends Controller
                 AND parcelas_receita.id_conta_receber = contas_receber.id
                 ORDER BY data_vencimento ASC
             ");
+=======
+            $hoje = date("Y-m-d");
+            $filter = $_GET["filter"];
+
+            if($filter == "all"){
+                $receitas = DB::select("
+                    SELECT
+                        contas_receber.id,
+                        contas_receber.id_categoria,
+                        contas_receber.id_cliente as cliente,
+                        contas_receber.descricao,
+                        contas_receber.valor,
+                        contas_receber.valor_pago,
+                        contas_receber.qtd_parcelas,
+                        contas_receber.qtd_parcelas_pagas,
+                        parcelas_receita.id as id_parcela,
+                        parcelas_receita.id_conta_receber,
+                        parcelas_receita.id_forma_pagamento,
+                        parcelas_receita.valor_pago,
+                        parcelas_receita.valor_parcela,
+                        parcelas_receita.num_parcela,
+                        parcelas_receita.data_vencimento,
+                        parcelas_receita.data_pagamento,
+                        parcelas_receita.status,
+                        categoria.nome as categoria
+                    FROM contas_receber, parcelas_receita, categoria
+                    WHERE contas_receber.id_categoria = categoria.id
+                    AND parcelas_receita.id_conta_receber = contas_receber.id
+                    ORDER BY data_vencimento ASC
+                ");
+            }else if($filter == "intime"){
+                $receitas = DB::select("
+                    SELECT
+                        contas_receber.id,
+                        contas_receber.id_categoria,
+                        contas_receber.id_cliente as cliente,
+                        contas_receber.descricao,
+                        contas_receber.valor,
+                        contas_receber.valor_pago,
+                        contas_receber.qtd_parcelas,
+                        contas_receber.qtd_parcelas_pagas,
+                        parcelas_receita.id as id_parcela,
+                        parcelas_receita.id_conta_receber,
+                        parcelas_receita.id_forma_pagamento,
+                        parcelas_receita.valor_pago,
+                        parcelas_receita.valor_parcela,
+                        parcelas_receita.num_parcela,
+                        parcelas_receita.data_vencimento,
+                        parcelas_receita.data_pagamento,
+                        parcelas_receita.status,
+                        categoria.nome as categoria
+                    FROM contas_receber, parcelas_receita, categoria
+                    WHERE contas_receber.id_categoria = categoria.id
+                    AND parcelas_receita.id_conta_receber = contas_receber.id
+                    AND parcelas_receita.status = '0'
+                    AND parcelas_receita.data_vencimento >= '".$hoje."'
+                    ORDER BY data_vencimento ASC
+                ");
+            }else if($filter == "timeout"){
+                $receitas = DB::select("
+                    SELECT
+                        contas_receber.id,
+                        contas_receber.id_categoria,
+                        contas_receber.id_cliente as cliente,
+                        contas_receber.descricao,
+                        contas_receber.valor,
+                        contas_receber.valor_pago,
+                        contas_receber.qtd_parcelas,
+                        contas_receber.qtd_parcelas_pagas,
+                        parcelas_receita.id as id_parcela,
+                        parcelas_receita.id_conta_receber,
+                        parcelas_receita.id_forma_pagamento,
+                        parcelas_receita.valor_pago,
+                        parcelas_receita.valor_parcela,
+                        parcelas_receita.num_parcela,
+                        parcelas_receita.data_vencimento,
+                        parcelas_receita.data_pagamento,
+                        parcelas_receita.status,
+                        categoria.nome as categoria
+                    FROM contas_receber, parcelas_receita, categoria
+                    WHERE contas_receber.id_categoria = categoria.id
+                    AND parcelas_receita.id_conta_receber = contas_receber.id
+                    AND parcelas_receita.status = '0'
+                    AND parcelas_receita.data_vencimento < '".$hoje."'
+                    ORDER BY data_vencimento ASC
+                ");
+            }
+>>>>>>> origin/ronald
 
             foreach ($receitas as $receita) {
 
@@ -235,7 +568,11 @@ class Contas_Controller extends Controller
             $formas_pagamento = DB::select("
                 SELECT * FROM forma_pagamento");     
 
+<<<<<<< HEAD
             return view('contas.contas_receitas_parcelas',compact('receitas','formas_pagamento'));
+=======
+            return view('contas.contas_receitas_parcelas',compact('receitas','formas_pagamento','hoje','filter'));
+>>>>>>> origin/ronald
         }
     }
 
@@ -271,13 +608,20 @@ class Contas_Controller extends Controller
             $intervalo = $despesa->intervalo;
             // $meses = $despesa->intervalo/30;
             $dias = $despesa->intervalo;
-            $valor_parcela = $despesa->valor/$qtd_parcelas;
+
+            $valor_despesa = str_replace('.', '', $despesa['valor']);
+            $valor_despesa = str_replace(',', '.', $valor_despesa);
+            $valor_parcela = $valor_despesa/$qtd_parcelas;
 
             $conta_pagar = Despesa::create([
                 'id_categoria'=> $despesa['categoria'],
                 'id_fornecedor'=> $despesa['fornecedor'],
                 'descricao'=> strtoupper($despesa['descricao']),
+<<<<<<< HEAD
                 'valor'=> $despesa['valor'],
+=======
+                'valor'=> $valor_despesa,
+>>>>>>> origin/ronald
                 'valor_pago'=> 0,
                 'qtd_parcelas'=> $qtd_parcelas,
                 'qtd_parcelas_pagas'=> 0,
@@ -308,11 +652,14 @@ class Contas_Controller extends Controller
 
         }else{
 
+            $valor_despesa = str_replace('.', '', $despesa['valor']);
+            $valor_despesa = str_replace(',', '.', $valor_despesa);
+
             $conta_pagar = Despesa::create([
                 'id_categoria'=> $despesa['categoria'],
                 'id_fornecedor'=> $despesa['fornecedor'],
                 'descricao'=> strtoupper($despesa['descricao']),
-                'valor'=> $despesa['valor'],
+                'valor'=> $valor_despesa,
                 'valor_pago'=> 0,
                 'qtd_parcelas'=> 1,
                 'qtd_parcelas_pagas'=> 0,
@@ -321,7 +668,7 @@ class Contas_Controller extends Controller
 
             Parcela_despesa::create([
                 'id_conta_pagar'=> $conta_pagar->id,
-                'valor_parcela'=> $despesa['valor'],
+                'valor_parcela'=> $valor_despesa,
                 'num_parcela' => 1,
                 'data_vencimento'=> $despesa['data_vencimento'],
                 'status'=> 0
@@ -368,8 +715,8 @@ class Contas_Controller extends Controller
                 $descricao = $parcela->descricao;
                 $qtd_parcelas = $parcela->qtd_parcelas;
                 $qtd_parcelas_pagas = $parcela->qtd_parcelas_pagas;
-                $valor_total = $parcela->valor;
-                $total_pago = $parcela->total_pago;
+                $valor_total = number_format($parcela->valor, 2, ',', '.');
+                $total_pago = number_format($parcela->total_pago, 2, ',', '.');
 
                 $parcela->data_vencimento = date('d/m/Y', strtotime($parcela->data_vencimento));
                 $parcela->data_pagamento = date('d/m/Y', strtotime($parcela->data_pagamento));
@@ -405,7 +752,228 @@ class Contas_Controller extends Controller
             $formas_pagamento = DB::select("
                 SELECT * FROM forma_pagamento");
 
-            return view('contas.contas_despesas_detalhes',compact('id_despesa','categoria','descricao','qtd_parcelas','valor_total','fornecedor','qtd_parcelas_pagas','total_pago','parcelas','formas_pagamento'));
+            $hoje = date("Y-m-d"); 
+            $count = 1;
+
+            return view('contas.contas_despesas_detalhes',compact('id_despesa','categoria','descricao','qtd_parcelas','valor_total','fornecedor','qtd_parcelas_pagas','total_pago','parcelas','formas_pagamento','hoje','count'));
+    }
+
+    public function delete_despesa(Request $request, $id){
+
+        $despesa = DB::table('contas_pagar')->where('id', '=', $id)->delete();
+        
+        return redirect('/contas/despesas');
+
+    }
+
+    public function delete_parcela_despesa(Request $request, $id){
+
+        $despesa = DB::table('parcelas_despesa')->where('id', '=', $id)->get();
+        $parcela = DB::table('parcelas_despesa')->where('id', '=', $id)->delete();
+
+        foreach ($despesa as $i) {
+            $id_despesa = $i->id_conta_pagar;
+        }
+        
+        return redirect('/contas/despesas/parcelas/'.$id_despesa);
+    }
+
+// receitas
+    public function nova_receita () {
+
+        $clientes = DB::select("
+            SELECT clientes.id, pessoa_fisicas.nome FROM clientes
+            INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = clientes.id_pessoa_fisica
+            union
+            SELECT clientes.id, pessoa_juridicas.nome_fantasia as nome FROM clientes
+            INNER JOIN pessoa_juridicas ON pessoa_juridicas.id = clientes.id_pessoa_juridica
+            ORDER BY nome
+        ");
+
+        $categorias = DB::select("
+            SELECT *
+            FROM categoria
+            WHERE categoria.tipo = 'receita'
+            ORDER BY nome
+        ");
+
+        return view('contas.contas_receita_novo', compact('clientes','categorias'));
+    }
+
+    public function create_receita (Request $receita) {
+        
+        if($receita->repete == '1'){
+
+            $descricao = strtoupper($receita->descricao);
+            $qtd_parcelas = $receita->qtd_parcelas;
+            $data_vencimento = $receita->data_vencimento;
+            $intervalo = $receita->intervalo;
+            $dias = $receita->intervalo;
+
+            $valor_receita = str_replace('.', '', $receita['valor']);
+            $valor_receita = str_replace(',', '.', $valor_receita);
+            $valor_parcela = $valor_receita/$qtd_parcelas;
+
+            $conta_receber = Receita::create([
+                'id_categoria'=> $receita['categoria'],
+                'id_cliente'=> $receita['cliente'],
+                'descricao'=> strtoupper($receita['descricao']),
+                'valor'=> $valor_receita,
+                'valor_pago'=> 0,
+                'qtd_parcelas'=> $qtd_parcelas,
+                'qtd_parcelas_pagas'=> 0,
+                'status'=> 0
+            ]);
+
+            Parcela_receita::create([
+                'id_conta_receber'=> $conta_receber->id,
+                'valor_parcela'=> $valor_parcela,
+                'num_parcela' => 1,
+                'data_vencimento'=> $data_vencimento,
+                'status'=> 0
+            ]);
+
+            $valor_receita = str_replace('.', '', $receita['valor']);
+            $valor_receita = str_replace(',', '.', $valor_receita);
+
+            for($i=2; $i<=$qtd_parcelas; $i++){
+
+                $data_vencimento = date('Y-m-d', strtotime($data_vencimento. ' +'.$dias.' days'));
+                Parcela_receita::create([
+                    'id_conta_receber'=> $conta_receber->id,
+                    'valor_parcela'=> $valor_parcela,
+                    'num_parcela' => $i,
+                    'data_vencimento'=> $data_vencimento,
+                    'status'=> 0
+                ]);
+            }
+
+            return redirect('contas/receitas/parcelas/'.$conta_receber->id);   
+
+        }else{
+
+            $conta_receber = Receita::create([
+                'id_categoria'=> $receita['categoria'],
+                'id_cliente'=> $receita['cliente'],
+                'descricao'=> strtoupper($receita['descricao']),
+                'valor'=> $valor_receita,
+                'valor_pago'=> 0,
+                'qtd_parcelas'=> 1,
+                'qtd_parcelas_pagas'=> 0,
+                'status'=> 0
+            ]);
+
+            Parcela_receita::create([
+                'id_conta_receber'=> $conta_receber->id,
+                'valor_parcela'=> $valor_receita,
+                'num_parcela' => 1,
+                'data_vencimento'=> $receita['data_vencimento'],
+                'status'=> 0
+            ]);
+
+            return redirect('contas/receitas/parcelas/'.$conta_receber->id);
+        }
+
+    }
+
+    public function detalhes_receita ($id){
+
+        $parcelas = DB::select("
+                SELECT
+                    contas_receber.id,
+                    contas_receber.id_categoria,
+                    contas_receber.id_cliente as cliente,
+                    contas_receber.descricao,
+                    contas_receber.valor,
+                    contas_receber.valor_pago as total_pago,
+                    contas_receber.qtd_parcelas,
+                    contas_receber.qtd_parcelas_pagas,
+                    parcelas_receita.id as id_parcela,
+                    parcelas_receita.id_conta_receber,
+                    parcelas_receita.id_forma_pagamento,
+                    parcelas_receita.valor_pago,
+                    parcelas_receita.valor_parcela,
+                    parcelas_receita.num_parcela,
+                    parcelas_receita.data_vencimento,
+                    parcelas_receita.data_pagamento,
+                    parcelas_receita.status,
+                    categoria.nome as categoria
+                FROM contas_receber, parcelas_receita, categoria
+                WHERE contas_receber.id_categoria = categoria.id
+                AND parcelas_receita.id_conta_receber = contas_receber.id
+                AND contas_receber.id = '".$id."'
+                ORDER BY data_vencimento ASC
+            ");
+
+            foreach ($parcelas as $parcela) {
+
+                $id_receita = $parcela->id;
+                $categoria = $parcela->categoria;
+                $descricao = $parcela->descricao;
+                $qtd_parcelas = $parcela->qtd_parcelas;
+                $qtd_parcelas_pagas = $parcela->qtd_parcelas_pagas;
+                $valor_total = number_format($parcela->valor, 2, ',', '.');
+                $total_pago = number_format($parcela->total_pago, 2, ',', '.');
+
+                $parcela->data_vencimento = date('d/m/Y', strtotime($parcela->data_vencimento));
+                $parcela->data_pagamento = date('d/m/Y', strtotime($parcela->data_pagamento));
+
+                $clientes = DB::select("
+                    SELECT
+                    pessoa_fisicas.nome
+                    FROM pessoa_fisicas, clientes
+                    WHERE clientes.id = '".$parcela->cliente."' 
+                    AND pessoa_fisicas.id = clientes.id_pessoa_fisica
+                ");
+
+                if($clientes){
+                    foreach ($clientes as $cliente) {
+                        $cliente = $cliente->nome;
+                    }
+                }else{
+                    $clientes = DB::select("
+                        SELECT
+                        pessoa_juridicas.nome_fantasia
+                        FROM pessoa_juridicas, clientes
+                        WHERE clientes.id = '".$parcela->cliente."' 
+                        AND pessoa_juridicas.id = clientes.id_pessoa_juridica
+                    ");
+
+                    foreach ($clientes as $cliente) {
+                        $cliente = $cliente->nome_fantasia;
+                    }
+                }
+
+            }
+
+            $formas_pagamento = DB::select("
+                SELECT * FROM forma_pagamento");
+
+            $hoje = date("Y-m-d"); 
+            $count = 1;
+
+            return view('contas.contas_receitas_detalhes',compact('id_receita','categoria','descricao','qtd_parcelas','valor_total','cliente','qtd_parcelas_pagas','total_pago','parcelas','formas_pagamento','hoje','count'));
+    }
+
+    public function delete_receita(Request $request, $id){
+
+        $receita = DB::table('contas_receber')->where('id', '=', $id)->delete();
+        
+        return redirect('/contas/receitas');
+
+    }
+
+    public function delete_parcela_receita(Request $request, $id){
+
+        $receita = DB::table('parcelas_receita')->where('id', '=', $id)->get();
+        $parcela = DB::table('parcelas_receita')->where('id', '=', $id)->delete();
+
+        foreach ($receita as $i) {
+            $id_receita = $i->id_conta_receber;
+        }
+
+        return redirect('/contas/receitas/parcelas/'.$id_receita);
+
     }
 
     public function delete_despesa(Request $request, $id){

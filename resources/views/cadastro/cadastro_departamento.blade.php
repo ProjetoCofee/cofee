@@ -138,6 +138,10 @@
                                 </tbody>
                                 
                             </TABLE>
+
+                            <div align="center">
+                                {!! $departamentos->links() !!}
+                            </div>
                         </div>
                     </div>
                 </div>
