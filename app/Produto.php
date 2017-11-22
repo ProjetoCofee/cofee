@@ -18,6 +18,7 @@ class Produto extends Model
         'corredor',
         'prateleira',
         'minimo',
+        'ativo',
         'observacao'
     ];
 }

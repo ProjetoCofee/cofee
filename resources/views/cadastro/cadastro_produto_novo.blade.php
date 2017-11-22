@@ -3,98 +3,98 @@
 @section('content')
 
 <script type="text/javascript">
-	// cliente prefere sem validação ean
-    // function valida_ean(){
 
-    //     var numero = document.getElementById('codigo_barras');
+    function valida_ean(){
 
-    //     var codigo = numero.value;
-    //     var mascara = '#############';
+        var numero = document.getElementById('codigo_barras');
 
-    //     var i = numero.value.length;
-    //     var saida = mascara.substring(0,1);
-    //     var texto = mascara.substring(i)
+        var codigo = numero.value;
+        var mascara = '#############';
 
-    //     if (texto.substring(0,1) != saida){
-    //         numero.value += texto.substring(0,1);
-    //     }
+        var i = numero.value.length;
+        var saida = mascara.substring(0,1);
+        var texto = mascara.substring(i)
 
-    //     factor = 3;
-    //     sum = 0;
-    //     numlen = numero.value.length;
-    //     if (numlen == 13){
-    //         for(index = numero.value.length; index > 0; --index){
-    //             if (index != 13){
-    //             sum = sum + numero.value.substring (index-1, index) * factor;
-    //             factor = 4 - factor;
-    //             }
-    //         }
-    //         cc = ((1000 - sum) % 10);
-    //         ca = numero.value.substring(12);
-    //         if(cc == ca){
-    //             consulta_codigo_barras(codigo);
-    //         }
-    //         else{
-    //             $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
-    //             document.getElementById("btn_salvar").disabled = true;
-    //         }
-    //     }
-    //     if(numlen == 14){
-    //         for(index = numero.value.length; index > 0; --index){
-    //             if (index != 14){
-    //             sum = sum + numero.value.substring (index-1, index) * factor;
-    //             factor = 4 - factor;
-    //             }
-    //         }
-    //         cc = ((1000 - sum) % 10);
-    //         ca = numero.value.substring(13);
-    //         if(cc == ca){
-    //             consulta_codigo_barras(codigo);
-    //         }
-    //         else{
-    //             $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
-    //             document.getElementById("btn_salvar").disabled = true;
-    //         }
-    //     }
-    //     if(numlen == 8){
-    //         for(index = numero.value.length; index > 0; --index){
-    //             if (index != 8){
-    //             sum = sum + numero.value.substring (index-1, index) * factor;
-    //             factor = 4 - factor;
-    //             }
-    //         }
-    //         cc = ((1000 - sum) % 10);
-    //         ca = numero.value.substring(7);
-    //         if(cc == ca){
-    //             consulta_codigo_barras(codigo);
-    //         }
-    //         else{
-    //             $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');     
-    //             document.getElementById("btn_salvar").disabled = true;  
-    //         }
-    //     }
-    //     if(numlen == 12){
-    //         for(index = numero.value.length; index > 0; --index){
-    //             if (index != 12){
-    //             sum = sum + numero.value.substring (index-1, index) * factor;
-    //             factor = 4 - factor;
-    //             }
-    //         }
-    //         cc = ((1000 - sum) % 10);
-    //         ca = numero.value.substring(11);
-    //         if(cc == ca){
-    //             consulta_codigo_barras(codigo);
-    //         }
-    //         else{
-    //             $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
-    //             document.getElementById("btn_salvar").disabled = true;
-    //         }
-    //     }
-    //     if (((((numlen != 8) && (numlen != 12)) && (numlen != 13)) && (numlen != 14))){
-    //         $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
-    //         document.getElementById("btn_salvar").disabled = true;
-    //     }
-    // }
+        if (texto.substring(0,1) != saida){
+            numero.value += texto.substring(0,1);
+        }
+
+        factor = 3;
+        sum = 0;
+        numlen = numero.value.length;
+        if (numlen == 13){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 13){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(12);
+            if(cc == ca){
+                consulta_codigo_barras(codigo);
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+                document.getElementById("btn_salvar").disabled = true;
+            }
+        }
+        if(numlen == 14){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 14){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(13);
+            if(cc == ca){
+                consulta_codigo_barras(codigo);
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+                document.getElementById("btn_salvar").disabled = true;
+            }
+        }
+        if(numlen == 8){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 8){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(7);
+            if(cc == ca){
+                consulta_codigo_barras(codigo);
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');     
+                document.getElementById("btn_salvar").disabled = true;  
+            }
+        }
+        if(numlen == 12){
+            for(index = numero.value.length; index > 0; --index){
+                if (index != 12){
+                sum = sum + numero.value.substring (index-1, index) * factor;
+                factor = 4 - factor;
+                }
+            }
+            cc = ((1000 - sum) % 10);
+            ca = numero.value.substring(11);
+            if(cc == ca){
+                consulta_codigo_barras(codigo);
+            }
+            else{
+                $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+                document.getElementById("btn_salvar").disabled = true;
+            }
+        }
+        if (((((numlen != 8) && (numlen != 12)) && (numlen != 13)) && (numlen != 14))){
+            $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Digite um código EAN válido!</div>');
+            document.getElementById("btn_salvar").disabled = true;
+        }
+    }
 
     function consulta_codigo_barras(codigo_barras){
         $.ajax({
@@ -106,12 +106,19 @@
             console.log(data);
             if(data==1){
                 document.getElementById("btn_salvar").disabled = true;
-                $('#alerta').html('<div align="center" class="alert alert-warning" role="alert">O código informado já está cadastrado!</div>');
+                $('#alerta').html('<div align="center" class="alert alert-warning" role="alert">O código EAN informado já está cadastrado!</div>');
             }else if(data==0){                
                 $('#alerta').empty();
                 document.getElementById("btn_salvar").disabled = false;
             }
         });
+    }
+
+    function apenas_numero(event){
+
+        if((event.keyCode>=96 && event.keyCode<=105)||(event.keyCode>=48 && event.keyCode<=57)){
+            console.log(event.keyCode);
+        } 
     }
 
 </script>
@@ -184,7 +191,7 @@
                             <label for="codigo_barras" class="col-md-4 control-label required">Código de barras</label>
 
                             <div class="col-md-6">
-                                <input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="{{ old('codigo_barras') }}" maxlength="13" onkeyup="consulta_codigo_barras(this.value)" placeholder="Digite um código válido" required>
+                                <input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="{{ old('codigo_barras') }}" maxlength="13" onkeyup="valida_ean()" placeholder="Digite um código válido" required>
 
                                 @if ($errors->has('codigo_barras'))
                                     <span class="help-block">

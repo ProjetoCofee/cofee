@@ -15,7 +15,9 @@ $sql = mysqli_query($mysqli, "SELECT
 				marcas.nome as nome_marca, 
 				departamentos.nome as nome_departamento
 			FROM produtos, marcas, departamentos
-			WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+			WHERE produtos.id_marca = marcas.id 
+			AND produtos.id_departamento = departamentos.id
+			AND produtos.ativo = '1'
 			AND produtos.id = ".$busca); 
 
    

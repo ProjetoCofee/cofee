@@ -89,12 +89,20 @@
 </div>
 
 <!-- Scripts -->
-<!--     <script src="{{ asset('js/app.js') }}"></script> -->
+    <script src="{{ asset('js/app.js') }}"></script>
 <!--     <script src="//code.jquery.com/jquery-3.2.1.js"></script> -->
 <!--     <script src="{{ asset('/js/jquery-3.2.1.min.js') }}"></script> -->
 <!--     <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script> -->
 <!--         <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
      -->
+     <!--link para maskMoney-->
+    <script type="text/javascript" src="/js/jquery.maskMoney.js" ></script>
+    <!--mascara para moeda-->
+    <script type="text/javascript">
+        $(document).ready(function(){
+              $("input.dinheiro").maskMoney({showSymbol:false, decimal:",", thousands:"."});           
+        });
+    </script>
     
     <script type="text/javascript">
         var url = "http://localhost:8000/";

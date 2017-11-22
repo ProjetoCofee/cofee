@@ -2,11 +2,62 @@
 
 @section('content')
 
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+
 <script type="text/javascript">
 
-    window.onload = function() {
-        document.getElementById('search').focus();
-    };
+    $(document).ready(function() {
+
+        $('#example').dataTable({
+            initComplete: function () {
+                this.api().columns([0, 1]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "Todos"]],
+            "sPaginationType": "full_numbers",
+            "sDom": '<"H"Tlfr>t<"F"ip>',
+            "oLanguage": {
+                "sLengthMenu": "Registros por páginas: _MENU_",
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
+</script>
+
+<script type="text/javascript">
 
     function formatar_Data(data, tipo){
         var d = new Date(data),
@@ -75,46 +126,46 @@
 
                 $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Nome:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+nome+'</td><tr><td><th style="float: right">CPF:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+cpf+'</td><tr><td><th style="float: right">RG:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+rg+'</td><tr><td><th style="float: right">Orgão Expedidor:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+orgao_expedidor+'</td><tr><td><th style="float: right">Sexo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+sexo+'</td><tr><td><th style="float: right">Data de nascimento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+data_nascim+'</td><tr><td><th style="float: right">Telefone:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone+'</td><tr><td><th style="float: right">Telefone Secundário:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone_sec+'</td><tr><td><th style="float: right">Email:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+email+'</td><tr><td><th style="float: right">UF:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+uf+'</td><tr><td><th style="float: right">Cidade:</th></td><td style="color: black; fontuf-family: arial; padding-left: 10%;">'+cidade+'</td><tr><td><th style="float: right">Bairro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+bairro+'</td><tr><td><th style="float: right">Logradouro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+logradouro+'</td><tr><td><th style="float: right">Complemento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+complemento+'</td><tr><td><th style="float: right">Número:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+numero+'</td><tr><td><th style="float: right">Tipo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+tipo+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');    
             });
+}else{
+    $.ajax({
+        dataType: 'json',
+        url: url+'api/busca_pessoa_juridica_id_detalhes.php',
+        data: {busca:id}
+
+    }).done(function(data){
+
+        var id = data[0].id;
+        var nome_fantasia = data[0].nome_fantasia;
+        var cnpj = data[0].cnpj;
+        var razao_social = data[0].razao_social;
+        var inscricao_estadual = data[0].inscricao_estadual;
+        var telefone = data[0].telefone;
+        var telefone_sec = data[0].telefone_sec;
+        var email = data[0].email;
+        var uf = data[0].uf;
+        var cidade = data[0].cidade;
+        var bairro = data[0].bairro;
+        var logradouro = data[0].logradouro;
+        var numero = data[0].numero;
+        var complemento = data[0].complemento;
+        var tipo = data[0].tipo;
+        var created_at = formatar_Data(data[0].created_at);
+        var updated_at = formatar_Data(data[0].updated_at);
+
+        if(tipo == 'c'){
+            tipo = 'Cliente';
+        } else if(tipo == 'f'){
+            tipo = 'Fornecedor';
+        } else if(tipo == "cf"){
+            tipo = 'Cliente/Fornecedor';
         }else{
-            $.ajax({
-                dataType: 'json',
-                url: url+'api/busca_pessoa_juridica_id_detalhes.php',
-                data: {busca:id}
-
-            }).done(function(data){
-
-                var id = data[0].id;
-                var nome_fantasia = data[0].nome_fantasia;
-                var cnpj = data[0].cnpj;
-                var razao_social = data[0].razao_social;
-                var inscricao_estadual = data[0].inscricao_estadual;
-                var telefone = data[0].telefone;
-                var telefone_sec = data[0].telefone_sec;
-                var email = data[0].email;
-                var uf = data[0].uf;
-                var cidade = data[0].cidade;
-                var bairro = data[0].bairro;
-                var logradouro = data[0].logradouro;
-                var numero = data[0].numero;
-                var complemento = data[0].complemento;
-                var tipo = data[0].tipo;
-                var created_at = formatar_Data(data[0].created_at);
-                var updated_at = formatar_Data(data[0].updated_at);
-
-                if(tipo == 'c'){
-                    tipo = 'Cliente';
-                } else if(tipo == 'f'){
-                    tipo = 'Fornecedor';
-                } else if(tipo == "cf"){
-                    tipo = 'Cliente/Fornecedor';
-                }else{
-                    tipo = '';
-                }
-
-                $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Nome Fantasia:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+nome_fantasia+'</td><tr><td><th style="float: right">CNPJ:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+cnpj+'</td><tr><td><th style="float: right">Razão Social:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+razao_social+'</td><tr><td><th style="float: right">Inscrição Estadual:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+inscricao_estadual+'</td><tr><td><th style="float: right">Telefone:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone+'</td><tr><td><th style="float: right">Telefone Secundário:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone_sec+'</td><tr><td><th style="float: right">uf:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+uf+'</td><tr><td><th style="float: right">Cidade:</th></td><td style="color: black; fontuf-family: arial; padding-left: 10%;">'+cidade+'</td><tr><td><th style="float: right">bairro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+bairro+'</td><tr><td><th style="float: right">logradouro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+logradouro+'</td><tr><td><th style="float: right">Número:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+numero+'</td><tr><td><th style="float: right">Complemento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+complemento+'</td><tr><td><th style="float: right">Tipo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+tipo+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');    
-            });
+            tipo = '';
         }
-    }
+
+        $('#modal_detalhes').html('<div class="container"><div class="center-block" style="margin-left: 5%;"><table><td><th style="float: right">Nome Fantasia:</th></td><td style="color: black; font-family: arial; padding-left: 10%; min-width: 250px;">'+nome_fantasia+'</td><tr><td><th style="float: right">CNPJ:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+cnpj+'</td><tr><td><th style="float: right">Razão Social:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+razao_social+'</td><tr><td><th style="float: right">Inscrição Estadual:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+inscricao_estadual+'</td><tr><td><th style="float: right">Telefone:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone+'</td><tr><td><th style="float: right">Telefone Secundário:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+telefone_sec+'</td><tr><td><th style="float: right">uf:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+uf+'</td><tr><td><th style="float: right">Cidade:</th></td><td style="color: black; fontuf-family: arial; padding-left: 10%;">'+cidade+'</td><tr><td><th style="float: right">bairro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+bairro+'</td><tr><td><th style="float: right">logradouro:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+logradouro+'</td><tr><td><th style="float: right">Número:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+numero+'</td><tr><td><th style="float: right">Complemento:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+complemento+'</td><tr><td><th style="float: right">Tipo:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+tipo+'</td><tr><td><th style="float: right">Criado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+created_at+'</td><tr><td><th style="float: right">Alterado em:</th></td><td style="color: black; font-family: arial; padding-left: 10%;">'+updated_at+'</td></table></div>');    
+    });
+}
+}
 </script>
 
 <div class="container-fluid">
@@ -136,13 +187,12 @@
                 </div>
             </div>
 
-            <div class="col-md-10 col-md-offset-0">
+            <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
                         <div class="panel-heading">Cadastro de Fornecedores</div>
                         <div class="panel-body">
                             @if($tipo == "fisica")
-                            
                             <table>
                                 <tr>
                                     <td>
@@ -156,59 +206,45 @@
                                             <option value="fornecedor-juridica">Pessoa Jurídica</option>
                                         </select>
                                     </td>
-
-                                    <td style="padding-bottom: 1em; padding-left: 1em;">
-                                        <form method="post" action="/cadastro/fornecedor_fisica/busca" class="form-inline" role="search">
-                                            <div class="form-group">
-                                                <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
-                                            </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
-
-                                    <td style="padding-bottom: 1em;">
-                                        <form method="get" action="/cadastro/fornecedor-fisica" class="form-inline">
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
                                 </tr>
                             </table>
                             @if($fornecedorsF)
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>CPF</th>
+                                        <th>Telefone</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                </thead>
+
+                                <tfoot>
                                     <tr>
                                         <th>Nome</th>
                                         <th>CPF</th>
                                         <th>Telefone</th>
                                         <th></th>
                                     </tr>
-                                </thead>
+                                </tfoot>
 
-                                @foreach($fornecedorsF as $fornecedor)
-                                    <tbody>
-                                        <tr>
-                                            <td>{{$fornecedor->nome}}</td>
-                                            <td>{{substr($fornecedor->cpf,0,3) . "." . substr($fornecedor->cpf,3,3) . "." . substr($fornecedor->cpf,6,3) . "-" . substr($fornecedor->cpf,9,3)}}</td>
-                                            <td>{{$fornecedor->telefone}}</td>
-                                            <td>
-                                                <div style="display: inline-flex; float: right;">
-                                                    <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_fisica}}','fisica')"><span class="glyphicon glyphicon-eye-open"></span></button>
+                                <tbody>
+                                    @foreach($fornecedorsF as $fornecedor)
+                                    <tr>
+                                        <td>{{$fornecedor->nome}}</td>
+                                        <td>{{substr($fornecedor->cpf,0,3) . "." . substr($fornecedor->cpf,3,3) . "." . substr($fornecedor->cpf,6,3) . "-" . substr($fornecedor->cpf,9,3)}}</td>
+                                        <td>{{$fornecedor->telefone}}</td>
+                                        <td>
+                                            <div style="display: inline-flex; float: right;">
+                                                <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_fisica}}','fisica')"><span class="glyphicon glyphicon-eye-open"></span></button>
 
-                                                    <form method="GET" action="/cadastro/pessoa/fisica/{{$fornecedor->id_pessoa_fisica}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
-
-                                                    <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                @endforeach
+                                                <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </TABLE>
-
-                            <div align="center">
-                                {!! $fornecedorsF->links() !!}
-                            </div>
                             @endif
                             @endif
 
@@ -226,59 +262,47 @@
                                             <option value="fornecedor-juridica" selected>Pessoa Jurídica</option>
                                         </select>
                                     </td>
-
-                                    <td style="padding-bottom: 1em; padding-left: 1em;">
-                                        <form method="post" action="/cadastro/fornecedor_juridica/busca" class="form-inline" role="search">
-                                            <div class="form-group">
-                                                <input type="text" name="search" id="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Procurar" autofocus="true">
-                                            </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
-
-                                    <td style="padding-bottom: 1em;">
-                                        <form method="get" action="/cadastro/fornecedor-juridica" class="form-inline">
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </td>
                                 </tr>
                             </table>
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 @if($fornecedorsJ)
                                 <thead>
                                     <tr>
                                         <th>Nome</th>
                                         <th>Razão Social</th>
                                         <th>CNPJ</th>
-                                        <th></th>
+                                        <th>Opções</th>
                                     </tr>
                                 </thead>
+                                
+                                <tfoot>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Razão Social</th>
+                                        <th>CNPJ</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                                
+                                <tbody>
+                                    @foreach($fornecedorsJ as $fornecedor)
+                                    <tr>
+                                        <td>{{$fornecedor->nome_fantasia}}</td>
+                                        <td>{{$fornecedor->razao_social}}</td>
+                                        <td>{{substr($fornecedor->cnpj,0,2) . "." . substr($fornecedor->cnpj,2,3) . "." . substr($fornecedor->cnpj,5,3) . "/" . substr($fornecedor->cnpj,8,4)  . "-" . substr($fornecedor->cnpj,12,2)}}</td>
+                                        <td>
+                                            <div style="display: inline-flex; float: right;">
+                                                <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_juridica}}','juridica')"><span class="glyphicon glyphicon-eye-open"></span></button>
 
-                                @foreach($fornecedorsJ as $fornecedor)
-                                    <tbody>
-                                        <tr>
-                                            <td>{{$fornecedor->nome_fantasia}}</td>
-                                            <td>{{$fornecedor->razao_social}}</td>
-                                            <td>{{substr($fornecedor->cnpj,0,2) . "." . substr($fornecedor->cnpj,2,3) . "." . substr($fornecedor->cnpj,5,3) . "/" . substr($fornecedor->cnpj,8,4)  . "-" . substr($fornecedor->cnpj,12,2)}}</td>
-                                            <td>
-                                                <div style="display: inline-flex; float: right;">
-                                                    <button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_pessoa('{{$fornecedor->id_pessoa_juridica}}','juridica')"><span class="glyphicon glyphicon-eye-open"></span></button>
-
-                                                    <form method="GET" action="/cadastro/pessoa/juridica/{{$fornecedor->id_pessoa_juridica}}/update"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-pencil"></span></button></form>
-
-                                                    <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                @endforeach
+                                                <form method="GET" action="mailto:{{$fornecedor->email}}"><button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-envelope"></span></button></form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                                
                                 @endif
                             </TABLE>
-                            <div align="center">
-                                {!! $fornecedorsJ->links() !!}
-                            </div>
                             @endif
                         </div>
                     </div>
@@ -288,6 +312,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="detail_item" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

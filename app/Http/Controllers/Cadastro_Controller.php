@@ -26,50 +26,52 @@ class Cadastro_Controller extends Controller
 
         if($atributo == "produto"){
 
-            $produtos = DB::table('produtos')->join(
-                'marcas', 'produtos.id_marca', '=', 'marcas.id')->join(
-                    'departamentos', 'produtos.id_departamento', '=', 'departamentos.id')->select(
-                        'produtos.id', 
-                        'produtos.codigo_barras',
-                        'produtos.descricao', 
-                        'marcas.nome as nome_marca', 
-                        'departamentos.nome as nome_departamento', 
-                        'produtos.saldo', 
-                        'produtos.unidade_medida', 
-                        'produtos.posicao', 
-                        'produtos.corredor', 
-                        'produtos.prateleira', 
-                        'produtos.minimo', 
-                        'produtos.observacao')->orderByRaw('descricao ASC')->paginate(7);
+            $produtos = DB::select("
+                select
+                produtos.id,
+                produtos.codigo_barras, 
+                produtos.descricao, 
+                marcas.nome as nome_marca, 
+                departamentos.nome as nome_departamento, 
+                produtos.saldo, 
+                produtos.unidade_medida, 
+                produtos.posicao, 
+                produtos.minimo, 
+                produtos.observacao 
+                FROM produtos, marcas, departamentos
+                WHERE produtos.id_marca = marcas.id 
+                AND produtos.id_departamento = departamentos.id
+                AND produtos.ativo = '1'
+            ");
 
 
             return view('cadastro.cadastro_produto',compact('produtos'));
 
         }else if($atributo == "marca"){
 
-            $marcas = DB::table('marcas')->orderByRaw('nome ASC')->paginate(7);
+            $marcas = DB::table('marcas')->orderByRaw('nome ASC')->get();
 
             return view('cadastro.cadastro_marca', compact('marcas'));
 
         }else if($atributo == "departamento"){
 
-            $departamentos = DB::table('departamentos')->orderByRaw('nome ASC')->paginate(7);
+            $departamentos = DB::table('departamentos')->orderByRaw('nome ASC')->get();
 
             return view('cadastro.cadastro_departamento', compact('departamentos'));
 
         }else if($atributo == "fisica"){
             $tipo = "fisica";
 
-            $pessoas = DB::table('pessoa_fisicas')->orderByRaw('nome ASC')->paginate(7);
+            $pessoas = DB::table('pessoa_fisicas')->orderByRaw('nome ASC')->get();
 
-            return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
+            return view('cadastro.cadastro_pessoa_fisica', compact('pessoas'));
 
         }else if($atributo == "juridica"){
             $tipo = "juridica";
 
-            $pessoas = DB::table('pessoa_juridicas')->orderByRaw('nome_fantasia ASC')->paginate(7);
+            $pessoas = DB::table('pessoa_juridicas')->get();
 
-            return view('cadastro.cadastro_pessoa', compact('pessoas','tipo'));
+            return view('cadastro.cadastro_pessoa_juridica', compact('pessoas'));
 
         }else if($atributo == "cliente-fisica"){
 
@@ -83,80 +85,80 @@ class Cadastro_Controller extends Controller
                     'pessoa_fisicas.nome as nome', 
                     'pessoa_fisicas.cpf as cpf',
                     'pessoa_fisicas.telefone as telefone',
-                    'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->paginate(7);
+                    'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->get();
 
-            return view('cadastro.cadastro_cliente', compact('clientesF', 'tipo'));
+                return view('cadastro.cadastro_cliente', compact('clientesF', 'tipo'));
 
-        } else if($atributo == "cliente-juridica"){
-
-            $tipo = "juridica";
-
-            $clientesJ = DB::table('pessoa_juridicas')->join(
-                'clientes', 'pessoa_juridicas.id', '=', 'clientes.id_pessoa_juridica')->select(
-                    'pessoa_juridicas.id',
-                    'clientes.id',
-                    'clientes.id_pessoa_juridica',
-                    'pessoa_juridicas.nome_fantasia as nome_fantasia',
-                    'pessoa_juridicas.razao_social as razao_social',
-                    'pessoa_juridicas.cnpj as cnpj',
-                    'pessoa_juridicas.telefone as telefone',
-                    'pessoa_juridicas.email as email')->orderByRaw('nome_fantasia ASC')->paginate(7);
-
-                return view('cadastro.cadastro_cliente', compact('clientesJ', 'tipo'));
-
-            }else if($atributo == "fornecedor-fisica"){
-
-                $tipo = "fisica";
-
-                $fornecedorsF = DB::table('pessoa_fisicas')->join(
-                    'fornecedors', 'pessoa_fisicas.id', '=', 'fornecedors.id_pessoa_fisica')->select(
-                        'pessoa_fisicas.id',
-                        'fornecedors.id',
-                        'fornecedors.id_pessoa_fisica',
-                        'pessoa_fisicas.nome as nome', 
-                        'pessoa_fisicas.cpf as cpf',
-                        'pessoa_fisicas.telefone as telefone',
-                        'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->paginate(7);
-
-                return view('cadastro.cadastro_fornecedor', compact('fornecedorsF', 'tipo'));
-
-            }else if($atributo == "fornecedor-juridica"){
+            } else if($atributo == "cliente-juridica"){
 
                 $tipo = "juridica";
 
-                $fornecedorsJ = DB::table('pessoa_juridicas')->join(
-                    'fornecedors', 'pessoa_juridicas.id', '=', 'fornecedors.id_pessoa_juridica')->select(
+                $clientesJ = DB::table('pessoa_juridicas')->join(
+                    'clientes', 'pessoa_juridicas.id', '=', 'clientes.id_pessoa_juridica')->select(
                         'pessoa_juridicas.id',
-                        'fornecedors.id',
-                        'fornecedors.id_pessoa_juridica',
+                        'clientes.id',
+                        'clientes.id_pessoa_juridica',
                         'pessoa_juridicas.nome_fantasia as nome_fantasia',
                         'pessoa_juridicas.razao_social as razao_social',
                         'pessoa_juridicas.cnpj as cnpj',
                         'pessoa_juridicas.telefone as telefone',
-                        'pessoa_juridicas.email as email')->orderByRaw('nome_fantasia ASC')->paginate(7);
+                        'pessoa_juridicas.email as email')->orderByRaw('nome_fantasia ASC')->get();
 
-                return view('cadastro.cadastro_fornecedor', compact('fornecedorsJ', 'tipo'));
+                    return view('cadastro.cadastro_cliente', compact('clientesJ', 'tipo'));
 
-            }else if($atributo == "usuario"){
+                }else if($atributo == "fornecedor-fisica"){
 
-                $usuarios = DB::table('users')->where('users.id', '!=', '0')->orderByRaw('name ASC')->paginate(7);
+                    $tipo = "fisica";
 
-                return view('cadastro.cadastro_usuario',compact('usuarios'));
-            }else{
-                return;
-            }    
-    }
+                    $fornecedorsF = DB::table('pessoa_fisicas')->join(
+                        'fornecedors', 'pessoa_fisicas.id', '=', 'fornecedors.id_pessoa_fisica')->select(
+                            'pessoa_fisicas.id',
+                            'fornecedors.id',
+                            'fornecedors.id_pessoa_fisica',
+                            'pessoa_fisicas.nome as nome', 
+                            'pessoa_fisicas.cpf as cpf',
+                            'pessoa_fisicas.telefone as telefone',
+                            'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->paginate(7);
+
+                        return view('cadastro.cadastro_fornecedor', compact('fornecedorsF', 'tipo'));
+
+                    }else if($atributo == "fornecedor-juridica"){
+
+                        $tipo = "juridica";
+
+                        $fornecedorsJ = DB::table('pessoa_juridicas')->join(
+                            'fornecedors', 'pessoa_juridicas.id', '=', 'fornecedors.id_pessoa_juridica')->select(
+                                'pessoa_juridicas.id',
+                                'fornecedors.id',
+                                'fornecedors.id_pessoa_juridica',
+                                'pessoa_juridicas.nome_fantasia as nome_fantasia',
+                                'pessoa_juridicas.razao_social as razao_social',
+                                'pessoa_juridicas.cnpj as cnpj',
+                                'pessoa_juridicas.telefone as telefone',
+                                'pessoa_juridicas.email as email')->orderByRaw('nome_fantasia ASC')->paginate(7);
+
+                            return view('cadastro.cadastro_fornecedor', compact('fornecedorsJ', 'tipo'));
+
+                        }else if($atributo == "usuario"){
+
+                            $usuarios = DB::table('users')->where('users.id', '!=', '0')->orderByRaw('name ASC')->get();
+
+                            return view('cadastro.cadastro_usuario',compact('usuarios'));
+                        }else{
+                            return;
+                        }    
+                    }
 
     //cadastro usuario
-    public function novo_usuario($atributo){
-        if($atributo == "convidar"){
-            return view('cadastro.cadastro_usuario_convite');
-        }elseif ($atributo == "cadastrar") {
-            return view('cadastro.cadastro_usuario_novo');
-        }else{
-            return;
-        }
-    }
+                    public function novo_usuario($atributo){
+                        if($atributo == "convidar"){
+                            return view('cadastro.cadastro_usuario_convite');
+                        }elseif ($atributo == "cadastrar") {
+                            return view('cadastro.cadastro_usuario_novo');
+                        }else{
+                            return;
+                        }
+                    }
 
     public function enviar_convite(Request $request){//testar no servidor em localhost não funciona
 
@@ -246,7 +248,8 @@ class Cadastro_Controller extends Controller
             'prateleira'=> $data['prateleira'],
             'minimo'=> $data['minimo'],
             'observacao'=> $data['observacao'],
-            'saldo'=> 0
+            'saldo'=> 0,
+            'ativo'=> 1
         ]);
 
         return redirect('cadastro/produto');
@@ -289,7 +292,9 @@ class Cadastro_Controller extends Controller
 
         $produto = \App\Produto::find($id);
 
-        $produto = $produto->delete();
+        $produto->ativo = '0';
+
+        $produto->save();   
 
         return redirect('cadastro/produto');      
 
@@ -358,7 +363,9 @@ class Cadastro_Controller extends Controller
                 produtos.minimo, 
                 produtos.observacao 
                 FROM produtos, marcas, departamentos
-                WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+                WHERE produtos.id_marca = marcas.id 
+                AND produtos.id_departamento = departamentos.id
+                AND produtos.ativo = '1'
                 AND (
                 produtos.descricao LIKE '%".$busca."%' OR
                 produtos.codigo_barras LIKE '%".$busca."%' OR
@@ -1150,7 +1157,7 @@ class Cadastro_Controller extends Controller
 
 
                // echo $departamentos->nome;
-   
+            
 
             //echo $departamentos->nome;
 

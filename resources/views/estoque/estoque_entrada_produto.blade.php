@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.app2')
 @section('content')
 
 <script type="text/javascript">
@@ -188,21 +187,21 @@
                                 <table>
                                     <td>
                                         <label class="col-md-3 control-label" for="num_nota_fiscal" style="min-width: 100px;">Nota fiscal</label>
-                                        <div class="col-md-6">
-                                            <input class="form-control" type="text" name="num_nota_fiscal" value="{{$entrada->num_nota_fiscal}}" readonly style="min-width: 200px;">
+                                        <div class="col-md-6" style="padding-bottom: 1em;">
+                                            <input class="form-control number" type="text" name="num_nota_fiscal" value="{{$entrada->num_nota_fiscal}}" readonly style="min-width: 200px;">
                                         </div>
                                     </td>
                                     <td>
                                         <label class="col-md-3 control-label" for="id_fornecedor" style="min-width: 100px;">Fornecedor</label>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6" style="padding-bottom: 1em;">
                                             <input class="form-control" type="text" name="id_fornecedor" value="{{$nome}}" readonly style="min-width: 200px;">
                                         </div>
                                     </td>
                                     <tr></tr>
-                                    <td style="float: left">
-                                        <label class="col-md-3 control-label" style="min-width: 100px; padding-bottom: 1em; padding-top: 1em;" for="num_nota_fiscal">Procurar</label>
+                                    <td style="float: left;">
+                                        <label class="col-md-3 control-label" style="min-width: 100px; padding-bottom: 1em;" for="num_nota_fiscal">Procurar</label>
                                         <div class="col-md-6">
-                                                <div class="form-group" style="padding-top: 1em;">
+                                                <div class="form-group" style="padding-bottom: 1em;">
                                                     <input style="min-width: 300px;" type="text" id="input_search" name="input_search" class="form-control" placeholder="Código, descrição, marca ou departamento" autofocus="autofocus" onkeypress="getPageDataEnter(event)">
                                                 </div>
                                                 <td>

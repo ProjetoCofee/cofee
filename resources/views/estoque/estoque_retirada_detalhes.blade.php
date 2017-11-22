@@ -131,6 +131,15 @@
 
 </script>
 
+<style type="text/css">
+    label {
+        text-align: right;
+    }
+    td{
+        margin-bottom: 1em; 
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-14 col-md-offset-0">
@@ -179,14 +188,14 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="min-width: 150px;">Nº solicitação</label>
                                         <div class="col-md-6">
-                                            <input class="form-control" type="text" value="{{$id_solicitacao}}" readonly style="min-width: 200px;">
+                                            <input class="form-control number" type="text" value="{{$id_solicitacao}}" readonly style="min-width: 200px;">
                                         </div>
                                     </td>
                                     <tr>
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="min-width: 150px;">Solicitante</label>
                                         <div class="col-md-6">
-                                            <input class="form-control" type="text" value="{{$solicitante}}" readonly style="min-width: 200px;">
+                                            <input class="form-control" type="text" value="{{$solicitante}}" readonly style="min-width: 200px; text-transform:uppercase;">
                                         </div>
                                     </td>
                                     <td style="float: left; padding-bottom: 1em;">
@@ -199,7 +208,7 @@
                                     <td style="float: left; padding-bottom: 1em;">
                                         <label class="col-md-3 control-label" style="min-width: 150px;">Aprovador</label>
                                         <div class="col-md-6">
-                                            <input class="form-control" type="text" value="{{$aprovador}}" readonly style="min-width: 200px;">
+                                            <input class="form-control" type="text" value="{{$aprovador}}" readonly style="min-width: 200px; text-transform:uppercase">
                                         </div>
                                     </td>
                                     <td style="float: left; padding-bottom: 1em;">
