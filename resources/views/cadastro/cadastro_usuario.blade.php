@@ -80,10 +80,10 @@
                 </div>
             </div>
 
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Cadastro de usuários</div>
+                        <div class="panel-heading">Cadastro de usuários<div style="float: right; font-size: 17pt;"><a target="_blank" href="/cadastro/usuario/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
 
                             <table>
@@ -96,7 +96,7 @@
 
                                     <td>
                                         <form class="btn-new" method="get" action="/cadastro/usuario/cadastrar">
-                                            <button type="submit" class="btn btn-primary">Novo</button>
+                                            <button type="submit" class="btn btn-primary"><span style="color: white" class="glyphicon glyphicon-plus"></span> Novo</button>
                                         </form>
                                     </td>
 

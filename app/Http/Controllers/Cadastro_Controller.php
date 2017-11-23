@@ -343,50 +343,50 @@ class Cadastro_Controller extends Controller
     }
 
     //busca produto
-    public function busca_produto(Request $request){
+    // public function busca_produto(Request $request){
 
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'produto';
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'produto';
 
-        if($busca != ''){
-            $produtos = DB::select("
-                SELECT
-                produtos.id,
-                produtos.codigo_barras, 
-                produtos.descricao, 
-                marcas.nome as nome_marca, 
-                departamentos.nome as nome_departamento, 
-                produtos.saldo, 
-                produtos.unidade_medida, 
-                produtos.posicao, 
-                produtos.minimo, 
-                produtos.observacao 
-                FROM produtos, marcas, departamentos
-                WHERE produtos.id_marca = marcas.id 
-                AND produtos.id_departamento = departamentos.id
-                AND produtos.ativo = '1'
-                AND (
-                produtos.descricao LIKE '%".$busca."%' OR
-                produtos.codigo_barras LIKE '%".$busca."%' OR
-                marcas.nome LIKE '%".$busca."%' OR
-                departamentos.nome LIKE '%".$busca."%'
-            )
-            ORDER BY descricao ASC
-            ");
+    //     if($busca != ''){
+    //         $produtos = DB::select("
+    //             SELECT
+    //             produtos.id,
+    //             produtos.codigo_barras, 
+    //             produtos.descricao, 
+    //             marcas.nome as nome_marca, 
+    //             departamentos.nome as nome_departamento, 
+    //             produtos.saldo, 
+    //             produtos.unidade_medida, 
+    //             produtos.posicao, 
+    //             produtos.minimo, 
+    //             produtos.observacao 
+    //             FROM produtos, marcas, departamentos
+    //             WHERE produtos.id_marca = marcas.id 
+    //             AND produtos.id_departamento = departamentos.id
+    //             AND produtos.ativo = '1'
+    //             AND (
+    //             produtos.descricao LIKE '%".$busca."%' OR
+    //             produtos.codigo_barras LIKE '%".$busca."%' OR
+    //             marcas.nome LIKE '%".$busca."%' OR
+    //             departamentos.nome LIKE '%".$busca."%'
+    //         )
+    //         ORDER BY descricao ASC
+    //         ");
 
-            if (count($produtos) != 0) {
+    //         if (count($produtos) != 0) {
 
-                return view('cadastro.cadastro_produto_busca',compact('produtos','busca'));
-            }else{
+    //             return view('cadastro.cadastro_produto_busca',compact('produtos','busca'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca','tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca','tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/produto');
-        }
-    }
+    //         return redirect('cadastro/produto');
+    //     }
+    // }
 
 
     //MARCA
@@ -752,187 +752,187 @@ class Cadastro_Controller extends Controller
         return redirect('cadastro/juridica');      
     }
 
-    public function busca_pessoa_fisica(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'fisica';
+    // public function busca_pessoa_fisica(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'fisica';
 
-        if($busca != ''){
-            $pessoas = DB::select("
-                SELECT
-                pessoa_fisicas.id,
-                pessoa_fisicas.nome, 
-                pessoa_fisicas.cpf, 
-                pessoa_fisicas.rg, 
-                pessoa_fisicas.orgao_expedidor,
-                pessoa_fisicas.sexo,
-                pessoa_fisicas.data_nascim, 
-                pessoa_fisicas.email, 
-                pessoa_fisicas.telefone, 
-                pessoa_fisicas.telefone_sec, 
-                pessoa_fisicas.cep, 
-                pessoa_fisicas.uf, 
-                pessoa_fisicas.cidade, 
-                pessoa_fisicas.logradouro,
-                pessoa_fisicas.complemento, 
-                pessoa_fisicas.numero,
-                pessoa_fisicas.tipo 
-                FROM pessoa_fisicas
-                WHERE pessoa_fisicas.cpf LIKE '%".$busca."%' 
-                OR pessoa_fisicas.nome LIKE '%".$busca."%' 
-                OR pessoa_fisicas.rg LIKE '%".$busca."%'
-                ORDER BY nome ASC
-                ");
+    //     if($busca != ''){
+    //         $pessoas = DB::select("
+    //             SELECT
+    //             pessoa_fisicas.id,
+    //             pessoa_fisicas.nome, 
+    //             pessoa_fisicas.cpf, 
+    //             pessoa_fisicas.rg, 
+    //             pessoa_fisicas.orgao_expedidor,
+    //             pessoa_fisicas.sexo,
+    //             pessoa_fisicas.data_nascim, 
+    //             pessoa_fisicas.email, 
+    //             pessoa_fisicas.telefone, 
+    //             pessoa_fisicas.telefone_sec, 
+    //             pessoa_fisicas.cep, 
+    //             pessoa_fisicas.uf, 
+    //             pessoa_fisicas.cidade, 
+    //             pessoa_fisicas.logradouro,
+    //             pessoa_fisicas.complemento, 
+    //             pessoa_fisicas.numero,
+    //             pessoa_fisicas.tipo 
+    //             FROM pessoa_fisicas
+    //             WHERE pessoa_fisicas.cpf LIKE '%".$busca."%' 
+    //             OR pessoa_fisicas.nome LIKE '%".$busca."%' 
+    //             OR pessoa_fisicas.rg LIKE '%".$busca."%'
+    //             ORDER BY nome ASC
+    //             ");
 
-            if (count($pessoas) != 0) {
+    //         if (count($pessoas) != 0) {
 
-                return view('cadastro.cadastro_pessoa_busca',compact('pessoas','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_pessoa_busca',compact('pessoas','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/fisica');
-        }
-    }
+    //         return redirect('cadastro/fisica');
+    //     }
+    // }
 
-    public function busca_pessoa_juridica(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'juridica';
+    // public function busca_pessoa_juridica(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'juridica';
 
-        if($busca != ''){
-            $pessoas = DB::select("
-                SELECT
-                pessoa_juridicas.id,
-                pessoa_juridicas.nome_fantasia, 
-                pessoa_juridicas.cnpj, 
-                pessoa_juridicas.inscricao_estadual, 
-                pessoa_juridicas.razao_social, 
-                pessoa_juridicas.email, 
-                pessoa_juridicas.telefone, 
-                pessoa_juridicas.telefone_sec, 
-                pessoa_juridicas.cep, 
-                pessoa_juridicas.uf, 
-                pessoa_juridicas.cidade, 
-                pessoa_juridicas.logradouro, 
-                pessoa_juridicas.numero,
-                pessoa_juridicas.tipo 
-                FROM pessoa_juridicas
-                WHERE pessoa_juridicas.cnpj LIKE '%".$busca."%' 
-                OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
-                OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
-                OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
-                ORDER BY nome_fantasia ASC
-                ");
+    //     if($busca != ''){
+    //         $pessoas = DB::select("
+    //             SELECT
+    //             pessoa_juridicas.id,
+    //             pessoa_juridicas.nome_fantasia, 
+    //             pessoa_juridicas.cnpj, 
+    //             pessoa_juridicas.inscricao_estadual, 
+    //             pessoa_juridicas.razao_social, 
+    //             pessoa_juridicas.email, 
+    //             pessoa_juridicas.telefone, 
+    //             pessoa_juridicas.telefone_sec, 
+    //             pessoa_juridicas.cep, 
+    //             pessoa_juridicas.uf, 
+    //             pessoa_juridicas.cidade, 
+    //             pessoa_juridicas.logradouro, 
+    //             pessoa_juridicas.numero,
+    //             pessoa_juridicas.tipo 
+    //             FROM pessoa_juridicas
+    //             WHERE pessoa_juridicas.cnpj LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
+    //             ORDER BY nome_fantasia ASC
+    //             ");
 
-            if (count($pessoas) != 0) {
+    //         if (count($pessoas) != 0) {
 
-                return view('cadastro.cadastro_pessoa_busca',compact('pessoas','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_pessoa_busca',compact('pessoas','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/juridica');
-        }
-    }
+    //         return redirect('cadastro/juridica');
+    //     }
+    // }
 
-    public function busca_cliente_fisica(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'cliente-fisica';
+    // public function busca_cliente_fisica(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'cliente-fisica';
 
-        if($busca != ''){
-            $clientesF = DB::select("
-                SELECT
-                pessoa_fisicas.id,
-                pessoa_fisicas.nome, 
-                pessoa_fisicas.cpf, 
-                pessoa_fisicas.rg, 
-                pessoa_fisicas.orgao_expedidor,
-                pessoa_fisicas.sexo,
-                pessoa_fisicas.data_nascim, 
-                pessoa_fisicas.email, 
-                pessoa_fisicas.telefone, 
-                pessoa_fisicas.telefone_sec, 
-                pessoa_fisicas.cep, 
-                pessoa_fisicas.uf, 
-                pessoa_fisicas.cidade, 
-                pessoa_fisicas.logradouro, 
-                pessoa_fisicas.complemento,
-                pessoa_fisicas.numero,
-                pessoa_fisicas.tipo 
-                FROM pessoa_fisicas, clientes
-                WHERE pessoa_fisicas.id = clientes.id_pessoa_fisica
-                AND(
-                pessoa_fisicas.cpf LIKE '%".$busca."%' 
-                OR pessoa_fisicas.nome LIKE '%".$busca."%' 
-                OR pessoa_fisicas.rg LIKE '%".$busca."%'
-            )
-            ORDER BY nome ASC
-            ");
+    //     if($busca != ''){
+    //         $clientesF = DB::select("
+    //             SELECT
+    //             pessoa_fisicas.id,
+    //             pessoa_fisicas.nome, 
+    //             pessoa_fisicas.cpf, 
+    //             pessoa_fisicas.rg, 
+    //             pessoa_fisicas.orgao_expedidor,
+    //             pessoa_fisicas.sexo,
+    //             pessoa_fisicas.data_nascim, 
+    //             pessoa_fisicas.email, 
+    //             pessoa_fisicas.telefone, 
+    //             pessoa_fisicas.telefone_sec, 
+    //             pessoa_fisicas.cep, 
+    //             pessoa_fisicas.uf, 
+    //             pessoa_fisicas.cidade, 
+    //             pessoa_fisicas.logradouro, 
+    //             pessoa_fisicas.complemento,
+    //             pessoa_fisicas.numero,
+    //             pessoa_fisicas.tipo 
+    //             FROM pessoa_fisicas, clientes
+    //             WHERE pessoa_fisicas.id = clientes.id_pessoa_fisica
+    //             AND(
+    //             pessoa_fisicas.cpf LIKE '%".$busca."%' 
+    //             OR pessoa_fisicas.nome LIKE '%".$busca."%' 
+    //             OR pessoa_fisicas.rg LIKE '%".$busca."%'
+    //         )
+    //         ORDER BY nome ASC
+    //         ");
 
-            if (count($clientesF) != 0) {
+    //         if (count($clientesF) != 0) {
 
-                return view('cadastro.cadastro_cliente_busca',compact('clientesF','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_cliente_busca',compact('clientesF','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/cliente-fisica');
-        }
-    }
+    //         return redirect('cadastro/cliente-fisica');
+    //     }
+    // }
 
-    public function busca_cliente_juridica(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'cliente-juridica';
+    // public function busca_cliente_juridica(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'cliente-juridica';
 
-        if($busca != ''){
-            $clientesJ = DB::select("
-                SELECT
-                pessoa_juridicas.id,
-                pessoa_juridicas.nome_fantasia, 
-                pessoa_juridicas.cnpj, 
-                pessoa_juridicas.inscricao_estadual, 
-                pessoa_juridicas.razao_social, 
-                pessoa_juridicas.email, 
-                pessoa_juridicas.telefone, 
-                pessoa_juridicas.telefone_sec, 
-                pessoa_juridicas.cep, 
-                pessoa_juridicas.uf, 
-                pessoa_juridicas.cidade, 
-                pessoa_juridicas.logradouro, 
-                pessoa_juridicas.numero,
-                pessoa_juridicas.tipo
-                FROM pessoa_juridicas, clientes
-                WHERE pessoa_juridicas.id = clientes.id_pessoa_juridica
-                AND(
-                pessoa_juridicas.cnpj LIKE '%".$busca."%' 
-                OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
-                OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
-                OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
-            )
-            ORDER BY nome_fantasia ASC
-            ");
+    //     if($busca != ''){
+    //         $clientesJ = DB::select("
+    //             SELECT
+    //             pessoa_juridicas.id,
+    //             pessoa_juridicas.nome_fantasia, 
+    //             pessoa_juridicas.cnpj, 
+    //             pessoa_juridicas.inscricao_estadual, 
+    //             pessoa_juridicas.razao_social, 
+    //             pessoa_juridicas.email, 
+    //             pessoa_juridicas.telefone, 
+    //             pessoa_juridicas.telefone_sec, 
+    //             pessoa_juridicas.cep, 
+    //             pessoa_juridicas.uf, 
+    //             pessoa_juridicas.cidade, 
+    //             pessoa_juridicas.logradouro, 
+    //             pessoa_juridicas.numero,
+    //             pessoa_juridicas.tipo
+    //             FROM pessoa_juridicas, clientes
+    //             WHERE pessoa_juridicas.id = clientes.id_pessoa_juridica
+    //             AND(
+    //             pessoa_juridicas.cnpj LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
+    //         )
+    //         ORDER BY nome_fantasia ASC
+    //         ");
 
-            if (count($clientesJ) != 0) {
+    //         if (count($clientesJ) != 0) {
 
-                return view('cadastro.cadastro_cliente_busca',compact('clientesJ','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_cliente_busca',compact('clientesJ','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/cliente-juridica');
-        }
-    }
+    //         return redirect('cadastro/cliente-juridica');
+    //     }
+    // }
 
     public function delete_cliente_fisica($id){
 
@@ -981,196 +981,196 @@ class Cadastro_Controller extends Controller
         return redirect('cadastro/cliente-juridica');      
     }
 
-    public function busca_fornecedor_fisica(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'fornecedor-fisica';
+    // public function busca_fornecedor_fisica(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'fornecedor-fisica';
 
-        if($busca != ''){
-            $fornecedorsF = DB::select("
-                SELECT
-                pessoa_fisicas.id,
-                pessoa_fisicas.nome, 
-                pessoa_fisicas.cpf, 
-                pessoa_fisicas.rg, 
-                pessoa_fisicas.sexo,
-                pessoa_fisicas.orgao_expedidor,
-                pessoa_fisicas.data_nascim, 
-                pessoa_fisicas.email, 
-                pessoa_fisicas.telefone, 
-                pessoa_fisicas.telefone_sec, 
-                pessoa_fisicas.cep, 
-                pessoa_fisicas.uf, 
-                pessoa_fisicas.cidade, 
-                pessoa_fisicas.logradouro, 
-                pessoa_fisicas.complemento,
-                pessoa_fisicas.numero,
-                pessoa_fisicas.tipo 
-                FROM pessoa_fisicas, fornecedors
-                WHERE pessoa_fisicas.id = fornecedors.id_pessoa_fisica
-                AND(
-                pessoa_fisicas.cpf LIKE '%".$busca."%' 
-                OR pessoa_fisicas.nome LIKE '%".$busca."%' 
-                OR pessoa_fisicas.rg LIKE '%".$busca."%'
-            )
-            ORDER BY nome ASC
-            ");
+    //     if($busca != ''){
+    //         $fornecedorsF = DB::select("
+    //             SELECT
+    //             pessoa_fisicas.id,
+    //             pessoa_fisicas.nome, 
+    //             pessoa_fisicas.cpf, 
+    //             pessoa_fisicas.rg, 
+    //             pessoa_fisicas.sexo,
+    //             pessoa_fisicas.orgao_expedidor,
+    //             pessoa_fisicas.data_nascim, 
+    //             pessoa_fisicas.email, 
+    //             pessoa_fisicas.telefone, 
+    //             pessoa_fisicas.telefone_sec, 
+    //             pessoa_fisicas.cep, 
+    //             pessoa_fisicas.uf, 
+    //             pessoa_fisicas.cidade, 
+    //             pessoa_fisicas.logradouro, 
+    //             pessoa_fisicas.complemento,
+    //             pessoa_fisicas.numero,
+    //             pessoa_fisicas.tipo 
+    //             FROM pessoa_fisicas, fornecedors
+    //             WHERE pessoa_fisicas.id = fornecedors.id_pessoa_fisica
+    //             AND(
+    //             pessoa_fisicas.cpf LIKE '%".$busca."%' 
+    //             OR pessoa_fisicas.nome LIKE '%".$busca."%' 
+    //             OR pessoa_fisicas.rg LIKE '%".$busca."%'
+    //         )
+    //         ORDER BY nome ASC
+    //         ");
 
-            if (count($fornecedorsF) != 0) {
+    //         if (count($fornecedorsF) != 0) {
 
-                return view('cadastro.cadastro_fornecedor_busca',compact('fornecedorsF','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_fornecedor_busca',compact('fornecedorsF','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/fornecedor-fisica');
-        }
-    }
+    //         return redirect('cadastro/fornecedor-fisica');
+    //     }
+    // }
 
-    public function busca_fornecedor_juridica(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'fornecedor-juridica';
+    // public function busca_fornecedor_juridica(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'fornecedor-juridica';
 
-        if($busca != ''){
-            $fornecedorsJ = DB::select("
-                SELECT
-                pessoa_juridicas.id,
-                pessoa_juridicas.nome_fantasia, 
-                pessoa_juridicas.cnpj, 
-                pessoa_juridicas.inscricao_estadual, 
-                pessoa_juridicas.razao_social, 
-                pessoa_juridicas.email, 
-                pessoa_juridicas.telefone, 
-                pessoa_juridicas.telefone_sec, 
-                pessoa_juridicas.cep, 
-                pessoa_juridicas.uf, 
-                pessoa_juridicas.cidade, 
-                pessoa_juridicas.logradouro, 
-                pessoa_juridicas.numero,
-                pessoa_juridicas.tipo
-                FROM pessoa_juridicas, fornecedors
-                WHERE pessoa_juridicas.id = fornecedors.id_pessoa_juridica
-                AND(
-                pessoa_juridicas.cnpj LIKE '%".$busca."%' 
-                OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
-                OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
-                OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
-            )
-            ORDER BY nome_fantasia ASC
-            ");
+    //     if($busca != ''){
+    //         $fornecedorsJ = DB::select("
+    //             SELECT
+    //             pessoa_juridicas.id,
+    //             pessoa_juridicas.nome_fantasia, 
+    //             pessoa_juridicas.cnpj, 
+    //             pessoa_juridicas.inscricao_estadual, 
+    //             pessoa_juridicas.razao_social, 
+    //             pessoa_juridicas.email, 
+    //             pessoa_juridicas.telefone, 
+    //             pessoa_juridicas.telefone_sec, 
+    //             pessoa_juridicas.cep, 
+    //             pessoa_juridicas.uf, 
+    //             pessoa_juridicas.cidade, 
+    //             pessoa_juridicas.logradouro, 
+    //             pessoa_juridicas.numero,
+    //             pessoa_juridicas.tipo
+    //             FROM pessoa_juridicas, fornecedors
+    //             WHERE pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+    //             AND(
+    //             pessoa_juridicas.cnpj LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.nome_fantasia LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.razao_social LIKE '%".$busca."%' 
+    //             OR pessoa_juridicas.inscricao_estadual LIKE '%".$busca."%'
+    //         )
+    //         ORDER BY nome_fantasia ASC
+    //         ");
 
-            if (count($fornecedorsJ) != 0) {
+    //         if (count($fornecedorsJ) != 0) {
 
-                return view('cadastro.cadastro_fornecedor_busca',compact('fornecedorsJ','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_fornecedor_busca',compact('fornecedorsJ','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/fornecedor-juridica');
-        }
-    }
+    //         return redirect('cadastro/fornecedor-juridica');
+    //     }
+    // }
 
-    public function busca_usuario(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'usuario';
+    // public function busca_usuario(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'usuario';
 
-        if($busca != ''){
-            $usuarios = DB::select("
-                SELECT
-                users.id,
-                users.name, 
-                users.email
-                FROM users
-                WHERE users.id != '0'
-                AND users.name LIKE '%".$busca."%' OR users.id LIKE '%".$busca."%' 
-                OR users.email LIKE '%".$busca."%'
-                ORDER BY name
-                ");
+    //     if($busca != ''){
+    //         $usuarios = DB::select("
+    //             SELECT
+    //             users.id,
+    //             users.name, 
+    //             users.email
+    //             FROM users
+    //             WHERE users.id != '0'
+    //             AND users.name LIKE '%".$busca."%' OR users.id LIKE '%".$busca."%' 
+    //             OR users.email LIKE '%".$busca."%'
+    //             ORDER BY name
+    //             ");
 
-            if (count($usuarios) != 0) {
+    //         if (count($usuarios) != 0) {
 
-                return view('cadastro.cadastro_usuario_busca',compact('usuarios','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_usuario_busca',compact('usuarios','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/usuario');
-        }
-    }
+    //         return redirect('cadastro/usuario');
+    //     }
+    // }
 
-    public function busca_marca(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'marca';
+    // public function busca_marca(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'marca';
 
-        if($busca != ''){
-            $marcas = DB::select("
-                SELECT
-                marcas.id,
-                marcas.nome
-                FROM marcas
-                WHERE marcas.nome LIKE '%".$busca."%' 
-                OR marcas.id LIKE '%".$busca."%'
-                ORDER BY nome ASC
-                ");
+    //     if($busca != ''){
+    //         $marcas = DB::select("
+    //             SELECT
+    //             marcas.id,
+    //             marcas.nome
+    //             FROM marcas
+    //             WHERE marcas.nome LIKE '%".$busca."%' 
+    //             OR marcas.id LIKE '%".$busca."%'
+    //             ORDER BY nome ASC
+    //             ");
 
-            if (count($marcas) != 0) {
+    //         if (count($marcas) != 0) {
 
-                return view('cadastro.cadastro_marca_busca',compact('marcas','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_marca_busca',compact('marcas','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/marca');
-        }
-    }
+    //         return redirect('cadastro/marca');
+    //     }
+    // }
 
-    public function busca_departamento(Request $request){
-        $busca = $request->search;
-        trim($busca);
-        $tipo = 'departamento';
+    // public function busca_departamento(Request $request){
+    //     $busca = $request->search;
+    //     trim($busca);
+    //     $tipo = 'departamento';
 
-        if($busca != ''){
-            $departamentos = DB::select("
-                SELECT
-                departamentos.id,
-                departamentos.nome
-                FROM departamentos
-                WHERE departamentos.nome LIKE '%".$busca."%' 
-                OR departamentos.id LIKE '%".$busca."%'
-                ORDER BY nome ASC
-                ");
+    //     if($busca != ''){
+    //         $departamentos = DB::select("
+    //             SELECT
+    //             departamentos.id,
+    //             departamentos.nome
+    //             FROM departamentos
+    //             WHERE departamentos.nome LIKE '%".$busca."%' 
+    //             OR departamentos.id LIKE '%".$busca."%'
+    //             ORDER BY nome ASC
+    //             ");
 
-            // $departamentos = DB::table('departamentos')->select(
-            //     'departamentos.id', 
-            //     'departamentos.nome')->where('nome', '=', $busca)->where('id', '=', $busca);
+    //         // $departamentos = DB::table('departamentos')->select(
+    //         //     'departamentos.id', 
+    //         //     'departamentos.nome')->where('nome', '=', $busca)->where('id', '=', $busca);
 
 
-               // echo $departamentos->nome;
+    //            // echo $departamentos->nome;
             
 
-            //echo $departamentos->nome;
+    //         //echo $departamentos->nome;
 
-            if (count($departamentos) != 0) {
+    //         if (count($departamentos) != 0) {
 
-                return view('cadastro.cadastro_departamento_busca',compact('departamentos','busca', 'tipo'));
-            }else{
+    //             return view('cadastro.cadastro_departamento_busca',compact('departamentos','busca', 'tipo'));
+    //         }else{
 
-                return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
-            }
-        }else{
+    //             return view('cadastro.cadastro_busca_vazia',compact('busca', 'tipo'));
+    //         }
+    //     }else{
 
-            return redirect('cadastro/departamento');
-        }
-    }
+    //         return redirect('cadastro/departamento');
+    //     }
+    // }
 }

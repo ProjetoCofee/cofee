@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
 
@@ -76,7 +76,7 @@
                     var nome_departamento = data[0].nome_departamento;
                     var saldo = data[0].saldo;
 
-                    $('#modal_retirada').html('<form class="form-horizontal"><div class="form-group"><label for="codigo_barras" class="col-md-4 control-label">Código</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="'+codigo_barras+'" readonly></div><label for="descricao" class="col-md-4 control-label">Descrição</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly></div><label for="marca" class="col-md-4 control-label">Marca</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="marca" type="text" class="form-control" name="marca" value="'+nome_marca+'" readonly></div><label for="departamento" class="col-md-4 control-label">Departamento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="departamento" type="text" class="form-control" name="departamento" value="'+nome_departamento+'" readonly></div><label for="saldo" class="col-md-4 control-label">Saldo</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="saldo" type="text" class="form-control" name="saldo" value="'+saldo+'" readonly></div><label for="quantidade" class="col-md-4 control-label">Quantidade</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="quantidade" type="number" class="form-control" name="quantidade" autocomplete="off" onkeyup="calcula_saldo()" required></div><div align="center"><button id="btn_inserir" type="button" class="btn crud-submit btn-primary" onclick="solicita_produto('+id+')" data-dismiss="modal" aria-label="Close">Inserir</button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></div></div></form>');    
+                    $('#modal_retirada').html('<form class="form-horizontal"><div class="form-group"><label for="codigo_barras" class="col-md-4 control-label">Código</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="'+codigo_barras+'" readonly></div><label for="descricao" class="col-md-4 control-label">Descrição</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="descricao" type="text" class="form-control" name="descricao" value="'+descricao+'" readonly></div><label for="marca" class="col-md-4 control-label">Marca</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="marca" type="text" class="form-control" name="marca" value="'+nome_marca+'" readonly></div><label for="departamento" class="col-md-4 control-label">Departamento</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="departamento" type="text" class="form-control" name="departamento" value="'+nome_departamento+'" readonly></div><label for="saldo" class="col-md-4 control-label">Saldo</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="saldo" type="text" class="form-control" name="saldo" value="'+saldo+'" readonly></div><label for="quantidade" class="col-md-4 control-label">Quantidade</label><div class="col-md-6" style="padding-bottom: 1em;"><input id="quantidade" type="number" min="1" max="99999" class="form-control" name="quantidade" autocomplete="off" onkeyup="calcula_saldo()" required></div><div align="center"><button id="btn_inserir" type="button" class="btn crud-submit btn-primary" onclick="solicita_produto('+id+')" data-dismiss="modal" aria-label="Close">Inserir</button><button type="button" class="btn crud-submit btn-primary" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Cancelar</span></button></div></div></form>');    
                 });
             }
         });
@@ -184,21 +184,24 @@
                 </div>
             </div>
                   
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Solicitar produtos do estoque</div>
+                        <div class="panel-heading">Solicitar produtos do estoque<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/retirada_produto/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
-                                    <td>
-                                        <div class="form-group" style="padding-top: 1em; margin-right: 1em;">
-                                            <input style="min-width: 300px;" type="text" id="input_search" name="input_search" class="form-control" placeholder="Código, descrição, marca ou departamento" onkeypress="getPageDataEnter(event)">
+                                    <td style="float: left;">
+                                        <label class="col-md-3 control-label" style="min-width: 100px; padding-bottom: 1em;" for="num_nota_fiscal">Procurar</label>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="padding-bottom: : 1em; margin-right: 1em;">
+                                                <input style="min-width: 300px;" type="text" id="input_search" name="input_search" class="form-control" placeholder="Código, descrição, marca ou departamento" onkeypress="getPageDataEnter(event)">
+                                            </div>
+                                            <td>
+                                                <button type="submit" class="btn btn-icon" onclick="getPageData()"><span class="glyphicon glyphicon-search"></span></button>
+                                                <button type="submit" class="btn btn-icon" onclick="clearPageData()"><span class="glyphicon glyphicon-arrow-left"></span></button>
+                                            </td>
                                         </div>
-                                        <td>
-                                            <button type="submit" class="btn btn-icon" onclick="getPageData()"><span class="glyphicon glyphicon-search"></span></button>
-                                            <button type="submit" class="btn btn-icon" onclick="clearPageData()"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                        </td>
                                         <td>
                                         <label class="col-md-5 control-label" for="num_nota_fiscal" style="min-width: 100px;">Nº solicitação</label>
                                         <div class="col-md-6">

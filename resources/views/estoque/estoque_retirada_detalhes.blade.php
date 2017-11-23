@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
 
@@ -177,10 +177,10 @@
                 </div>
             </div>
                   
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10    col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Solicitação de retirada</div>
+                        <div class="panel-heading">Detalhes da retirada<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/retirada_detalhes/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
 
                             <div style="float: left; padding-bottom: 1em;">

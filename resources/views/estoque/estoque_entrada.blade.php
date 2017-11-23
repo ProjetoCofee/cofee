@@ -73,10 +73,10 @@
                 </div>
             </div>
 
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Entrada de produtos</div>
+                        <div class="panel-heading">Entrada de produtos<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/entrada/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
                             <form class="form-horizontal" method="POST" action="/estoque/produto">
                                 {{ csrf_field() }}

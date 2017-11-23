@@ -87,13 +87,13 @@
             <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Cadastro de Marcas</div>
+                        <div class="panel-heading">Cadastro de Marcas<div style="float: right; font-size: 17pt;"><a target="_blank" href="/cadastro/marca/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
                             <table>
                                 <tr>
                                     <td>
                                         <form class="btn-new" method="get" action="/cadastro/marca/cadastrar">
-                                            <button type="submit" class="btn btn-primary">Nova Marca</button>
+                                            <button type="submit" class="btn btn-primary"><span style="color: white" class="glyphicon glyphicon-plus"></span> Novo</button>
                                         </form>
                                     </td>
                                 </tr>

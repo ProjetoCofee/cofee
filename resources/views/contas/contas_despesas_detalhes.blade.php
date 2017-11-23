@@ -125,6 +125,15 @@
 
 </script>
 
+<style type="text/css">
+    label {
+        text-align: right;
+    }
+    td{
+        margin-bottom: 1em; 
+    }
+</style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-14 col-md-offset-0">

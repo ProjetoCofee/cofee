@@ -22,6 +22,10 @@ Route::get('/cadastro/{atributo}', 'Cadastro_Controller@index')->name('cadastro'
 Route::get('/estoque/{atributo}', 'Estoque_Controller@index')->name('estoque');
 Route::get('/contas/{atributo}', 'Contas_Controller@index')->name('contas');
 
+Route::get('/cadastro/{atributo}/help', 'Help_Controller@help_cadastro')->name('help_cadastro');
+Route::get('/estoque/{atributo}/help', 'Help_Controller@help_estoque')->name('help_estoque');
+
+
 //cadastro usuario
 //get
 Route::get('/cadastro/usuario/{convidar}', 'Cadastro_Controller@novo_usuario')->name('novo_usuario');

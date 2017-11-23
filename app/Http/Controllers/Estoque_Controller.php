@@ -31,7 +31,9 @@ class Estoque_Controller extends Controller
 				produtos.minimo, 
 				produtos.observacao 
 				FROM produtos, marcas, departamentos
-				WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+				WHERE produtos.id_marca = marcas.id 
+				AND produtos.id_departamento = departamentos.id
+				AND produtos.ativo = '1'
 				ORDER BY descricao ASC
 				");
 
@@ -166,47 +168,47 @@ class Estoque_Controller extends Controller
 	}
 
     //produto estoque
-	public function busca_produto(Request $request){
+	// public function busca_produto(Request $request){
 
-		$busca = $request->search;
-		trim($busca);
+	// 	$busca = $request->search;
+	// 	trim($busca);
 
-		if($busca != ''){
-			$produtos = DB::select("
-				SELECT
-				produtos.id,
-				produtos.codigo_barras, 
-				produtos.descricao, 
-				marcas.nome as nome_marca, 
-				departamentos.nome as nome_departamento, 
-				produtos.saldo, 
-				produtos.unidade_medida, 
-				produtos.posicao, 
-				produtos.minimo, 
-				produtos.observacao 
-				FROM produtos, marcas, departamentos
-				WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
-				AND (
-					produtos.descricao LIKE '%".$busca."%' OR
-					produtos.codigo_barras LIKE '%".$busca."%' OR
-					marcas.nome LIKE '%".$busca."%' OR
-					departamentos.nome LIKE '%".$busca."%'
-				)
-				ORDER BY descricao ASC
-			");
+	// 	if($busca != ''){
+	// 		$produtos = DB::select("
+	// 			SELECT
+	// 			produtos.id,
+	// 			produtos.codigo_barras, 
+	// 			produtos.descricao, 
+	// 			marcas.nome as nome_marca, 
+	// 			departamentos.nome as nome_departamento, 
+	// 			produtos.saldo, 
+	// 			produtos.unidade_medida, 
+	// 			produtos.posicao, 
+	// 			produtos.minimo, 
+	// 			produtos.observacao 
+	// 			FROM produtos, marcas, departamentos
+	// 			WHERE produtos.id_marca = marcas.id AND produtos.id_departamento = departamentos.id
+	// 			AND (
+	// 				produtos.descricao LIKE '%".$busca."%' OR
+	// 				produtos.codigo_barras LIKE '%".$busca."%' OR
+	// 				marcas.nome LIKE '%".$busca."%' OR
+	// 				departamentos.nome LIKE '%".$busca."%'
+	// 			)
+	// 			ORDER BY descricao ASC
+	// 		");
 
-			if (count($produtos) != 0) {
+	// 		if (count($produtos) != 0) {
 
-				return view('estoque.estoque_busca',compact('produtos','busca'));
-			}else{
+	// 			return view('estoque.estoque_busca',compact('produtos','busca'));
+	// 		}else{
 
-				return view('estoque.estoque_busca_vazia',compact('busca'));
-			}
-		}else{
+	// 			return view('estoque.estoque_busca_vazia',compact('busca'));
+	// 		}
+	// 	}else{
 
-			return redirect('estoque/show');
-		}
-	}
+	// 		return redirect('estoque/show');
+	// 	}
+	// }
 
     //entrada
 	public function create_entrada(Request $data){
@@ -257,41 +259,41 @@ class Estoque_Controller extends Controller
 
 	}
 
-	public function busca_entrada(Request $request){
+	// public function busca_entrada(Request $request){
 
-		$busca = $request->search;
-		trim($busca);
+	// 	$busca = $request->search;
+	// 	trim($busca);
 
-		if($busca != ''){
+	// 	if($busca != ''){
 
-			$entradas= DB::select("
-				SELECT
-				entrada.id,
-				entrada.id_usuario,
-				entrada.data_entrada,
-				entrada.motivo,
-				users.name as responsavel
-				FROM entrada, users
-				WHERE entrada.id_usuario = users.id
-				AND (
-				entrada.id LIKE '%".$busca."%' OR
-				users.name LIKE '%".$busca."%'
-				)
-				ORDER BY data_entrada DESC
-			");
+	// 		$entradas= DB::select("
+	// 			SELECT
+	// 			entrada.id,
+	// 			entrada.id_usuario,
+	// 			entrada.data_entrada,
+	// 			entrada.motivo,
+	// 			users.name as responsavel
+	// 			FROM entrada, users
+	// 			WHERE entrada.id_usuario = users.id
+	// 			AND (
+	// 			entrada.id LIKE '%".$busca."%' OR
+	// 			users.name LIKE '%".$busca."%'
+	// 			)
+	// 			ORDER BY data_entrada DESC
+	// 		");
 
-			if (count($entradas) != 0) {
+	// 		if (count($entradas) != 0) {
 
-				return view('estoque.estoque_historico_entrada_busca',compact('entradas','busca'));
-			}else{
+	// 			return view('estoque.estoque_historico_entrada_busca',compact('entradas','busca'));
+	// 		}else{
 
-				return view('estoque.estoque_historico_entrada_busca_vazia',compact('busca'));
-			}
-		}else{
+	// 			return view('estoque.estoque_historico_entrada_busca_vazia',compact('busca'));
+	// 		}
+	// 	}else{
 
-			return redirect('estoque/historico_entrada');
-		}
-	}
+	// 		return redirect('estoque/historico_entrada');
+	// 	}
+	// }
 
 	public function detalhes_entrada($id){
 
@@ -378,60 +380,60 @@ class Estoque_Controller extends Controller
 	}
 
 	//retirada
-	public function busca_retirada(Request $request){
+	// public function busca_retirada(Request $request){
 
-		$busca = $request->search;
-		trim($busca);
+	// 	$busca = $request->search;
+	// 	trim($busca);
 
-		if($busca != ''){
-			$solicitacoes = DB::select("
-				SELECT
-				users_sol.name as solicitante,
-				solicitacao_produto.id,
-				solicitacao_produto.id_usuario_solicitante,
-				solicitacao_produto.id_usuario_aprova as aprovador,
-				solicitacao_produto.data_solicitacao,
-				solicitacao_produto.data_aprovacao,
-				solicitacao_produto.status
-				FROM solicitacao_produto, users as users_sol
-				WHERE solicitacao_produto.id_usuario_solicitante = users_sol.id
-				AND (
-					users_sol.name LIKE '%".$busca."%' OR
-					solicitacao_produto.id LIKE '%".$busca."%'
-				)
-				ORDER BY data_solicitacao DESC
-			");
+	// 	if($busca != ''){
+	// 		$solicitacoes = DB::select("
+	// 			SELECT
+	// 			users_sol.name as solicitante,
+	// 			solicitacao_produto.id,
+	// 			solicitacao_produto.id_usuario_solicitante,
+	// 			solicitacao_produto.id_usuario_aprova as aprovador,
+	// 			solicitacao_produto.data_solicitacao,
+	// 			solicitacao_produto.data_aprovacao,
+	// 			solicitacao_produto.status
+	// 			FROM solicitacao_produto, users as users_sol
+	// 			WHERE solicitacao_produto.id_usuario_solicitante = users_sol.id
+	// 			AND (
+	// 				users_sol.name LIKE '%".$busca."%' OR
+	// 				solicitacao_produto.id LIKE '%".$busca."%'
+	// 			)
+	// 			ORDER BY data_solicitacao DESC
+	// 		");
 
-			foreach ($solicitacoes as $solicitacao) {
-				if($solicitacao->status == 'f'){
+	// 		foreach ($solicitacoes as $solicitacao) {
+	// 			if($solicitacao->status == 'f'){
 
-					$users = DB::select("
-						SELECT 
-						users_apr.name as aprovador
-						FROM users as users_apr
-						WHERE users_apr.id = '".$solicitacao->aprovador."'
-						");
+	// 				$users = DB::select("
+	// 					SELECT 
+	// 					users_apr.name as aprovador
+	// 					FROM users as users_apr
+	// 					WHERE users_apr.id = '".$solicitacao->aprovador."'
+	// 					");
 
-					if($users){
-						foreach ($users as $user) {
-							$solicitacao->aprovador = $user->aprovador;
-						}
-					}
-				}
-			}
+	// 				if($users){
+	// 					foreach ($users as $user) {
+	// 						$solicitacao->aprovador = $user->aprovador;
+	// 					}
+	// 				}
+	// 			}
+	// 		}
 
-			if (count($solicitacoes) != 0) {
+	// 		if (count($solicitacoes) != 0) {
 
-				return view('estoque.estoque_retirada_busca',compact('solicitacoes','busca'));
-			}else{
+	// 			return view('estoque.estoque_retirada_busca',compact('solicitacoes','busca'));
+	// 		}else{
 
-				return view('estoque.estoque_retirada_busca_vazia',compact('busca'));
-			}
-		}else{
+	// 			return view('estoque.estoque_retirada_busca_vazia',compact('busca'));
+	// 		}
+	// 	}else{
 
-			return redirect('estoque/retirada');
-		}
-	}
+	// 		return redirect('estoque/retirada');
+	// 	}
+	// }
 
 	public function detalhes_retirada($id){
 
@@ -525,46 +527,46 @@ class Estoque_Controller extends Controller
 	}
 
     //compra
-	public function busca_compra(Request $request){
+	// public function busca_compra(Request $request){
 
-		$busca = $request->search;
-		trim($busca);
+	// 	$busca = $request->search;
+	// 	trim($busca);
 
-		if($busca != ''){
+	// 	if($busca != ''){
 
-			$solicitacoes = DB::select("
-				SELECT
-				users.name as solicitante,
-				produtos.descricao,
-				produtos.saldo,
-				produtos.minimo,
-				solicitacao_compra.id,
-				solicitacao_compra.id_usuario_solicitante,
-				solicitacao_compra.id_produto,
-				solicitacao_compra.data_solicitacao,
-				solicitacao_compra.data_confirmacao,
-				solicitacao_compra.confirmado
-				FROM solicitacao_compra, users, produtos
-				WHERE solicitacao_compra.id_usuario_solicitante = users.id
-				AND solicitacao_compra.id_produto = produtos.id
-				AND (
-					users.name LIKE '%".$busca."%' OR
-					produtos.descricao LIKE '%".$busca."%'
-				)
-				ORDER BY data_solicitacao DESC
-			");
+	// 		$solicitacoes = DB::select("
+	// 			SELECT
+	// 			users.name as solicitante,
+	// 			produtos.descricao,
+	// 			produtos.saldo,
+	// 			produtos.minimo,
+	// 			solicitacao_compra.id,
+	// 			solicitacao_compra.id_usuario_solicitante,
+	// 			solicitacao_compra.id_produto,
+	// 			solicitacao_compra.data_solicitacao,
+	// 			solicitacao_compra.data_confirmacao,
+	// 			solicitacao_compra.confirmado
+	// 			FROM solicitacao_compra, users, produtos
+	// 			WHERE solicitacao_compra.id_usuario_solicitante = users.id
+	// 			AND solicitacao_compra.id_produto = produtos.id
+	// 			AND (
+	// 				users.name LIKE '%".$busca."%' OR
+	// 				produtos.descricao LIKE '%".$busca."%'
+	// 			)
+	// 			ORDER BY data_solicitacao DESC
+	// 		");
 
-			if (count($solicitacoes) != 0) {
+	// 		if (count($solicitacoes) != 0) {
 
-				return view('estoque.estoque_compra_busca',compact('solicitacoes','busca'));
-			}else{
+	// 			return view('estoque.estoque_compra_busca',compact('solicitacoes','busca'));
+	// 		}else{
 
-				return view('estoque.estoque_compra_busca_vazia',compact('busca'));
-			}
-		}else{
+	// 			return view('estoque.estoque_compra_busca_vazia',compact('busca'));
+	// 		}
+	// 	}else{
 
-			return redirect('estoque/compra');
-		}
-	}
+	// 		return redirect('estoque/compra');
+	// 	}
+	// }
 
 }

@@ -61,7 +61,7 @@
                             <!-- <li><a href="{{ route('register') }}">Register</a></li> -->
                             @else
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
                                  {{ Auth::user()->name }} <span class="caret"></span>
                              </a>
 
@@ -70,7 +70,7 @@
                                     <a align="center" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                     document.getElementById('logout-form').submit();">
-                                    <span class="glyphicon glyphicon-off"></span> Logout
+                                    <span class="glyphicon glyphicon-off"></span> Sair
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

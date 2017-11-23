@@ -77,15 +77,19 @@
                 </div>
             </div>
                   
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Entradas de produto</div>
+                        <div class="panel-heading">Entradas de produto<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/historico_entrada/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
 
                             <div style="float: left;">
                                 <table>
-                                    <td><a href="/estoque/entrada"><button type="submit" class="btn btn-primary">Nova entrada</button></td>
+                                    <td>
+                                        <a href="/estoque/entrada">
+                                            <button type="submit" class="btn btn-primary"><span style="color: white" class="glyphicon glyphicon-plus"></span> Novo</button>
+                                        </a>
+                                    </td>
                                 </table>
                             </div>
                             <TABLE  id="example" class="table table-hover compact order-column">

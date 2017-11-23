@@ -149,14 +149,14 @@
             <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Cadastro de produtos</div>
+                        <div class="panel-heading">Cadastro de produtos<div style="float: right; font-size: 17pt;"><a target="_blank" href="/cadastro/produto/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
                                     <tr>
                                         <td>
                                             <form class="btn-new" method="get" action="produto/cadastrar">
-                                                <button type="submit" class="btn btn-primary">Novo produto</button>
+                                                <button type="submit" class="btn btn-primary"><span style="color: white" class="glyphicon glyphicon-plus"></span> Novo</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -221,7 +221,7 @@
                     <div id="modal_detalhes" class="modal-body" style="color: #1E3973;">
                         <div class="container">
                             <div class="center-block" style="margin-left: 5%;">
-                                <table>
+                                <table class="table-detalhes">
                                     <td>
                                         <th style="float: right">Código:</th>
                                     </td>

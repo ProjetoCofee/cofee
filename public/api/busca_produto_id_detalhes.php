@@ -24,7 +24,6 @@ $sql = mysqli_query($mysqli, "SELECT
 			FROM produtos, marcas, departamentos
 			WHERE produtos.id_marca = marcas.id 
 			AND produtos.id_departamento = departamentos.id
-			AND produtos.ativo = '1'
 			AND produtos.id = ".$busca); 
 
    

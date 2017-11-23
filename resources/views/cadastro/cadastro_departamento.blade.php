@@ -91,13 +91,13 @@
             <div class="col-md-9 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Cadastro de Departamentos</div>
+                        <div class="panel-heading">Cadastro de Departamentos<div style="float: right; font-size: 17pt;"><a target="_blank" href="/cadastro/departamento/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
                             <table>
                                 <tr>
                                     <td>
                                         <form class="btn-new" method="get" action="/cadastro/departamento/cadastrar">
-                                            <button type="submit" class="btn btn-primary">Novo Departamento</button>
+                                            <button type="submit" class="btn btn-primary"><span style="color: white" class="glyphicon glyphicon-plus"></span> Novo</button>
                                         </form>
                                     </td>
                                 </tr>

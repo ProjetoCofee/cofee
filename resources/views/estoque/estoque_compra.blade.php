@@ -120,7 +120,7 @@
             <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Solicitações de compra</div>
+                        <div class="panel-heading">Solicitações de compra<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/compra/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
 
                             <TABLE  id="example" class="table table-hover compact order-column">
@@ -133,6 +133,7 @@
                                         <th>Data solicitação</th>
                                         <th>Data confirmação</th>
                                         <th>Status</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 
@@ -142,6 +143,7 @@
                                         <th></th>
                                         <th></th>
                                         <th>Solicitante</th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th></th>
@@ -159,7 +161,8 @@
                                             <td>{{$solicitacao->solicitante}}</td>
                                             <td>{{$solicitacao->data_solicitacao}}</td>
                                             <td>{{$solicitacao->data_confirmacao}}</td>
-                                            <td>@if($solicitacao->confirmado)Confirmado
+                                            <td>@if($solicitacao->confirmado)Confirmado</td>
+                                            <td>
                                                 <div style="display: inline-flex; float: right;">
                                                     <button type="submit" class="btn btn-icon add" disabled><span class="glyphicon glyphicon-ok"></span></button>
                                                 </div>
@@ -167,7 +170,8 @@
                                                 <div style="display: inline-flex; float: right;">
                                                     <button type="submit" class="btn btn-icon add" data-toggle="modal" data-target="#detail_item" onclick="modal_confirmar('{{$solicitacao->id}}')"><span class="glyphicon glyphicon-ok"></span></button>
                                                 </div>
-                                                @endif</td>
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>

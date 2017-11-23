@@ -788,6 +788,9 @@ class Contas_Controller extends Controller
 
         }else{
 
+            $valor_receita = str_replace('.', '', $receita['valor']);
+            $valor_receita = str_replace(',', '.', $valor_receita);
+
             $conta_receber = Receita::create([
                 'id_categoria'=> $receita['categoria'],
                 'id_cliente'=> $receita['cliente'],

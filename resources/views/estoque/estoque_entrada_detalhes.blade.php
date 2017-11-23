@@ -84,10 +84,10 @@
                 </div>
             </div>
                   
-            <div class="col-md-9 col-md-offset-0">
+            <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Entrada de produtos</div>
+                        <div class="panel-heading">Detalhes da entrada<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/entrada_detalhes/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
 
                             <div style="float: left; padding-bottom: 1em;">
