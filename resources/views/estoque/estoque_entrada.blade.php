@@ -69,6 +69,7 @@
                                 <li class="subactive"><a> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Realizar entrada</a></li> 
                             </ul>
                         <li><a href="/estoque/retirada">Retirada<span class="sr-only">(current)</span></a></li>
+                        <li><a href="/estoque/relatorio/?filter=faltando">Relatórios<span class="sr-only">(current)</span></a></li>
                     </ul>
                 </div>
             </div>

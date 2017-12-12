@@ -1,12 +1,4 @@
-<!-- date picker -->
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="/resources/demos/style.css">
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<!-- date picker -->
-
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
 
@@ -16,20 +8,16 @@
         document.getElementById('nome').focus();
     };
 
-    $( function() {
-        $( "#data_nascim").datepicker({ minDate: "", maxDate: "0D", dateFormat: 'dd/mm/yy'});
-    } );
-
     function valida_data(){
         var data_nascim = document.getElementById('data_nascim').value;
         var partesData = data_nascim.split("/");
-        var data = new Date(partesData[2], partesData[1] - 1, partesData[0]);
-        if(data > new Date()){
-            $('#alerta').html('<div align="center" class="alert alert-danger" role="alert">Data de nascimento inválida!</div>');
-            document.getElementById('alerta').focus();
+        var data = "<?php print $date = date('Y-m-d') ?>"
+
+        if(data < data_nascim){
+            document.getElementById("div_data_nascim").className="form-group{{ $errors->has('data_nascim') ? ' has-error' : '' }} form-group has-error has-feedback";
             document.getElementById("btn_salvar").disabled = true;
         }else{
-            $('#alerta').empty();
+            document.getElementById("div_data_nascim").className="form-group{{ $errors->has('data_nascim') ? ' has-error' : '' }}";
             document.getElementById("btn_salvar").disabled = false;
         }
     }
@@ -87,8 +75,6 @@
     }
 
 </script>
-
-<div id="alerta"></div>
 
 <div class="container">
     <div class="row">
@@ -176,11 +162,11 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group{{ $errors->has('data_nascim') ? ' has-error' : '' }}">
+                                <div id="div_data_nascim" class="form-group{{ $errors->has('data_nascim') ? ' has-error' : '' }}">
                                     <label for="data_nascim" class="col-md-4 control-label required">Data de Nascimento</label>
 
                                     <div class="col-md-6">
-                                        <input id="data_nascim" type="text" class="form-control" OnKeyPress="formatar('##/##/####', this, 'data_nascim')" onkeyup="valida_data()" name="data_nascim" maxlength="10" value="{{$pessoa_fisica->data_nascim}}" required>
+                                        <input id="data_nascim" type="date" class="form-control" maxlength="8" name="data_nascim" oninput="valida_data()" onkeyup="valida_data()" value="{{$pessoa_fisica->data_nascim}}" required>
 
                                         @if ($errors->has('data_nascim'))
                                         <span class="help-block">
@@ -194,7 +180,7 @@
                                     <label for="telefone" class="col-md-4 control-label required">Telefone</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" pattern="[0-9]{2}-[0-9]{4,5}-[0-9]{4,5}$" value="{{$pessoa_fisica->telefone}}" required>
+                                        <input id="telefone" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone" pattern="^\d{10,11}$" value="{{$pessoa_fisica->telefone}}" required>
 
                                         @if ($errors->has('telefone'))
                                         <span class="help-block">
@@ -208,7 +194,7 @@
                                     <label for="telefone_sec" class="col-md-4 control-label">Telefone Secundário</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone_sec" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone_sec" pattern="[0-9]{2}-[0-9]{4,5}-[0-9]{4,5}$" value="{{$pessoa_fisica->telefone_sec}}">
+                                        <input id="telefone_sec" type="text" maxlength="13" class="form-control" onkeyup="formatar('##-####-####', this, 'telefone')" name="telefone_sec" pattern="^\d{10,11}$" value="{{$pessoa_fisica->telefone_sec}}">
 
                                         @if ($errors->has('telefone_sec'))
                                         <span class="help-block">
@@ -296,9 +282,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label>
+                                    <label for="bairro" class="col-md-4 control-label required" id="bairroL">Bairro</label>
                                     <div class="col-md-6">
-                                        <input id="bairro" type="text" class="form-control" name="bairro" value="{{$pessoa_fisica->bairro}}">
+                                        <input id="bairro" type="text" class="form-control" name="bairro" value="{{$pessoa_fisica->bairro}}" required>
                                     </div>
                                 </div>
 

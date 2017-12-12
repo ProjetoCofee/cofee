@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.app2')
 @section('content')
 
 <script>
@@ -79,7 +78,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('cnpj') ? ' has-error' : '' }}">
-                                    <label for="cnpj" class="col-md-4 control-label">CNPJ</label>
+                                    <label for="cnpj" class="col-md-4 control-label required">CNPJ</label>
 
                                     <div class="col-md-6">
                                         <input id="cnpj" type="text" class="form-control" name="cnpj" OnKeyPress="formatar('###.###.##-##', this, 'cnpj')" readonly="true" value="{{$cnpj}}" required>
@@ -93,7 +92,7 @@
                                 </div>
                                 
                                 <div class="form-group{{ $errors->has('nome_fantasia') ? ' has-error' : '' }}">
-                                    <label for="nome_fantasia" class="col-md-4 control-label">Nome Fantasia</label>
+                                    <label for="nome_fantasia" class="col-md-4 control-label required">Nome Fantasia</label>
 
                                     <div class="col-md-6">
                                         <input id="nome_fantasia" type="text" class="form-control" name="nome_fantasia" placeholder="Ex: Mega atacados" required>
@@ -107,7 +106,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('razao_social') ? ' has-error' : '' }}">
-                                    <label for="razao_social" class="col-md-4 control-label">Razão Social</label>
+                                    <label for="razao_social" class="col-md-4 control-label required">Razão Social</label>
 
                                     <div class="col-md-6">
                                         <input id="razao_social" type="text" class="form-control" name="razao_social" placeholder="Ex: Mega atacados ltda." required>
@@ -121,7 +120,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('inscricao_estadual') ? ' has-error' : '' }}">
-                                    <label for="inscricao_estadual" class="col-md-4 control-label">Inscrição Estadual</label>
+                                    <label for="inscricao_estadual" class="col-md-4 control-label required">Inscrição Estadual</label>
 
                                     <div class="col-md-6">
                                         <input id="inscricao_estadual" type="text" maxlength="16" class="form-control" name="inscricao_estadual" placeholder="Ex: 000.000.000.000" required>
@@ -135,7 +134,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
-                                    <label for="telefone" class="col-md-4 control-label">Telefone</label>
+                                    <label for="telefone" class="col-md-4 control-label required">Telefone</label>
 
                                     <div class="col-md-6">
                                         <input id="telefone" type="text" maxlength="16" class="form-control" OnKeyPress="formatar('##-#####-####', this, telefone)" name="telefone" placeholder="Ex: 00-0000-0000" required>
@@ -163,7 +162,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label for="email" class="col-md-4 control-label">Email</label>
+                                    <label for="email" class="col-md-4 control-label required">Email</label>
 
                                     <div class="col-md-6">
                                         <input id="email" type="email" class="form-control" name="email"  placeholder="Ex: atacados@mega.com" required>
@@ -285,15 +284,44 @@
                                         <button type="submit" class="btn btn-primary">
                                             Registrar
                                         </button>
-                                        <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">    
-                                            Cancelar
-                                        </button>
+                                        <button type="button" name="cancel" class="btn btn-default" data-toggle="modal" data-target="#cancelar">Cancelar</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancelar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">Atenção!</div>
+                <div class="panel-body">
+                    <div id="modal_delete" class="modal-body" style="color: #1E3973;">
+                        <div align="center">
+                            <p>Tem certeza que deseja cancelar o cadastro?<br> Nada será salvo!</p>
+                        </div>
+                        <br><br>
+                        <div align="center">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="btn crud-submit btn-primary" onclick="history.go(-1)">Sim</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Não</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

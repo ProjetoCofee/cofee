@@ -1,6 +1,129 @@
-@extends('layouts.app2')
-
+@extends('layouts.app')
 @section('content')
+
+<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.flash.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.print.min.js"></script>
+<script src="//cdn.datatables.net/buttons/1.4.2/js/buttons.colVis.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.4.2/css/buttons.bootstrap.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style type="text/css">
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+</style>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+        $('#example').dataTable({
+            dom: 'Bfrtip',
+
+            buttons: [
+            {
+                    // exporta em PDF
+                    // extend: 'pdf',
+                    extend:    'pdfHtml5',
+                    text:      '<i class="fa fa-file-pdf-o" style="font-size: 18px; color: #CD0000"></i>',
+                    titleAttr: 'Exportar para PDF',
+                    orientation: 'portrait', //landscape = paisagem | portrait = retrato
+                    pageSize: 'LEGAL',
+                    exportOptions: {
+                        columns: [0, 1, 2, 3, 4, 5] // seleciona as colunas que deseja exportar
+                    },
+                    message: <?php $data = date("d/m/Y H:i");?> "Relatório gerado no dia {!! $data !!}",
+                    title: "Relatório de Despesas Cadastradas",
+                    customize: function(doc) {
+                        doc.defaultStyle.alignment = 'center';
+                        doc.styles.tableHeader.alignment = 'center';
+                    }
+
+            },
+
+            {
+                // exporta em excel
+                extend: 'excelHtml5',
+                text:      '<i class="fa fa-file-excel-o" style="font-size: 18px; color: green"></i>',
+                titleAttr: 'Exportar para Excel',
+                orientation: 'portrait', //landscape = paisagem | portrait = retrato
+                pageSize: 'LEGAL',
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4, 5]
+                },
+                message: <?php $data = date("d/m/Y H:i");?> "Relatório gerado no dia {!! $data !!}",
+                title: "Relatório de Despesas Cadastradas"
+            },
+
+            'pageLength',
+            ],
+
+            lengthMenu: [
+                [ 10, 25, 50, -1 ],
+                [ '10 registros', '25 registros', '50 registros', 'Mostrar Todos' ]
+            ],
+
+            stateSave: false,
+            fixedHeader: true, // para congelar os titulos quando rolar o relatório para baixo
+
+            initComplete: function () {
+                this.api().columns([0, 1, 2, 5]).every( function () {
+                    var column = this;
+                    var title = $(this).text();
+                    var select = $('<select><option value="">Mostrar Todos</option></select>')
+                    .appendTo( $(column.footer()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                            );
+
+                        column
+                        .search( val ? '^'+val+'$' : '', true, false )
+                        .draw();
+                    } );
+
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            },
+
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "oLanguage": {
+                buttons: {
+                    pageLength: {
+                       _: "Mostrando %d Registros",
+                       '-1': "Mostrando Todos"
+                   }
+                },
+                "sZeroRecords": "Nenhum registro encontrado",
+                "sInfo": "Mostrando _START_ / _END_ de _TOTAL_ registro(s)",
+                "sInfoEmpty": "Mostrando 0 / 0 de 0 registros",
+                "sInfoFiltered": "(filtrado de _MAX_ registros)",
+                "sSearch": "Pesquisar: ",
+                "oPaginate": {
+                    "sFirst": "Início",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+        });  
+    });
+</script>
 
 <script type="text/javascript">
 
@@ -22,19 +145,19 @@
             <div class="col-md-2 col-md-offset-0">
                 <div class="panel panel-default">
                     <div class="panel-heading">Contas</div>
-                        <ul class="nav nav-pills nav-stacked">
-                            <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
-                            <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
-                            <li class="active"><a href="#">Despesas<span class="sr-only">(current)</span></a>
-                                <ul class="nav nav-pills nav-stacked"> 
-                                    <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas?filter=all"> <span class="glyphicon glyphicon-menu-right"></span> Todas parcelas</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
-                        </ul>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
+                        <li><a href="/contas/resumo">Resumo<span class="sr-only">(current)</span></a></li>
+                        <li class="active"><a href="#">Despesas<span class="sr-only">(current)</span></a>
+                            <ul class="nav nav-pills nav-stacked"> 
+                                <li style = "padding-left: 10px"><a href="/contas/despesas_parcelas?filter=all"> <span class="glyphicon glyphicon-menu-right"></span> Todas parcelas</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
+                    </ul>
                 </div>
             </div>
-                  
+            
             <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
@@ -47,24 +170,9 @@
                                             <button type="submit" class="btn btn-primary">Nova Despesa</button>
                                         </form>
                                     </td>
-                                    <td style="padding-bottom: 1em;">
-                                    <form method="post" action="/contas/despesas/busca" class="form-inline" role="search">
-                                        <div class="form-group">
-                                            <input type="text" id="search" name="search" class="form-control" style="min-width:300px; margin-right: 1em;" placeholder="Data, valor, fornecedor ou categoria" autofocus="true">
-                                        </div>
-                                            <button type="submit" class="btn btn-icon"><span class="glyphicon glyphicon-search"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
-                                    <td style="padding-bottom: 1em;">
-                                    <form method="get" action="/contas/despesas" class="form-inline">
-                                        <button type="submit" class="btn btn-icon" style="margin-right: 1em;"><span class="glyphicon glyphicon-arrow-left"></span></button>
-                                        {{ csrf_field() }}
-                                    </form>
-                                    </td>
                                 </table>
                             </div>
-                            <TABLE  class="table table-hover">
+                            <TABLE  id="example" class="table table-hover compact order-column">
                                 <thead>
                                     <tr>
                                         <th>Descrição</th>
@@ -76,21 +184,33 @@
                                         <th></th>
                                     </tr>
                                 </thead>
+
+                                <tfoot>
+                                    <tr>
+                                        <th>Descrição</th>
+                                        <th>Fornecedor</th>
+                                        <th>Categoria</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Situação</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
                                 @if($despesas)
+                                <tbody>
                                     @foreach($despesas as $despesa)
-                                    <tbody>
-                                        <tr>
-                                            <td>{{$despesa->descricao}}</td>
-                                            <td>{{$despesa->fornecedor}}</td>
-                                            <td>{{$despesa->categoria}}</td>
-                                            <td>{{number_format($despesa->valor, 2, ',', '.')}}</td>
-                                            <td>{{$despesa->qtd_parcelas}}</td>          
-                                            @if($despesa->status == '0')
-                                            <td>Pendente</td>
-                                            @else 
-                                            <td>Pago</td>
-                                            @endif
-                                            <td>
+                                    <tr>
+                                        <td>{{$despesa->descricao}}</td>
+                                        <td>{{$despesa->fornecedor}}</td>
+                                        <td>{{$despesa->categoria}}</td>
+                                        <td>{{number_format($despesa->valor, 2, ',', '.')}}</td>
+                                        <td>{{$despesa->qtd_parcelas}}</td>          
+                                        @if($despesa->status == '0')
+                                        <td>Pendente</td>
+                                        @else 
+                                        <td>Pago</td>
+                                        @endif
+                                        <td>
                                             <div style="display: inline-flex; float: right;">
                                                 @if($despesa->qtd_parcelas == '0')
                                                 <form class="btn-new" method="get" action="/contas/despesas/parcelas/{{$despesa->id}}">
@@ -104,10 +224,10 @@
                                                 
                                                 <button title="Excluir despesa" type="submit" class="btn btn-icon remove" data-toggle="modal" data-target="#delete_item" onclick="delete_despesa('{{$despesa->id}}')"><span class="glyphicon glyphicon-trash"></span></button>
                                             </div>
-                                            </td>                                           
-                                        </tr>
-                                    </tbody>
+                                        </td>                                           
+                                    </tr>
                                     @endforeach
+                                </tbody>
                                 @endif
                             </TABLE>
                         </div>
@@ -126,7 +246,7 @@
                 <div class="panel-heading" align="center">Atenção!</div>
                 <div class="panel-body">
                     <div id="modal_delete" class="modal-body" style="color: #1E3973;">
-                    <!-- conteudo js -->
+                        <!-- conteudo js -->
                     </div>
                 </div>                
             </div>
@@ -140,7 +260,7 @@
                 <div class="panel-heading" align="center">Confirmar pagamento</div>
                 <div class="panel-body">
                     <div id="modal_pagamento" class="modal-body" style="color: #1E3973;">
-                    <!-- conteudo js -->
+                        <!-- conteudo js -->
                     </div>
                 </div>
             </div>

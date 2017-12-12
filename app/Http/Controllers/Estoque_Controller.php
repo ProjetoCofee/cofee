@@ -59,9 +59,11 @@ class Estoque_Controller extends Controller
 			$fornecedors = DB::select("
 				SELECT fornecedors.id, pessoa_fisicas.nome FROM fornecedors
 				INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = fornecedors.id_pessoa_fisica
+				AND pessoa_fisicas.ativo = '1'
 				union
 				SELECT fornecedors.id, pessoa_juridicas.nome_fantasia as nome FROM fornecedors
 				INNER JOIN pessoa_juridicas ON pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+				AND pessoa_juridicas.ativo = '1'
 				ORDER BY nome ASC
 				");
 
@@ -162,6 +164,107 @@ class Estoque_Controller extends Controller
 			]);
 
 			return view('estoque.estoque_solicita_retirada',compact('retirada'));
+		}else if($atributo == "relatorio"){
+
+			$filter = $_GET["filter"];
+
+			if($filter == "faltando"){
+				$produtos = DB::select("
+				SELECT
+				produtos.id,
+				produtos.codigo_barras, 
+				produtos.descricao, 
+				marcas.nome as nome_marca, 
+				departamentos.nome as nome_departamento, 
+				produtos.saldo, 
+				produtos.unidade_medida, 
+				produtos.posicao, 
+				produtos.minimo, 
+				produtos.observacao 
+				FROM produtos, marcas, departamentos
+				WHERE produtos.id_marca = marcas.id 
+				AND produtos.id_departamento = departamentos.id
+				AND produtos.ativo = '1'
+				AND produtos.saldo = '0'
+				ORDER BY descricao ASC
+				");
+
+				return view('estoque.estoque_relatorio',compact('filter','produtos'));
+
+			}else if($filter == "minimo"){
+				$produtos = DB::select("
+				SELECT
+				produtos.id,
+				produtos.codigo_barras, 
+				produtos.descricao, 
+				marcas.nome as nome_marca, 
+				departamentos.nome as nome_departamento, 
+				produtos.saldo, 
+				produtos.unidade_medida, 
+				produtos.posicao, 
+				produtos.minimo, 
+				produtos.observacao 
+				FROM produtos, marcas, departamentos
+				WHERE produtos.id_marca = marcas.id 
+				AND produtos.id_departamento = departamentos.id
+				AND produtos.ativo = '1'
+				AND produtos.saldo < produtos.minimo
+				ORDER BY descricao ASC
+				");
+
+				return view('estoque.estoque_relatorio',compact('filter','produtos'));
+
+			}else if($filter == "entrada"){
+				$produtos = DB::select("
+				SELECT 
+				produtos.id,
+				produtos.codigo_barras, 
+				produtos.descricao, 
+				marcas.nome as nome_marca, 
+				departamentos.nome as nome_departamento, 
+				produtos.saldo, 
+				produtos.unidade_medida, 
+				produtos.posicao, 
+				produtos.minimo, 
+				produtos.observacao, 
+				count(id_produto) as qtd 
+				FROM entrada_produto, produtos, marcas, departamentos
+				WHERE produtos.id = entrada_produto.id_produto
+				AND produtos.id_marca = marcas.id 
+				AND produtos.id_departamento = departamentos.id
+				AND produtos.ativo = '1'
+				group by entrada_produto.id_produto
+				order by qtd desc
+				");
+
+				return view('estoque.estoque_relatorio',compact('filter','produtos'));
+
+			}else if($filter == "saida"){
+				$produtos = DB::select("
+				SELECT 
+				produtos.id,
+				produtos.codigo_barras, 
+				produtos.descricao, 
+				marcas.nome as nome_marca, 
+				departamentos.nome as nome_departamento, 
+				produtos.saldo, 
+				produtos.unidade_medida, 
+				produtos.posicao, 
+				produtos.minimo, 
+				produtos.observacao, 
+				count(id_produto) as qtd 
+				FROM produto_solicitado, produtos, marcas, departamentos
+				WHERE produtos.id = produto_solicitado.id_produto
+				AND produtos.id_marca = marcas.id 
+				AND produtos.id_departamento = departamentos.id
+				AND produtos.ativo = '1'
+				group by produto_solicitado.id_produto
+				order by qtd desc
+				");
+
+				return view('estoque.estoque_relatorio',compact('filter','produtos'));
+			}
+
 		}else{
 			return;
 		}    

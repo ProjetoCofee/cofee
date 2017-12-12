@@ -1,6 +1,35 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
+
+<script type="text/javascript">
+    function consulta_codigo_barras(codigo_barras){
+
+        var codigo_barras_old = <?php print "$produto->codigo_barras" ?>
+
+        if(codigo_barras != codigo_barras_old){
+            $.ajax({
+            dataType: 'json',
+            type:'POST',
+            url: url+'api/consulta_codigo_barras.php',
+            data:{codigo_barras:codigo_barras}
+            }).done(function(data){
+                console.log(data);
+                if(data==1){
+                    document.getElementById("btn_salvar").disabled = true;
+                    $('#alerta').html('<div align="center" class="alert alert-warning" role="alert">O código informado já está cadastrado!</div>');
+                }else if(data==0){                
+                    $('#alerta').empty();
+                    document.getElementById("btn_salvar").disabled = false;
+                }
+            });
+        }
+        
+    }
+</script>
+
+<div id="alerta"></div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -19,7 +48,7 @@
                                     <option value="">Escolha um departamento</option>
 
                                     @foreach($departamentos as $departamento)
-                                        <option value="{{$departamento->id_departamento}}">{{$departamento->nome}}</option>
+                                        <option value="{{$departamento->id}}">{{$departamento->nome}}</option>
                                     @endforeach
                                 </select>
 
@@ -39,7 +68,7 @@
                                     <option value="{{$produto->id_marca}}">{{$marca_up->nome}}</option>
                                     <option value="">Escolha uma marca</option>
                                     @foreach($marcas as $marca)
-                                        <option value="{{$marca->id_marca}}">{{$marca->nome}}</option>
+                                        <option value="{{$marca->id}}">{{$marca->nome}}</option>
                                     @endforeach
                                 </select>
 
@@ -55,7 +84,7 @@
                             <label for="descricao" class="col-md-4 control-label required">Descrição</label>
 
                             <div class="col-md-6">
-                                <input id="descricao" type="text" class="form-control" name="descricao" value="{{$produto->descricao}}" placeholder="Ex: lapis de escrever" required>
+                                <input id="descricao" type="text" class="form-control" name="descricao" value="{{$produto->descricao}}" maxlength="34" placeholder="Ex: lapis de escrever" required>
 
                                 @if ($errors->has('descricao'))
                                     <span class="help-block">
@@ -68,7 +97,7 @@
                             <label for="codigo_barras" class="col-md-4 control-label required">Código de barras</label>
 
                             <div class="col-md-6">
-                                <input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="{{$produto->codigo_barras}}" placeholder="Digite um código válido" required>
+                                <input id="codigo_barras" type="text" class="form-control" name="codigo_barras" value="{{$produto->codigo_barras}}" maxlength="13" onkeyup="consulta_codigo_barras(this.value)" placeholder="Digite um código válido" required>
 
                                 @if ($errors->has('codigo_barras'))
                                     <span class="help-block">
@@ -100,7 +129,7 @@
                             <label for="posicao" class="col-md-4 control-label required">Posição</label>
 
                             <div class="col-md-6">
-                                <input id="posicao" type="text" class="form-control" name="posicao" value="{{$produto->posicao}}" placeholder="Ex: A" maxlength="3" pattern="[A-Za-z]" required>
+                                <input id="posicao" type="text" class="form-control" name="posicao" value="{{$produto->posicao}}" placeholder="Ex: A" maxlength="3" pattern="[A-Za-z]{1-3}" required>
 
                                 @if ($errors->has('posicao'))
                                     <span class="help-block">
@@ -163,7 +192,7 @@
                         </div> 
                         <div class="form-group">
                             <div align="center">
-                                <button type="submit" class="btn btn-primary">
+                                <button id="btn_salvar" type="submit" class="btn btn-primary">
                                     Salvar
                                 </button>
                                 <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">Cancelar</button>

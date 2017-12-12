@@ -10,7 +10,7 @@ use App\Entrada;
 use App\Retirada;
 use App\Despesa;
 use App\Receita;
-use App\parcela_despesa;
+use App\Parcela_despesa;
 use App\Parcela_receita;
 use DB;
 use Illuminate\Support\Facades\Auth;
@@ -522,9 +522,11 @@ class Contas_Controller extends Controller
         $fornecedors = DB::select("
             SELECT fornecedors.id, pessoa_fisicas.nome FROM fornecedors
             INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = fornecedors.id_pessoa_fisica
+            AND pessoa_fisicas.ativo = '1'
             union
             SELECT fornecedors.id, pessoa_juridicas.nome_fantasia as nome FROM fornecedors
             INNER JOIN pessoa_juridicas ON pessoa_juridicas.id = fornecedors.id_pessoa_juridica
+            AND pessoa_juridicas.ativo = '1'
             ORDER BY nome
         ");
 
@@ -720,9 +722,11 @@ class Contas_Controller extends Controller
         $clientes = DB::select("
             SELECT clientes.id, pessoa_fisicas.nome FROM clientes
             INNER JOIN pessoa_fisicas ON pessoa_fisicas.id = clientes.id_pessoa_fisica
+            AND pessoa_fisicas.ativo = '1'
             union
             SELECT clientes.id, pessoa_juridicas.nome_fantasia as nome FROM clientes
             INNER JOIN pessoa_juridicas ON pessoa_juridicas.id = clientes.id_pessoa_juridica
+            AND pessoa_juridicas.ativo = '1'
             ORDER BY nome
         ");
 

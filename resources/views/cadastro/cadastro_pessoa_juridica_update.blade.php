@@ -1,5 +1,4 @@
-@extends('layouts.app')
-
+@extends('layouts.app2')
 @section('content')
 
 <script>
@@ -43,7 +42,7 @@
             $('#resultadoCep').empty();
             $('#preCep').empty();
 
-            $('#resultadoCep').append('<div id="form"><div class="form-group"><label for="uf" class="col-md-4 control-label" id="ufL">UF</label><div class="col-md-6"><input id="uf" type="text" class="form-control" name="uf" value="'+data.uf+'" readonly></div></div><div class="form-group"><label for="cidade" class="col-md-4 control-label" id="cidadeL">Cidade</label><div class="col-md-6"><input id="cidade" type="text" class="form-control" name="cidade" value="'+data.localidade+'" readonly></div></div><div class="form-group"><label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label><div class="col-md-6"><input id="bairro" type="text" class="form-control" name="bairro" value="'+data.bairro+'" readonly></div></div><div class="form-group"><label for="logradouro" class="col-md-4 control-label" id="logradouroL">Logradouro</label><div class="col-md-6"><input id="logradouro" type="text" class="form-control" name="logradouro" value="'+data.logradouro+'" readonly></div></div><div class="form-group"><label for="numero" class="col-md-4 control-label" id="numeroL">Número</label><div class="col-md-6"><input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false"></div></div></div>'
+            $('#resultadoCep').append('<div id="form"><div class="form-group"><label for="uf" class="col-md-4 control-label" id="ufL">UF</label><div class="col-md-6"><input id="uf" type="text" class="form-control" name="uf" value="'+data.uf+'" ></div></div><div class="form-group"><label for="cidade" class="col-md-4 control-label" id="cidadeL">Cidade</label><div class="col-md-6"><input id="cidade" type="text" class="form-control" name="cidade" value="'+data.localidade+'" ></div></div><div class="form-group"><label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label><div class="col-md-6"><input id="bairro" type="text" class="form-control" name="bairro" value="'+data.bairro+'" ></div></div><div class="form-group"><label for="logradouro" class="col-md-4 control-label" id="logradouroL">Logradouro</label><div class="col-md-6"><input id="logradouro" type="text" class="form-control" name="logradouro" value="'+data.logradouro+'" ></div></div><div class="form-group"><label for="numero" class="col-md-4 control-label" id="numeroL">Número</label><div class="col-md-6"><input id="numero" type="number" class="form-control" name="numero" required autocomplete = "false"></div></div></div>'
                 );
         });
     }
@@ -69,7 +68,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('cnpj') ? ' has-error' : '' }}">
-                                    <label for="cnpj" class="col-md-4 control-label">CNPJ</label>
+                                    <label for="cnpj" class="col-md-4 control-label required">CNPJ</label>
 
                                     <div class="col-md-6">
                                         <input id="cnpj" type="text" class="form-control" name="cnpj" OnKeyPress="formatar('###.###.##-##', this, 'cnpj')" readonly="true" value="{{$pessoa_juridica->cnpj}}" required readonly="true">
@@ -83,7 +82,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('nome_fantasia') ? ' has-error' : '' }}">
-                                    <label for="nome_fantasia" class="col-md-4 control-label">Nome Fantasia</label>
+                                    <label for="nome_fantasia" class="col-md-4 control-label required">Nome Fantasia</label>
 
                                     <div class="col-md-6">
                                         <input id="nome_fantasia" type="text" class="form-control" name="nome_fantasia" value="{{$pessoa_juridica->nome_fantasia}}" required autofocus>
@@ -97,7 +96,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('razao_social') ? ' has-error' : '' }}">
-                                    <label for="razao_social" class="col-md-4 control-label">Razão Social</label>
+                                    <label for="razao_social" class="col-md-4 control-label required">Razão Social</label>
 
                                     <div class="col-md-6">
                                         <input id="razao_social" type="text" class="form-control" name="razao_social" value="{{$pessoa_juridica->razao_social}}" required autofocus>
@@ -111,7 +110,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('inscricao_estadual') ? ' has-error' : '' }}">
-                                    <label for="inscricao_estadual" class="col-md-4 control-label">Inscrição Estadual</label>
+                                    <label for="inscricao_estadual" class="col-md-4 control-label required">Inscrição Estadual</label>
 
                                     <div class="col-md-6">
                                         <input id="inscricao_estadual" type="text" class="form-control" name="inscricao_estadual" value="{{$pessoa_juridica->inscricao_estadual}}" required autofocus>
@@ -125,7 +124,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('telefone') ? ' has-error' : '' }}">
-                                    <label for="telefone" class="col-md-4 control-label">Telefone</label>
+                                    <label for="telefone" class="col-md-4 control-label required">Telefone</label>
 
                                     <div class="col-md-6">
                                         <input id="telefone" type="text" class="form-control" OnKeyPress="formatar('##-#####-####', this, telefone)" name="telefone" value="{{$pessoa_juridica->telefone}}" required autofocus>
@@ -142,7 +141,7 @@
                                     <label for="telefone_sec" class="col-md-4 control-label">Telefone Secundário</label>
 
                                     <div class="col-md-6">
-                                        <input id="telefone_sec" type="text" class="form-control" OnKeyPress="formatar('##-#####-####', this, 'telefone_sec')" name="telefone_sec" value="{{$pessoa_juridica->telefone_sec}}" required autofocus>
+                                        <input id="telefone_sec" type="text" class="form-control" OnKeyPress="formatar('##-#####-####', this, 'telefone_sec')" name="telefone_sec" value="{{$pessoa_juridica->telefone_sec}}" autofocus>
 
                                         @if ($errors->has('telefone_sec'))
                                         <span class="help-block">
@@ -153,7 +152,7 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                    <label for="email" class="col-md-4 control-label">Email</label>
+                                    <label for="email" class="col-md-4 control-label required">Email</label>
 
                                     <div class="col-md-6">
                                         <input id="email" type="text" class="form-control" name="email" value="{{$pessoa_juridica->email}}" required autofocus>
@@ -176,7 +175,7 @@
                                     <label for="cep" class="col-md-4 control-label">CEP</label>
 
                                     <div class="col-md-6">
-                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false" value="{{$pessoa_juridica->cep}}" required>
+                                        <input id="cep" onpaste="return false;" maxlength="9" type="text" class="form-control" name="cep" onkeyup="formatar('#####-###', this, 'cep')" autocomplete="false" value="{{$pessoa_juridica->cep}}">
 
                                         @if ($errors->has('cep'))
                                         <span class="help-block">
@@ -193,40 +192,81 @@
                                 <div id="preCep">
 
                                     <div class="form-group">
-                                        <label for="uf" class="col-md-4 control-label" id="ufL">UF</label>
+                                        <label for="uf" class="col-md-4 control-label required" id="ufL">UF</label>
                                         <div class="col-md-6">
-                                            <input id="uf" type="text" class="form-control" name="uf" value="{{$pessoa_juridica->uf}}" readonly>
+                                            <select class="form-control" name="uf" id="ufL" required>
+                                            <option value="{{$pessoa_juridica->uf}}">{{$pessoa_juridica->uf}}</option>
+                                            <option value="">Selecione</option>
+                                            <option value="AC">AC</option>
+                                            <option value="AL">AL</option>
+                                            <option value="AM">AM</option>
+                                            <option value="AP">AP</option>
+                                            <option value="BA">BA</option>
+                                            <option value="CE">CE</option>
+                                            <option value="DF">DF</option>
+                                            <option value="ES">ES</option>
+                                            <option value="GO">GO</option>
+                                            <option value="MA">MA</option>
+                                            <option value="MG">MG</option>
+                                            <option value="MS">MS</option>
+                                            <option value="MT">MT</option>
+                                            <option value="PA">PA</option>
+                                            <option value="PB">PB</option>
+                                            <option value="PE">PE</option>
+                                            <option value="PI">PI</option>
+                                            <option value="PR">PR</option>
+                                            <option value="RJ">RJ</option>
+                                            <option value="RN">RN</option>
+                                            <option value="RS">RS</option>
+                                            <option value="RO">RO</option>
+                                            <option value="RR">RR</option>
+                                            <option value="SC">SC</option>
+                                            <option value="SE">SE</option>
+                                            <option value="SP">SP</option>
+                                            <option value="TO">TO</option>
+                                        </select>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="cidade" class="col-md-4 control-label" id="cidadeL">Cidade</label>
+                                        <label for="cidade" class="col-md-4 control-label required" id="cidadeL">Cidade</label>
                                         <div class="col-md-6">
-                                            <input id="cidade" type="text" class="form-control" name="cidade" value="{{$pessoa_juridica->cidade}}" readonly>
+                                            <input id="cidade" type="text" class="form-control" name="cidade" value="{{$pessoa_juridica->cidade}}" required >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="bairro" class="col-md-4 control-label" id="bairroL">Bairro</label>
+                                        <label for="bairro" class="col-md-4 control-label required" id="bairroL">Bairro</label>
                                         <div class="col-md-6">
-                                            <input id="bairro" type="text" class="form-control" name="bairro" value="{{$pessoa_juridica->bairro}}" readonly>
+                                            <input id="bairro" type="text" class="form-control" name="bairro" value="{{$pessoa_juridica->bairro}}" required >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="logradouro" class="col-md-4 control-label" id="logradouroL">Logradouro</label>
+                                        <label for="logradouro" class="col-md-4 control-label required" id="logradouroL">Logradouro</label>
                                         <div class="col-md-6">
-                                            <input id="logradouro" type="text" class="form-control" name="logradouro" value="{{$pessoa_juridica->logradouro}}" readonly>
+                                            <input id="logradouro" type="text" class="form-control" name="logradouro" value="{{$pessoa_juridica->logradouro}}" required >
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="numero" class="col-md-4 control-label" id="numeroL">Número</label>
+                                        <label for="numero" class="col-md-4 control-label required" id="numeroL">Número</label>
                                         <div class="col-md-6">
                                             <input id="numero" type="number" class="form-control" name="numero" value="{{$pessoa_juridica->numero}}" required autocomplete = "false">
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="complemento" class="col-md-4 control-label" id="complementoL">Complemento</label>
+                                    <div class="col-md-6">
+                                        <input id="complemento" type="text" class="form-control" name="complemento" value="{{$pessoa_juridica->complemento}}">
+                                    </div>
+                                </div>
+
+                                <div id="resultadoCep">
+
+                                </div> 
 
                                 @if($pessoa_juridica->tipo == "c")
                                 <div class="form-group{{ $errors->has('tipo_pessoa') ? ' has-error' : '' }}">

@@ -174,6 +174,7 @@
                             <li><a>Estoque<span class="sr-only">(current)</span></a></li>
                             <li class="active"><a>Entrada<span class="sr-only">(current)</span></a></li>
                             <li><a>Retirada<span class="sr-only">(current)</span></a></li>
+                            <li><a>Relatórios<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>

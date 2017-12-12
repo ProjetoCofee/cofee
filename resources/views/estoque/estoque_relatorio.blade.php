@@ -174,10 +174,34 @@
                     <div class="panel-heading">Estoque</div>
                         <ul class="nav nav-pills nav-stacked">
                             <li><a href="/home"><span style="margin-right: 5%" class="glyphicon glyphicon-circle-arrow-left"></span>  Menu</a></li>
-                            <li class="active"><a href="#">Estoque<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/estoque/show">Estoque<span class="sr-only">(current)</span></a></li>
                             <li><a href="/estoque/historico_entrada">Entrada<span class="sr-only">(current)</span></a></li>
                             <li><a href="/estoque/retirada">Retirada<span class="sr-only">(current)</span></a></li>
-                            <li><a href="/estoque/relatorio/?filter=faltando">Relatórios<span class="sr-only">(current)</span></a></li>
+                            <li class="active"><a href="#">Relatórios<span class="sr-only">(current)</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    @if($filter == "faltando")
+                                    <li class="subactive"><a href="#"> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Em falta</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=minimo"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Abaixo do mínimo</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=entrada"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Maior entrada</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=saida"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Maior saída</a></li>
+                                    @elseif($filter == "minimo")
+                                    <li><a href="/estoque/relatorio/?filter=faltando"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Em falta</a></li>
+                                    <li class="subactive"><a href="#"> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Abaixo do mínimo</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=entrada"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Maior entrada</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=saida"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Maior saída</a></li>
+                                    @elseif($filter == "entrada")
+                                    <li><a href="/estoque/relatorio/?filter=faltando"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Em falta</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=minimo"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Abaixo do mínimo</a></li>
+                                    <li class="subactive"><a href="#"> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Maior entrada</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=saida"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Maior saída</a></li>
+                                    @elseif($filter == "saida")
+                                    <li><a href="/estoque/relatorio/?filter=faltando"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Em falta</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=minimo"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Abaixo do mínimo</a></li>
+                                    <li><a href="/estoque/relatorio/?filter=entrada"> <span style="font-size: 16px;" class="glyphicon glyphicon-menu-right"></span>  Maior entrada</a></li>
+                                    <li class="subactive"><a href="#"> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span>  Maior saída</a></li>
+                                    @endif
+                                </ul>
+                            </li>
                         </ul>
                 </div>
             </div>
@@ -185,7 +209,7 @@
             <div class="col-md-10 col-md-offset-0">
                 <div class="well well-lg">
                     <div class="panel panel-default">
-                        <div class="panel-heading">Produtos em estoque<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/show/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
+                        <div class="panel-heading">Relatórios de produtos<div style="float: right; font-size: 17pt;"><a target="_blank" href="/estoque/show/help"><span style="color: white" class="glyphicon glyphicon-question-sign"></span></a></div></div>
                         <div class="panel-body">
                             <div style="float: left; padding-bottom: 1em;">
                                 <table>
@@ -199,8 +223,12 @@
                                         <th>Descrição</th>
                                         <th>Marca</th>
                                         <th>Departamento</th>
+                                        @if($filter == "entrada" || $filter == "saida")
+                                        <th>Movimentações</th>
+                                        @else
                                         <th>Saldo</th>
                                         <th>Un. Medida</th>
+                                        @endif
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -211,8 +239,12 @@
                                         <th></th>
                                         <th>Marca</th>
                                         <th>Departamento</th>
+                                        @if($filter == "entrada" || $filter == "saida")
+                                        <th></th>
+                                        @else
                                         <th></th>
                                         <th></th>
+                                        @endif
                                         <th></th>
                                     </tr>
                                 </tfoot>
@@ -224,8 +256,12 @@
                                             <td>{{$produto->descricao}}</td>
                                             <td>{{$produto->nome_marca}}</td>
                                             <td>{{$produto->nome_departamento}}</td>
+                                            @if($filter == "entrada" || $filter == "saida")
+                                            <td>{{$produto->qtd}}</td>
+                                            @else
                                             <td>{{$produto->saldo}}</td>
                                             <td>{{$produto->unidade_medida}}</td>
+                                            @endif
                                             <td>
                                             <div style="display: inline-flex; float: right;"><button type="submit" class="btn btn-icon" data-toggle="modal" data-target="#detail_item" onclick="detalhes_produto('{{$produto->id}}')"><span class="glyphicon glyphicon-eye-open"></span></button></div>
                                             </td>

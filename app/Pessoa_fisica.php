@@ -23,6 +23,7 @@ class Pessoa_fisica extends Model
         'bairro', 
         'cidade', 
         'uf',
-        'tipo'
+        'tipo',
+        'ativo'
     ];
 }

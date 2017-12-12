@@ -11,7 +11,9 @@ use App\Pessoa_fisica;
 use App\Pessoa_juridica;
 use App\Fornecedor;
 use App\Cliente;
+use App\Unidade_medida;
 use DB;
+use Illuminate\Database\QueryException;
 
 class Cadastro_Controller extends Controller
 {
@@ -62,14 +64,14 @@ class Cadastro_Controller extends Controller
         }else if($atributo == "fisica"){
             $tipo = "fisica";
 
-            $pessoas = DB::table('pessoa_fisicas')->orderByRaw('nome ASC')->get();
+            $pessoas = DB::table('pessoa_fisicas')->where('ativo', '1')->orderByRaw('nome ASC')->get();
 
             return view('cadastro.cadastro_pessoa_fisica', compact('pessoas'));
 
         }else if($atributo == "juridica"){
             $tipo = "juridica";
 
-            $pessoas = DB::table('pessoa_juridicas')->get();
+            $pessoas = DB::table('pessoa_juridicas')->where('ativo', '1')->get();
 
             return view('cadastro.cadastro_pessoa_juridica', compact('pessoas'));
 
@@ -85,7 +87,7 @@ class Cadastro_Controller extends Controller
                     'pessoa_fisicas.nome as nome', 
                     'pessoa_fisicas.cpf as cpf',
                     'pessoa_fisicas.telefone as telefone',
-                    'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->get();
+                    'pessoa_fisicas.email as email')->where('ativo', '1')->orderByRaw('nome ASC')->get();
 
                 return view('cadastro.cadastro_cliente', compact('clientesF', 'tipo'));
 
@@ -102,7 +104,7 @@ class Cadastro_Controller extends Controller
                         'pessoa_juridicas.razao_social as razao_social',
                         'pessoa_juridicas.cnpj as cnpj',
                         'pessoa_juridicas.telefone as telefone',
-                        'pessoa_juridicas.email as email')->orderByRaw('nome_fantasia ASC')->get();
+                        'pessoa_juridicas.email as email')->where('ativo', '1')->orderByRaw('nome_fantasia ASC')->get();
 
                     return view('cadastro.cadastro_cliente', compact('clientesJ', 'tipo'));
 
@@ -118,7 +120,7 @@ class Cadastro_Controller extends Controller
                             'pessoa_fisicas.nome as nome', 
                             'pessoa_fisicas.cpf as cpf',
                             'pessoa_fisicas.telefone as telefone',
-                            'pessoa_fisicas.email as email')->orderByRaw('nome ASC')->paginate(7);
+                            'pessoa_fisicas.email as email')->where('ativo', '1')->orderByRaw('nome ASC')->paginate(7);
 
                         return view('cadastro.cadastro_fornecedor', compact('fornecedorsF', 'tipo'));
 
@@ -135,13 +137,13 @@ class Cadastro_Controller extends Controller
                                 'pessoa_juridicas.razao_social as razao_social',
                                 'pessoa_juridicas.cnpj as cnpj',
                                 'pessoa_juridicas.telefone as telefone',
-                                'pessoa_juridicas.email as email')->orderByRaw('nome_fantasia ASC')->paginate(7);
+                                'pessoa_juridicas.email as email')->where('ativo', '1')->orderByRaw('nome_fantasia ASC')->paginate(7);
 
                             return view('cadastro.cadastro_fornecedor', compact('fornecedorsJ', 'tipo'));
 
                         }else if($atributo == "usuario"){
 
-                            $usuarios = DB::table('users')->where('users.id', '!=', '0')->orderByRaw('name ASC')->get();
+                            $usuarios = DB::table('users')->where([['id', '!=', '0'],['ativo', '=', '1']])->orderByRaw('name ASC')->get();
 
                             return view('cadastro.cadastro_usuario',compact('usuarios'));
                         }else{
@@ -182,6 +184,8 @@ class Cadastro_Controller extends Controller
             'name' => $data['name'],
             'email' => mb_strtolower($data['email']),
             'password' => bcrypt($data['password']),
+            'nivel' => 1,
+            'ativo' => 1
         ]);
 
         return redirect('cadastro/usuario');
@@ -211,7 +215,9 @@ class Cadastro_Controller extends Controller
 
         $usuario = \App\User::find($id);
 
-        $usuario = $usuario->delete();
+        $usuario->ativo = '0';
+
+        $usuario->save();
 
         return redirect('cadastro/usuario');      
 
@@ -225,7 +231,7 @@ class Cadastro_Controller extends Controller
             $departamentos = $departamentos->sortBy('nome');
             $marcas = \App\Marca::All();
             $marcas = $marcas->sortBy('nome');
-            $unidade_medidas = \App\unidade_medida::All();
+            $unidade_medidas = \App\Unidade_medida::All();
             $unidade_medidas = $unidade_medidas->sortBy('nome');
 
             return view('cadastro.cadastro_produto_novo', compact('departamentos','marcas','unidade_medidas'));
@@ -263,8 +269,11 @@ class Cadastro_Controller extends Controller
         $marca_up = \App\Marca::find($produto->id_marca);
 
         $departamentos = \App\Departamento::All();
+        $departamentos = $departamentos->sortBy('nome');
         $marcas = \App\Marca::All();
+        $marcas = $marcas->sortBy('nome');
         $unidade_medidas = \App\Unidade_medida::All();
+        $unidade_medidas = $unidade_medidas->sortBy('nome');
 
         return view('cadastro/cadastro_produto_update',compact('produto','marcas','departamentos','unidade_medidas', 'departamento_up','marca_up')); 
     }  
@@ -292,11 +301,16 @@ class Cadastro_Controller extends Controller
 
         $produto = \App\Produto::find($id);
 
-        $produto->ativo = '0';
+        if($produto->saldo > 0){
+            $titulo = "Excluir produto";
+            $mensagem = "Um produto com saldo em estoque não pode ser excluído!";
+            return view('cadastro/cadastro_erro',compact('titulo','mensagem'));
+        }else{
+            $produto->ativo = '0';
+            $produto->save();   
 
-        $produto->save();   
-
-        return redirect('cadastro/produto');      
+            return redirect('cadastro/produto');
+        }
 
     }
 
@@ -334,12 +348,17 @@ class Cadastro_Controller extends Controller
 
     public function delete_departamento(Request $request, $id){
 
-        $departamento = \App\Departamento::find($id);
+        try {
+            $departamento = \App\Departamento::find($id);
+            $departamento = $departamento->delete();
 
-        $departamento = $departamento->delete();
+            return redirect('cadastro/departamento');
 
-        return redirect('cadastro/departamento');      
-
+        } catch (QueryException $e) {
+            $titulo = "Excluir departamento";
+            $mensagem = "Este departamento não pode ser excluído!";
+            return view('cadastro/cadastro_erro',compact('titulo','mensagem')); 
+        }   
     }
 
     //busca produto
@@ -424,11 +443,17 @@ class Cadastro_Controller extends Controller
 
     public function delete_marca(Request $request, $id){
 
-        $marca = \App\Marca::find($id);
+        try{
+            $marca = \App\Marca::find($id);
+            $marca = $marca->delete();
 
-        $marca = $marca->delete();
+            return redirect('cadastro/marca');
 
-        return redirect('cadastro/marca');      
+        } catch (QueryException $e) {
+            $titulo = "Excluir marca";
+            $mensagem = "Esta marca não pode ser excluída!";
+            return view('cadastro/cadastro_erro',compact('titulo','mensagem')); 
+        }     
 
     }
 
@@ -498,6 +523,7 @@ class Cadastro_Controller extends Controller
                 'cidade' => $data['cidade'],
                 'uf' => $data['uf'],
                 'tipo' => $relacao,
+                'ativo' => 1
             ]);
 
             if ($registro->tipo == "cf") {
@@ -549,6 +575,7 @@ class Cadastro_Controller extends Controller
                 'cidade' => $data['cidade'],
                 'uf' => $data['uf'],
                 'tipo' => $relacao,
+                'ativo' => 1
             ]);
 
             if ($registro->tipo == "cf") {
@@ -595,24 +622,24 @@ class Cadastro_Controller extends Controller
             $pessoa_fisica->orgao_expedidor = $this->Mask("###/##",$pessoa_fisica->orgao_expedidor);
         }
 
-        if(strlen($pessoa_fisica->telefone) == 10){
-            $pessoa_fisica->telefone = $this->Mask("##-####-####",$pessoa_fisica->telefone);
-        } else if(strlen($pessoa_fisica->telefone) == 11){
-            $pessoa_fisica->telefone = $this->Mask("##-#####-####",$pessoa_fisica->telefone);
-        }
+        // if(strlen($pessoa_fisica->telefone) == 10){
+        //     $pessoa_fisica->telefone = $this->Mask("##-####-####",$pessoa_fisica->telefone);
+        // } else if(strlen($pessoa_fisica->telefone) == 11){
+        //     $pessoa_fisica->telefone = $this->Mask("##-#####-####",$pessoa_fisica->telefone);
+        // }
 
-        if(strlen($pessoa_fisica->telefone_sec) == 10){
-            $pessoa_fisica->telefone_sec = $this->Mask("##-####-####",$pessoa_fisica->telefone_sec);
-        } else if(strlen($pessoa_fisica->telefone_sec) == 11){
-            $pessoa_fisica->telefone_sec = $this->Mask("##-#####-####",$pessoa_fisica->telefone_sec);
-        }
+        // if(strlen($pessoa_fisica->telefone_sec) == 10){
+        //     $pessoa_fisica->telefone_sec = $this->Mask("##-####-####",$pessoa_fisica->telefone_sec);
+        // } else if(strlen($pessoa_fisica->telefone_sec) == 11){
+        //     $pessoa_fisica->telefone_sec = $this->Mask("##-#####-####",$pessoa_fisica->telefone_sec);
+        // }
 
         if(strlen($pessoa_fisica->cep) == 8){
             $pessoa_fisica->cep = $this->Mask("#####-###",$pessoa_fisica->cep);
         }
         
-        $date = str_replace('-', '/', $pessoa_fisica->data_nascim);
-        $pessoa_fisica->data_nascim = date('d/m/Y', strtotime($date));
+        // $date = str_replace('-', '/', $pessoa_fisica->data_nascim);
+        // $pessoa_fisica->data_nascim = date('d/m/Y', strtotime($date));
 
         return view('cadastro/cadastro_pessoa_fisica_update',compact('pessoa_fisica')); 
     }
@@ -737,7 +764,9 @@ class Cadastro_Controller extends Controller
 
         $pessoa_fisica = \App\Pessoa_fisica::find($id);
 
-        $pessoa_fisica = $pessoa_fisica->delete();
+        $pessoa_fisica->ativo = '0';
+
+        $pessoa_fisica->save();
 
         return redirect('cadastro/fisica');      
 
@@ -747,7 +776,9 @@ class Cadastro_Controller extends Controller
 
         $pessoa_juridica = \App\Pessoa_juridica::find($id);
 
-        $pessoa_juridica = $pessoa_juridica->delete();
+        $pessoa_juridica->ativo = '0';
+
+        $pessoa_juridica->save();
 
         return redirect('cadastro/juridica');      
     }
@@ -934,52 +965,52 @@ class Cadastro_Controller extends Controller
     //     }
     // }
 
-    public function delete_cliente_fisica($id){
+    // public function delete_cliente_fisica($id){
 
-        $cliente = \App\Cliente::find($id);
+    //     $cliente = \App\Cliente::find($id);
 
-        // $pessoa_fisica = DB::select("
-        //         SELECT 
-        //         pessoa_fisicas.id,
-        //         pessoa_fisicas.tipo
-        //         FROM pessoa_fisicas
-        //         WHERE pessoa_fisicas.id = '%".$cliente->id_pessoa_fisica."%'
-        //     ");
+    //     // $pessoa_fisica = DB::select("
+    //     //         SELECT 
+    //     //         pessoa_fisicas.id,
+    //     //         pessoa_fisicas.tipo
+    //     //         FROM pessoa_fisicas
+    //     //         WHERE pessoa_fisicas.id = '%".$cliente->id_pessoa_fisica."%'
+    //     //     ");
 
-        echo $pessoa_fisica->nome;
+    //     echo $pessoa_fisica->nome;
 
-        if($pessoa_fisica->tipo == 'cf'){
-            $pessoa_fisica->tipo = 'f'; 
-            $pessoa_fisica->save();
-        } else if($pessoa_fisica->tipo == 'c'){
-            $pessoa_fisica->tipo = ''; 
-            $pessoa_fisica->save();
-        } else{
-            return redirect('cadastro/cliente-fisica');
-        }
+    //     if($pessoa_fisica->tipo == 'cf'){
+    //         $pessoa_fisica->tipo = 'f'; 
+    //         $pessoa_fisica->save();
+    //     } else if($pessoa_fisica->tipo == 'c'){
+    //         $pessoa_fisica->tipo = ''; 
+    //         $pessoa_fisica->save();
+    //     } else{
+    //         return redirect('cadastro/cliente-fisica');
+    //     }
 
-        $cliente = $cliente->delete();
+    //     $cliente = $cliente->delete();
 
-        return redirect('cadastro/cliente-fisica');      
-    }
+    //     return redirect('cadastro/cliente-fisica');      
+    // }
 
-    public function delete_cliente_juridica($id){
+    // public function delete_cliente_juridica($id){
 
-        $cliente = \App\Cliente::find($id);
-        $cliente = $cliente->delete();
+    //     $cliente = \App\Cliente::find($id);
+    //     $cliente = $cliente->delete();
 
-        $pessoa_juridica = DB::select("
-            SELECT 
-            pessoa_juridicas.id,
-            pessoa_juridica.tipo
-            FROM pessoa_juridicas, clientes
-            WHERE pessoa_juridicas.id = clientes.id_pessoa_juridica
-            ");
+    //     $pessoa_juridica = DB::select("
+    //         SELECT 
+    //         pessoa_juridicas.id,
+    //         pessoa_juridica.tipo
+    //         FROM pessoa_juridicas, clientes
+    //         WHERE pessoa_juridicas.id = clientes.id_pessoa_juridica
+    //         ");
 
-        $pessoa_juridica = $pessoa_juridica->delete();
+    //     $pessoa_juridica = $pessoa_juridica->delete();
 
-        return redirect('cadastro/cliente-juridica');      
-    }
+    //     return redirect('cadastro/cliente-juridica');      
+    // }
 
     // public function busca_fornecedor_fisica(Request $request){
     //     $busca = $request->search;

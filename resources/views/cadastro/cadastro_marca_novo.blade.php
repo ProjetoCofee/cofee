@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app2')
 
 @section('content')
 
@@ -38,11 +38,42 @@
                                 <button type="submit" class="btn btn-primary">
                                     Salvar
                                 </button>
-                                <button type="reset" name="cancel" class="btn btn-default" onclick="history.go(-1)">Cancelar</button>
+                                <button type="button" name="cancel" class="btn btn-default" data-toggle="modal" data-target="#cancelar">Cancelar</button>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancelar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="panel panel-default">
+                <div class="panel-heading" align="center">Atenção!</div>
+                <div class="panel-body">
+                    <div id="modal_delete" class="modal-body" style="color: #1E3973;">
+                        <div align="center">
+                            <p>Tem certeza que deseja cancelar o cadastro?<br> Nada será salvo!</p>
+                        </div>
+                        <br><br>
+                        <div align="center">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="btn crud-submit btn-primary" onclick="history.go(-1)">Sim</button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn crud-submit btn-default" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Não</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>

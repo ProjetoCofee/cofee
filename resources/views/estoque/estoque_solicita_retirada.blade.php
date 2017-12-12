@@ -180,6 +180,7 @@
                                     <li class="subactive" ><a> <span style="font-size: 16px;" class="glyphicon glyphicon-triangle-right"></span> Solicitar retirada</a></li>
                                 </ul>
                             </li>
+                            <li><a>Relatórios<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>

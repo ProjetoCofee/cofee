@@ -14,6 +14,7 @@
                             <li class="active"><a href="#">Resumo<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/despesas">Despesas<span class="sr-only">(current)</span></a></li>
                             <li><a href="/contas/receitas">Receitas<span class="sr-only">(current)</span></a></li>
+                            <li><a href="/contas/relatorio">Relatórios<span class="sr-only">(current)</span></a></li>
                         </ul>
                 </div>
             </div>

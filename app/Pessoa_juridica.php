@@ -20,6 +20,7 @@ class Pessoa_juridica extends Model
         'bairro',
         'cidade',
         'uf',
-        'tipo'
+        'tipo',
+        'ativo'
     ];
 }
